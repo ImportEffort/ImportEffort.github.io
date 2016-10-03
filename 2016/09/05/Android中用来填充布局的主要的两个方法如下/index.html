@@ -1,0 +1,902 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="layout: pagertitle: 关于LayoutInflate和View.infalte的参数意义以及区别总结date: 2016-09-02 01:11:45tags: [android笔记]
+关于LayoutInflate和View.infalte的参数意义以及区别总结首先感谢AndroidDevelopment邪教群中月亮和六便士的讲解。接下来让我们步入正题：
+Android中填充布">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ImportEffort的博客">
+<meta property="og:url" content="http://yoursite.com/2016/09/05/Android中用来填充布局的主要的两个方法如下/index.html">
+<meta property="og:site_name" content="ImportEffort的博客">
+<meta property="og:description" content="layout: pagertitle: 关于LayoutInflate和View.infalte的参数意义以及区别总结date: 2016-09-02 01:11:45tags: [android笔记]
+关于LayoutInflate和View.infalte的参数意义以及区别总结首先感谢AndroidDevelopment邪教群中月亮和六便士的讲解。接下来让我们步入正题：
+Android中填充布">
+<meta property="og:image" content="http://yoursite.com/月亮和六便士的总结.jpg">
+<meta property="og:image" content="http://yoursite.com/listView出错.jpg">
+<meta property="og:updated_time" content="2016-09-05T15:56:54.995Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ImportEffort的博客">
+<meta name="twitter:description" content="layout: pagertitle: 关于LayoutInflate和View.infalte的参数意义以及区别总结date: 2016-09-02 01:11:45tags: [android笔记]
+关于LayoutInflate和View.infalte的参数意义以及区别总结首先感谢AndroidDevelopment邪教群中月亮和六便士的讲解。接下来让我们步入正题：
+Android中填充布">
+<meta name="twitter:image" content="http://yoursite.com/月亮和六便士的总结.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 666666,
+      author: '主编大人'
+    }
+  };
+</script>
+
+  <title>  | ImportEffort的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">ImportEffort的博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'roVfk5zqphGUwt-9AbCx','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-05T23:55:39+08:00" content="2016-09-05">
+              2016-09-05
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/05/Android中用来填充布局的主要的两个方法如下/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/05/Android中用来填充布局的主要的两个方法如下/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/09/05/Android中用来填充布局的主要的两个方法如下/" class="leancloud_visitors" data-flag-title="">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>layout: pager<br>title: 关于LayoutInflate和View.infalte的参数意义以及区别总结<br>date: 2016-09-02 01:11:45<br>tags: [android笔记]</p>
+<h2 id="关于LayoutInflate和View-infalte的参数意义以及区别总结"><a href="#关于LayoutInflate和View-infalte的参数意义以及区别总结" class="headerlink" title="关于LayoutInflate和View.infalte的参数意义以及区别总结"></a>关于LayoutInflate和View.infalte的参数意义以及区别总结</h2><p>首先感谢AndroidDevelopment邪教群中月亮和六便士的讲解。接下来让我们步入正题：</p>
+<h3 id="Android中填充布局的两种方式"><a href="#Android中填充布局的两种方式" class="headerlink" title="Android中填充布局的两种方式"></a>Android中填充布局的两种方式</h3><p>Android中用来填充布局的主要的两个方法如下：</p>
+<ol>
+<li><code>LayoutInflater.from(getContext()).inflate(resource, root, attachToRoot);</code></li>
+<li><code>View.inflate(context, resource, root);</code></li>
+</ol>
+<p>根据个人习惯不同，可能大家使用方法不同，之前我是习惯使用 <code>View.inflate(getContext(),R.layout.layout_main,null);</code>方法的，直到有一天我遇到一个问题：</p>
+<p> 我发现使用该方法，为listView（RecycleView）填充item条目的时候，根布局设置的layout参数总是不起作用，后来了解，在这种情况下，其实根布局的所有的属性都是不管用的。</p>
+<p>今天下午在邪教群 月亮和六便士 讲解里我了解了其中的原因：</p>
+<h3 id="View-inflate方法的原理"><a href="#View-inflate方法的原理" class="headerlink" title="View.inflate方法的原理"></a>View.inflate方法的原理</h3><p>首先看下View.inflate方法的几个参数的意义：</p>
+<p>第一个参数 Context。第二个参数，布局id，第三个参数root。这里主要讲下第三个参数，因为第三个参数我们一般都会传一个null，但是大都数人都不知道其中的原因。</p>
+<p>首先来看下官方给出的方法注解：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Inflate a view from an XML resource.  This convenience method wraps the &#123;<span class="doctag">@link</span></div><div class="line"> * LayoutInflater&#125; class, which provides a full range of options for view inflation.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@param</span> context The Context object for your activity or application.</div><div class="line"> * <span class="doctag">@param</span> resource The resource ID to inflate</div><div class="line"> * <span class="doctag">@param</span> root A view group that will be the parent.  Used to properly inflate the</div><div class="line"> * layout_* parameters.</div><div class="line"> * <span class="doctag">@see</span> LayoutInflater</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> View <span class="title">inflate</span><span class="params">(Context context, @LayoutRes <span class="keyword">int</span> resource, ViewGroup root)</span> </span>&#123;</div><div class="line">    LayoutInflater factory = LayoutInflater.from(context);</div><div class="line">    <span class="keyword">return</span> factory.inflate(resource, root);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注意看：<code>A view group that will be the parent.  Used to properly inflate the layout_* parameters.</code></p>
+<p>前半句的意思是，该参数将作为一个你布局的父View，后半句意思是，使用你inflate布局的跟布局的<code>layout_*</code>参数，也就是你根布局<code>layout_*</code>参数将会生效。反之<code>layout_*</code>参数将会不生效。这样我们就可以理解为什么我们设置的跟布局参数无法生效了，因为我们该参数传了个null。</p>
+<p>大家可能会说那我就讲parent传进去就好了呀，事情当然不会这么简单，比如我们在listView的getView方法中，将getView的参数作为inflate的第三个参数传入，就会报错，错误的意思是getView的返回的view已经有个parent不能再为其指定一个parent了，相信大家都知道getView方法中的parent是listView本身，不知道的去打印下。</p>
+<p>这是为什么？ 接着往下看你就会明白了：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Inflate a new view hierarchy from the specified xml resource. Throws</div><div class="line"> * &#123;<span class="doctag">@link</span> InflateException&#125; if there is an error.</div><div class="line"> * </div><div class="line"> * <span class="doctag">@param</span> resource ID for an XML layout resource to load (e.g.,</div><div class="line"> *        &lt;code&gt;R.layout.main_page&lt;/code&gt;)</div><div class="line"> * <span class="doctag">@param</span> root Optional view to be the parent of the generated hierarchy.</div><div class="line"> * <span class="doctag">@return</span> The root View of the inflated hierarchy. If root was supplied,</div><div class="line"> *         this is the root View; otherwise it is the root of the inflated</div><div class="line"> *         XML file.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> View <span class="title">inflate</span><span class="params">(@LayoutRes <span class="keyword">int</span> resource, @Nullable ViewGroup root)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> inflate(resource, root, root != <span class="keyword">null</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>继续点击查看源码实际上，factory.inflate(resource, root);调用了inflate(resource, root, root != null)方法，</p>
+<p>这个方法也就是LayoutInflater.from(getContext()).inflate(resource, root, attachToRoot);</p>
+<h3 id="LayoutInflater的inflate方法的三个参数"><a href="#LayoutInflater的inflate方法的三个参数" class="headerlink" title="LayoutInflater的inflate方法的三个参数"></a>LayoutInflater的inflate方法的三个参数</h3><p>好，那么我们有必要解释下inflate的三个参数，以及他们各自的作用了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Inflate a new view hierarchy from the specified xml resource. Throws</div><div class="line"> * &#123;<span class="doctag">@link</span> InflateException&#125; if there is an error.</div><div class="line"> * </div><div class="line"> * <span class="doctag">@param</span> resource ID for an XML layout resource to load (e.g.,</div><div class="line"> *        &lt;code&gt;R.layout.main_page&lt;/code&gt;)</div><div class="line"> * <span class="doctag">@param</span> root Optional view to be the parent of the generated hierarchy (if</div><div class="line"> *        &lt;em&gt;attachToRoot&lt;/em&gt; is true), or else simply an object that</div><div class="line"> *        provides a set of LayoutParams values for root of the returned</div><div class="line"> *        hierarchy (if &lt;em&gt;attachToRoot&lt;/em&gt; is false.)</div><div class="line"> * <span class="doctag">@param</span> attachToRoot Whether the inflated hierarchy should be attached to</div><div class="line"> *        the root parameter? If false, root is only used to create the</div><div class="line"> *        correct subclass of LayoutParams for the root view in the XML.</div><div class="line"> * <span class="doctag">@return</span> The root View of the inflated hierarchy. If root was supplied and</div><div class="line"> *         attachToRoot is true, this is root; otherwise it is the root of</div><div class="line"> *         the inflated XML file.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> View <span class="title">inflate</span><span class="params">(@LayoutRes <span class="keyword">int</span> resource, @Nullable ViewGroup root, <span class="keyword">boolean</span> attachToRoot)</span> </span>&#123;</div></pre></td></tr></table></figure>
+<p>​<br>第一个参数不多说 填入你定义好的布局 </p>
+<p>第二参数root也就是View.inflate(context, resource, root);的第三个参数，看下注解的解释：</p>
+<p>root：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">* <span class="meta">@param</span> <span class="function">root Optional view to be the parent of the generated <span class="title">hierarchy</span> <span class="params">(<span class="keyword">if</span></span></span></div><div class="line">*        &lt;em&gt;attachToRoot&lt;/em&gt; is <span class="keyword">true</span>), or <span class="keyword">else</span> simply an object that</div><div class="line">*        provides a set of LayoutParams values <span class="keyword">for</span> root of the returned</div><div class="line">*        <span class="title">hierarchy</span> <span class="params">(<span class="keyword">if</span> &lt;em&gt;attachToRoot&lt;/em&gt; is <span class="keyword">false</span>.)</span></div></pre></td></tr></table></figure>
+<p>​    注解的大概意思就是：如果 attachToRoot 参数为true的时候，你inflate返回的view将会是parent本身，而parent将会调用addView方法添加到这个布局view中；如果attachToRoot参数为false的时候，inflate将把你的布局的参数，作为下次调用addView的方法的时候的布局依据。当然，上边说的这些都是在root不为空的前提下的。    </p>
+<p>attachToRoot:    </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">* <span class="meta">@param</span> attachToRoot Whether the inflated hierarchy should be attached to</div><div class="line">*        the root parameter? If <span class="keyword">false</span>, root is only used to create the</div><div class="line">*        correct subclass of LayoutParams <span class="keyword">for</span> the root view in the XML.</div></pre></td></tr></table></figure>
+<p>这里多次用了attachToRoot参数，该参数的作用是什么，通过注解可以看到 该参数决定了infalte返回的view是root，还是你的布局view。</p>
+<p>如果为true返回root，如果为false，返回的是你的View，那么我们有点蒙了，我们什么时候返回false，什么时候返回true。群里的@深圳-奕超同学说了一个可能就是如果你的resource的跟布局是一个<code>&lt;merge /&gt;</code>标签的话就必须使用true了，原因是：</p>
+<blockquote>
+<p>inflate的时候如果不指定root并指定为true，那么infate返回的是被填充资源的根布局。<br>而如果为merge标签，merge本身不是一个view，Android在填充这个布局讲merge转成view的时候会报错，因为merge没有对应的Java对象。</p>
+</blockquote>
+<p>好现在我们应该能得到的结论是：<code>inflate(resource, root, attachToRoot);</code> root参数是否制定，会影响你的view根布局参数是否会生效。</p>
+<p>attachToRoot参数的true 和 false 将决定你的infalte方法返回值是root还是你的填充资源的根布局。</p>
+<h3 id="view-infalte-root参数报错的问题"><a href="#view-infalte-root参数报错的问题" class="headerlink" title="view.infalte root参数报错的问题"></a>view.infalte root参数报错的问题</h3><p>那么回到之前的问题，view.infalte中的第三个参数传入parent就会报错的问题</p>
+<pre><code>public View inflate(@LayoutRes int resource, @Nullable ViewGroup root) {
+    return inflate(resource, root, root != null);
+}
+</code></pre><p>上边，这段代码是view.infalte将会走的方法，可以看见如果我们指定root对象，他就会将attachToRoot设置为true，然后根据之前的讲解，如果attachToRoot为true，inflate返回的View就会是root本身（布局view已经作为子view添加到rootView）。而listVIew中的parent参数就是listView本身，那么在getView中又返回了listView，listView本身是父View的，这时候我们相当于把listView作为Item又添加到listView中，这时候我们先相当于又给其指定了一个父View即listView，这时候报错也是必然的了，因为一个view只能有一个父View。</p>
+<h3 id="继续深入了解inflate"><a href="#继续深入了解inflate" class="headerlink" title="继续深入了解inflate"></a>继续深入了解inflate</h3><p>下面继续深入理解下inflate(resource, root, attachToRoot);后两个参数的作用：</p>
+<p>假设这样一个场景：</p>
+<p>我用一ViewGroup1(相对布局)，里边有个btn。我现在想通过inflate的方法为这个ViewGroup添加一个子View，并放在btn的右边</p>
+<pre><code>&lt;LinearLayout
+    .....
+    android:Layout_toRightOf:&quot;@+id/btn&quot;
+    /&gt;
+</code></pre><p>我们的inflate参数是这样写的：</p>
+<p><code>View view = inflate(R.Layout.linear_layout,viewGroup2,false);</code>注意：viewGroup2也是个相对布局，但是并不是viewGroup1</p>
+<p>然后调用，viewGroup1.addView（view），这时候view会不会位于btn的右侧？</p>
+<p>答案是肯定的，如果你足够明白上边所讲的知识，inflate(R.Layout_linear_layout,viewGroup2,false)，方法将会是<code>R.layout.linear_layout</code>的根布局参数生效。当viewGroup1.addView（view）则按照view的跟布局参数设置view的位置</p>
+<p>那好，我们将ViewGroup1换成线性布局会发生什么事呢，聪明的你肯定猜到了，view肯定不会再btn右侧了<br>（这个如果你的线性布局水平布局的话还是有可能的，当然我们讲的中点不是这个）</p>
+<p>我们要说的是，造成这个结果原因是，虽然我们view的根布局有toRightof的属性，但是Linearlayout根本不认呀。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>好最后放大招总结：inflate(resource, root, attachToRoot);</p>
+<ol>
+<li><p>如果root为null，attachToRoot失去作用，true or false 并没有作用</p>
+</li>
+<li><p>如果root不为null，attachToRoot设置为true，则把加载的布局指定一个父View，即root</p>
+</li>
+</ol>
+<p>此时，inflate返回的是添加了你的布局的root。</p>
+<ol>
+<li><p>如果root不为null，attachToRoot设置为true，则布局文件的最外层的所有layout参数生效，再该view被添加到<br>一个父view时候，将会使用这些layout参数的值</p>
+</li>
+<li><p>当不设置attachToRoot的时候，指定root参数，默认attachToRoot的值为true，</p>
+</li>
+<li><p>如果给填充的布局文件指定了layout睡醒，但是root中并没有对应的layout属性，则会忽略掉这些属性</p>
+</li>
+<li><p>如果给填充的布局文件指定了layout属性，root中也对应的属性，但真正要添加的父view中并没有<br>这些属性的时候，该layout也不会生效，会被忽略。</p>
+</li>
+</ol>
+<p>  <img src="月亮和六便士的总结.jpg" alt="月亮和六便士的总结"> <img src="listView出错.jpg" alt="listView出错"></p>
+<p>​<br>​<br>​    </p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechatpay.jpg" alt="ImportEffort WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/25/Android-5-0新特性/" rel="next" title="Android 5.0新特性">
+                <i class="fa fa-chevron-left"></i> Android 5.0新特性
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/09/05/Android中用来填充布局的主要的两个方法如下/"
+           data-title="" data-url="http://yoursite.com/2016/09/05/Android中用来填充布局的主要的两个方法如下/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://www.uuwtq.com/file/image/tx/3w3074215130u3762619205t21.jpg"
+               alt="ImportEffort" />
+          <p class="site-author-name" itemprop="name">ImportEffort</p>
+          <p class="site-description motion-element" itemprop="description">说道做到，这就是我的忍道</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ImportEffort" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/3188955872/home?wvr=5" target="_blank" title="weibo">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/wang-sir-64-20" target="_blank" title="zhihu">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  zhihu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://write.blog.csdn.net/postlist" title="M_Yoda的CSDN" target="_blank">M_Yoda的CSDN</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.jianshu.com/users/970052f2d105/latest_articles" title="我的简书" target="_blank">我的简书</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关于LayoutInflate和View-infalte的参数意义以及区别总结"><span class="nav-number">1.</span> <span class="nav-text">关于LayoutInflate和View.infalte的参数意义以及区别总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Android中填充布局的两种方式"><span class="nav-number">1.1.</span> <span class="nav-text">Android中填充布局的两种方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#View-inflate方法的原理"><span class="nav-number">1.2.</span> <span class="nav-text">View.inflate方法的原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LayoutInflater的inflate方法的三个参数"><span class="nav-number">1.3.</span> <span class="nav-text">LayoutInflater的inflate方法的三个参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#view-infalte-root参数报错的问题"><span class="nav-number">1.4.</span> <span class="nav-text">view.infalte root参数报错的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#继续深入了解inflate"><span class="nav-number">1.5.</span> <span class="nav-text">继续深入了解inflate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">1.6.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ImportEffort</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"importeffort"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+      
+      <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+      <script src="/js/src/hook-duoshuo.js"></script>
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("dOCOQJ0o85lXuV0x6q6XagQX-gzGzoHsz", "x0DPLc3E7HvEAARvkMzOJXna");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

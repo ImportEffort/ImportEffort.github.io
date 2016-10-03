@@ -1,0 +1,960 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android笔记," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="##什么是自定义组合控件　　简单的自定义组合控件，意思就是把你经常使用的一些布局内容，抽取成一个单独的布局文件，然后自定义一个viewGroup类，来加载这个布局文件，并对外提供自定义属性。自定义组合控件主要两种.
+　
+
+一种是带自定义属性的自定义组合控件，这些属性通过Attributes添加，并可以在xml中使用。
+另一种是包装多个控件对外提供方法设置内部控件属性；">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android中的简单自定义组合控件">
+<meta property="og:url" content="http://yoursite.com/2016/07/27/Android中的简单自定义组合控件/index.html">
+<meta property="og:site_name" content="ImportEffort的博客">
+<meta property="og:description" content="##什么是自定义组合控件　　简单的自定义组合控件，意思就是把你经常使用的一些布局内容，抽取成一个单独的布局文件，然后自定义一个viewGroup类，来加载这个布局文件，并对外提供自定义属性。自定义组合控件主要两种.
+　
+
+一种是带自定义属性的自定义组合控件，这些属性通过Attributes添加，并可以在xml中使用。
+另一种是包装多个控件对外提供方法设置内部控件属性；">
+<meta property="og:image" content="http://i.imgur.com/LFF2EJL.png">
+<meta property="og:image" content="http://i.imgur.com/Y7mA1lv.png">
+<meta property="og:image" content="http://i.imgur.com/AzEL1D1.png">
+<meta property="og:updated_time" content="2016-07-28T17:37:00.931Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android中的简单自定义组合控件">
+<meta name="twitter:description" content="##什么是自定义组合控件　　简单的自定义组合控件，意思就是把你经常使用的一些布局内容，抽取成一个单独的布局文件，然后自定义一个viewGroup类，来加载这个布局文件，并对外提供自定义属性。自定义组合控件主要两种.
+　
+
+一种是带自定义属性的自定义组合控件，这些属性通过Attributes添加，并可以在xml中使用。
+另一种是包装多个控件对外提供方法设置内部控件属性；">
+<meta name="twitter:image" content="http://i.imgur.com/LFF2EJL.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/07/27/Android中的简单自定义组合控件/"/>
+
+  <title> Android中的简单自定义组合控件 | ImportEffort的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">ImportEffort的博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android中的简单自定义组合控件
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-27T08:53:16+08:00" content="2016-07-27">
+              2016-07-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>##什么是自定义组合控件<br>　　简单的自定义组合控件，意思就是把你经常使用的一些布局内容，抽取成一个单独的布局文件，然后自定义一个viewGroup类，来加载这个布局文件，并对外提供自定义属性。自定义组合控件主要两种.
+　</p>
+<ol>
+<li>一种是带自定义属性的自定义组合控件，这些属性通过Attributes添加，并可以在xml中使用。</li>
+<li>另一种是包装多个控件对外提供方法设置内部控件属性；</li>
+</ol>
+<a id="more"></a>
+<p>##不带自定义属性的组合控件</p>
+<p>比如说我们的需求是为一个横向的ProgresBar添加上描述文字，常见的场景就是系统内存控件使用率的展示，如下图：</p>
+<p><img src="http://i.imgur.com/LFF2EJL.png" alt=""></p>
+<p>实现方法：</p>
+<ol>
+<li>第一步我们需要使用，对系统原有的ProgressBar进行修改：</li>
+</ol>
+<pre><code>&lt;ProgressBar
+    android:id=&quot;@+id/pb_vdp&quot;
+    style=&quot;?android:attr/progressBarStyleHorizontal&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;22dp&quot;
+    android:layout_centerVertical=&quot;true&quot;
+    android:progress=&quot;50&quot;
+    android:progressDrawable=&quot;@drawable/progress_horizontal&quot; /&gt;
+</code></pre><p>可以看到我们对系统原有的横向进度条添加了一条progressDrawable的属性，通过这个属性我们可以自己定义系统进度条的样式。至于为什么可以？我们可以参照系统进度条实现方法：</p>
+<ul>
+<li><p>我们找到我们应用的主题样式，在清单文件中Applection节点下的</p>
+<pre><code>android:theme=&quot;@style/AppTheme&quot; &gt;
+</code></pre></li>
+<li><p>ctrl+左键进入项目的style.xml文件看到：</p>
+<pre><code>   &lt;style name=&quot;AppTheme&quot; parent=&quot;AppBaseTheme&quot;&gt;
+    &lt;item name=&quot;android:windowNoTitle&quot;&gt;true&lt;/item&gt;
+&lt;/style&gt;
+</code></pre></li>
+<li><p>再次ctrl+左键进入系统的theme.xml文件，全局搜索 progressBarStyleHorizontal 我们可以看到如下信息：</p>
+<pre><code>&lt;item name=&quot;progressBarStyleHorizontal&quot;&gt;
+    @android:style/Widget.ProgressBar.Horizontal
+&lt;/item&gt;
+</code></pre></li>
+<li><p>再次ctrl+左键进入系统的style.xml文件，我们就可以看见系统的ProgressBar样式了：</p>
+<pre><code>&lt;style name=&quot;Widget.ProgressBar.Horizontal&quot;&gt;
+    &lt;item name=&quot;android:indeterminateOnly&quot;&gt;false&lt;/item&gt;
+    &lt;item name=&quot;android:progressDrawable&quot;&gt;@android:drawable/progress_horizontal&lt;/item&gt;
+    &lt;item name=&quot;android:indeterminateDrawable&quot;&gt;@android:drawable/progress_indeterminate_horizontal&lt;/item&gt;
+    &lt;item name=&quot;android:minHeight&quot;&gt;20dip&lt;/item&gt;
+    &lt;item name=&quot;android:maxHeight&quot;&gt;20dip&lt;/item&gt;
+    &lt;item name=&quot;android:mirrorForRtl&quot;&gt;true&lt;/item&gt;
+&lt;/style&gt;
+</code></pre></li>
+<li>我们可以看到系统的横向进度条原有一个progressDrawable属性引用的是系统drawable目录下的Progress_horizontal文件，点击进去我们就可以看到：</li>
+</ul>
+<pre><code>&lt;layer-list xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;
+        &lt;!-- 背景 --&gt;
+        &lt;item android:id=&quot;@android:id/background&quot;&gt;
+            &lt;shape&gt;
+                &lt;corners android:radius=&quot;5dip&quot; /&gt;
+                &lt;gradient
+                        android:startColor=&quot;#ff9d9e9d&quot;
+                        android:centerColor=&quot;#ff5a5d5a&quot;
+                        android:centerY=&quot;0.75&quot;
+                        android:endColor=&quot;#ff747674&quot;
+                        android:angle=&quot;270&quot;
+                /&gt;
+            &lt;/shape&gt;
+        &lt;/item&gt;
+        &lt;!-- 副进度条 --&gt;
+        &lt;item android:id=&quot;@android:id/secondaryProgress&quot;&gt;
+            &lt;clip&gt;
+                &lt;shape&gt;
+                    &lt;corners android:radius=&quot;5dip&quot; /&gt;
+                    &lt;gradient
+                            android:startColor=&quot;#80ffd300&quot;
+                            android:centerColor=&quot;#80ffb600&quot;
+                            android:centerY=&quot;0.75&quot;
+                            android:endColor=&quot;#a0ffcb00&quot;
+                            android:angle=&quot;270&quot;
+                    /&gt;
+                &lt;/shape&gt;
+            &lt;/clip&gt;
+        &lt;/item&gt;
+        &lt;!-- 主进度条 --&gt;
+        &lt;item android:id=&quot;@android:id/progress&quot;&gt;
+            &lt;clip&gt;
+                &lt;!-- 四周弧度 --&gt;
+                &lt;shape&gt;
+                    &lt;corners android:radius=&quot;5dip&quot; /&gt;
+                &lt;!-- 渐变颜色 --&gt;
+                    &lt;gradient
+                            android:startColor=&quot;#ffffd300&quot;
+                            android:centerColor=&quot;#ffffb600&quot;
+                            android:centerY=&quot;0.75&quot;
+                            android:endColor=&quot;#ffffcb00&quot;
+                            android:angle=&quot;270&quot;
+                    /&gt;
+                &lt;/shape&gt;
+            &lt;/clip&gt;
+        &lt;/item&gt;
+
+    &lt;/layer-list&gt;
+</code></pre><ul>
+<li><p>我们需要做的是，在我们项目的drawable目录下也创建一个这样的文件，也可以直接复制系统的Progress_horizontal文件，然后修改里边的属性达到我们想要的效果，我们做出如下修改主要是更改了原有的系统进度条的背景及进度条颜色，之后回到我们之前布局文件中在ProgressBar中使用<code>android:progressDrawable=&quot;@drawable/progress_horizontal&quot;</code>即可：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;layer-list xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; &gt;
+    &lt;!-- 背景 --&gt;
+    &lt;item android:id=&quot;@android:id/background&quot;&gt;
+        &lt;shape&gt;
+            &lt;!-- 进度颜色 --&gt;
+            &lt;solid android:color=&quot;#22000000&quot; /&gt;
+        &lt;/shape&gt;
+    &lt;/item&gt;
+    &lt;!-- 副进度条 --&gt;
+    &lt;item android:id=&quot;@android:id/secondaryProgress&quot;&gt;
+        &lt;clip&gt;
+            &lt;shape&gt;
+                &lt;solid android:color=&quot;#22ff0000&quot; /&gt;
+            &lt;/shape&gt;
+        &lt;/clip&gt;
+    &lt;/item&gt;
+    &lt;!-- 主进度条 --&gt;
+    &lt;item android:id=&quot;@android:id/progress&quot;&gt;
+        &lt;clip&gt;
+            &lt;shape&gt;
+                &lt;solid android:color=&quot;#55ff0000&quot; /&gt;
+            &lt;/shape&gt;
+        &lt;/clip&gt;
+    &lt;/item&gt;
+&lt;/layer-list&gt;    
+</code></pre></li>
+</ul>
+<hr>
+<ol>
+<li><p>第二步 组合我们想要的控件</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+              android:layout_width=&quot;match_parent&quot;
+              android:layout_height=&quot;wrap_content&quot;
+              android:gravity=&quot;center_vertical&quot;
+              android:orientation=&quot;horizontal&quot;&gt;
+    &lt;TextView
+        android:id=&quot;@+id/tv_pdv_title&quot;
+        style=&quot;@style/TextContentStyle&quot;
+        android:layout_width=&quot;50dp&quot;
+        android:layout_marginTop=&quot;0dp&quot;
+        android:text=&quot;标题:&quot;
+        android:textSize=&quot;15sp&quot;/&gt;
+    &lt;RelativeLayout
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;wrap_content&quot;&gt;
+        &lt;ProgressBar
+            android:id=&quot;@+id/pb_pdv&quot;
+            style=&quot;?android:attr/progressBarStyleHorizontal&quot;
+            android:layout_width=&quot;match_parent&quot;
+            android:layout_height=&quot;24dp&quot;
+            android:layout_centerVertical=&quot;true&quot;
+            android:progressDrawable=&quot;@drawable/progress_horizontal&quot;/&gt;
+        &lt;TextView
+            android:id=&quot;@+id/tv_pdv_left&quot;
+            style=&quot;@style/TextContentStyle&quot;
+            android:layout_centerVertical=&quot;true&quot;
+            android:layout_marginLeft=&quot;0dp&quot;
+            android:text=&quot;xxx已用&quot;
+            android:textSize=&quot;13sp&quot;/&gt;
+        &lt;TextView
+            android:id=&quot;@+id/tv_pdv_right&quot;
+            style=&quot;@style/TextContentStyle&quot;
+            android:layout_alignParentRight=&quot;true&quot;
+            android:layout_centerVertical=&quot;true&quot;
+            android:layout_marginLeft=&quot;0dp&quot;
+            android:layout_marginRight=&quot;3dp&quot;
+            android:text=&quot;xxx可用&quot;
+            android:textSize=&quot;13sp&quot;/&gt;
+    &lt;/RelativeLayout&gt;
+&lt;/LinearLayout&gt;
+</code></pre></li>
+<li><p>新建一个类继承自RelativeLayout，覆写其3个构造发方法，其中只有一个构造参数的构造方法一般在代码声明中之传入一个参数的时候调用，其他两个方法一般在xml布局文件中声明的时候都会调用。这里我们为避免在每个构造方法中都初始化一遍我们的控件，我们采用this传递的方法，使其无论调用哪个构造方法最终均调用三个构造参数的方法。</p>
+<pre><code>public ProgressDesView(Context context, AttributeSet attrs, int defStyle) {
+    super(context, attrs, defStyle);
+    init();
+}
+
+public ProgressDesView(Context context, AttributeSet attrs) {
+    this(context, attrs, 0);
+}
+
+public ProgressDesView(Context context) {
+    this(context, null);
+}    
+</code></pre></li>
+<li><p>实现init（）；方法初始化布局控件内容：</p>
+<pre><code>    private TextView tvTitle;
+    private TextView tvLeft;
+    private TextView tvRight;
+    private ProgressBar pbProcess;
+
+private void init() {
+
+    View view = View.inflate(getContext(), R.layout.prgress_des_view, this);
+    tvTitle = (TextView) view.findViewById(R.id.tv_title);
+    tvLeft = (TextView) view.findViewById(R.id.tv_left);
+    tvRight = (TextView) view.findViewById(R.id.tv_right);
+    pbProcess = (ProgressBar) view.findViewById(R.id.pb_vdp);
+    pbProcess.setMax(100);
+}
+</code></pre></li>
+<li><p>我们实际需求是，能够在外部声明控件后直接setText就能动态设置进度条显示内容，所以我们为自定义的控件个添加了设置文本内容以及进度条进度的方法：</p>
+<pre><code>public void setItemTitle(String title) {
+    tvTitle.setText(title);
+}
+
+public void setUsed(String used) {
+    tvLeft.setText(used);
+}
+
+public void setUnUsed(String UnUsed) {
+    tvRight.setText(UnUsed);
+}
+
+public void setProgress(int precent) {
+    pbProcess.setProgress(precent);
+}
+</code></pre></li>
+</ol>
+<hr>
+<h2 id="带自定义属性的组合控件"><a href="#带自定义属性的组合控件" class="headerlink" title="带自定义属性的组合控件"></a>带自定义属性的组合控件</h2><p>从上边的控件看来，我们只是使用了现有的控件，然后在组合控件内部添加了自定义的方法暴露给外部，在代码中，我们通过自定义控件的对象来实现动态赋值。而如果我们为自定义的组合控件设置了自定义属性，我们就可以跟系统控件一样在布局文件中赋值了。好多第三方软件也是这样做的，好了下面效果图：</p>
+<p><img src="http://i.imgur.com/Y7mA1lv.png" alt=""></p>
+<p>上图中每个条目其实都是使用同一个自定义组合控件来实现的，通过设置不同的属性来控制显示的样式及内容。</p>
+<ol>
+<li><p>创建自定义组合控件的条目布局：</p>
+<pre><code>&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:paddingBottom=&quot;8dp&quot;
+    android:paddingLeft=&quot;12dp&quot;
+    android:paddingRight=&quot;12dp&quot;
+    android:paddingTop=&quot;8dp&quot; &gt;
+
+    &lt;TextView
+        android:id=&quot;@+id/tv_setting_title&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:text=&quot;设置中心&quot;
+        android:textColor=&quot;#393839&quot;
+        android:textSize=&quot;18dp&quot; /&gt;
+
+    &lt;ImageView
+        android:id=&quot;@+id/img_setting_toggle&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_alignParentRight=&quot;true&quot;
+        android:src=&quot;@drawable/on&quot; /&gt;
+
+&lt;/RelativeLayout&gt;
+</code></pre><p>效果图：</p>
+<p> <img src="http://i.imgur.com/AzEL1D1.png" alt=""></p>
+</li>
+<li><p>自定义一个类继承自RelativeLayout：</p>
+<pre><code>public ItemSetView(Context context, AttributeSet attrs, int defStyle) {
+
+    super(context, attrs, defStyle);
+
+        initView(context, attrs);
+    }
+    public ItemSetView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public ItemSetView(Context context) {
+        this(context, null);
+
+}
+</code></pre></li>
+<li><p>自定义属性的方法，我们在项目的values的目录下新建一个attrs.xml文件，在这里我们可以定义所有自定义控件的属性内容：</p>
+<pre><code>&lt;!-- 自定义控件的属性，name指定了是哪个自定义控件，这里写我们自己的类名 --&gt;
+&lt;declare-styleable name=&quot;ItemSetView&quot;&gt;
+    &lt;!-- 显示内容 --&gt;
+    &lt;attr name=&quot;isvTitle&quot; format=&quot;string&quot; /&gt;
+    &lt;!-- 背景图片 --&gt;
+    &lt;attr name=&quot;isvBkg&quot;&gt;
+        &lt;!-- name为提示框中中显示的可选值  --&gt;
+        &lt;enum name=&quot;first&quot; value=&quot;0&quot; /&gt;
+        &lt;enum name=&quot;middle&quot; value=&quot;1&quot; /&gt;
+        &lt;enum name=&quot;last&quot; value=&quot;2&quot; /&gt;
+    &lt;/attr&gt;
+    &lt;!--  --&gt;
+    &lt;attr name=&quot;isvEnable&quot; format=&quot;boolean&quot; /&gt;
+&lt;/declare-styleable&gt; 
+</code></pre></li>
+<li><p>实现initView(context, attrs)方法，方法参数二为AttributeSet，即为控件属性集合。我们通过这个集合在找到我们需要的控件属性：</p>
+<ol>
+<li>首先我们通过View.inflate(context, R.layout.view_setting_item, null);将我们定义好的布局引入，这里之所以能够这样引入是因为我们定义的都是一个ViewGroup，它本身就可以包含其他控件。</li>
+<li><p>context.obtainStyledAttributes检索属性 获取自定义属性集：</p>
+<pre><code>// 检索属性 获取自定义属性集
+TypedArray typedArray = context.obtainStyledAttributes(attrs,R.styleable.ItemSetView);
+</code></pre></li>
+<li><p>通过typedArray.getXXX方法获取对应自定义控件的属性，并赋值给对应的内部控件。在设置背景的时候我们使用了类似可选属性的方法，通过switch方法设置每个可选值对应的属性内容。</p>
+</li>
+</ol>
+</li>
+</ol>
+<pre><code>private void initView(Context context, AttributeSet attrs) {
+    View view = View
+            .inflate(context, R.layout.view_setting_item, null);
+    addView(view);
+    mSetTitle = (TextView) findViewById(R.id.tv_setting_title);
+    mImgToggle = (ImageView) findViewById(R.id.img_setting_toggle);
+
+    // 检索属性 获取自定义属性集
+    TypedArray typedArray = context.obtainStyledAttributes(attrs,R.styleable.ItemSetView);
+
+    // 获取设置的文本内容
+    String showTitle = typedArray.getString(R.styleable.ItemSetView_isvTitle);
+    mSetTitle.setText(showTitle);
+
+    // 获取设置的开关是否显示
+    boolean isShow = typedArray.getBoolean(R.styleable.ItemSetView_isvEnable, false);
+    mImgToggle.setVisibility(isShow ? View.VISIBLE : View.INVISIBLE);
+
+    // 获取设置的背景颜色
+    int bkgId = typedArray.getInt(R.styleable.ItemSetView_isvBkg, -1);
+    // 根据获取的值动态设置背景颜色
+    switch (bkgId) {
+    case 0:
+        setBackgroundResource(R.drawable.setting_item_first_selector);
+        break;
+    case 1:
+        setBackgroundResource(R.drawable.setting_item_middle_selector);
+        break;
+    case 2:
+        setBackgroundResource(R.drawable.setting_item_last_selector);
+        break;
+    default:
+        break;
+    }
+
+        typedArray.recycle();
+}
+</code></pre><ol>
+<li><p>使用方法：</p>
+<pre><code>&lt;com.zdysx.mobilesafe.view.ItemSetView
+    android:id=&quot;@+id/siv_addr_query&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:layout_marginTop=&quot;10dp&quot;
+    zdysx:isvBkg=&quot;first&quot;
+    zdysx:isvEnable=&quot;false&quot;
+    zdysx:isvTitle=&quot;号码归属地查询&quot; /&gt;
+</code></pre><p> 注意如果我们直接这么些，eclipse是会报错的，因为系统不知道zdysx是什么鬼东西当然会把报错了，解决方法就是为布局文件添加命名空间，方法就是：</p>
+<pre><code>&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    xmlns:zdysx=&quot;http://schemas.android.com/apk/res/com.zdysx.mobilesafe&quot;
+    xmlns:tools=&quot;http://schemas.android.com/tools&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    android:orientation=&quot;vertical&quot; &gt;
+</code></pre><p>  <code>xmlns:zdysx=&quot;http://schemas.android.com/apk/res/com.zdysx.mobilesafe&quot;</code>这一行就是我们自己的命名空间，也就是把系统的命名空间，复制一行最后一行改为我们自己的项目包名，androidstudio中自定义的属性，系统会直接提示你加上<code>xmlns:zdykj=&quot;http://schemas.android.com/apk/res-auto&quot;</code>；添加完成后我们就可以愉快的使用了。</p>
+</li>
+</ol>
+<hr>
+<p>##小结</p>
+<ol>
+<li>自定义组合控件，其实思想也是方便使用，当我们代码中有大量重复，有不能写死布局属性的时候，我们往往需要自定义一个组合控件出来使用。</li>
+<li>自定义属性控件，用的比较多，功能也比较强大，但是就是比较繁琐。至少我们了解第三方框架中的一些属性都是怎么回事了。</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android笔记/" rel="tag">#android笔记</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/27/Android中的手势识别（-）/" rel="next" title="Android中的手势识别（-）">
+                <i class="fa fa-chevron-left"></i> Android中的手势识别（-）
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/27/AsyncTask的简单使用/" rel="prev" title="AsyncTask的简单使用">
+                AsyncTask的简单使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="ImportEffort" />
+          <p class="site-author-name" itemprop="name">ImportEffort</p>
+          <p class="site-description motion-element" itemprop="description">说道做到，这就是我的忍道</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#带自定义属性的组合控件"><span class="nav-number">1.</span> <span class="nav-text">带自定义属性的组合控件</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ImportEffort</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

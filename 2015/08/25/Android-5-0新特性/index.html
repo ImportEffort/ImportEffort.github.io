@@ -1,0 +1,812 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android笔记," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="View的高度与阴影官网介绍：https://developer.android.com/intl/zh-tw/training/material/shadows-clipping.html
+
+注意这个内容是在5.0之后的出现的，所以只有在5.0后的手机上才能有效果
+View增加了高度的概念，高度大的View会覆盖在高度小的View之上，并带有阴影效果：
+View高度有2个因素组成：
+
+View高">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 5.0新特性">
+<meta property="og:url" content="http://yoursite.com/2015/08/25/Android-5-0新特性/index.html">
+<meta property="og:site_name" content="ImportEffort的博客">
+<meta property="og:description" content="View的高度与阴影官网介绍：https://developer.android.com/intl/zh-tw/training/material/shadows-clipping.html
+
+注意这个内容是在5.0之后的出现的，所以只有在5.0后的手机上才能有效果
+View增加了高度的概念，高度大的View会覆盖在高度小的View之上，并带有阴影效果：
+View高度有2个因素组成：
+
+View高">
+<meta property="og:image" content="http://i.imgur.com/5ErhscG.png">
+<meta property="og:image" content="http://i.imgur.com/UTxnctC.png">
+<meta property="og:updated_time" content="2016-09-21T15:26:30.373Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android 5.0新特性">
+<meta name="twitter:description" content="View的高度与阴影官网介绍：https://developer.android.com/intl/zh-tw/training/material/shadows-clipping.html
+
+注意这个内容是在5.0之后的出现的，所以只有在5.0后的手机上才能有效果
+View增加了高度的概念，高度大的View会覆盖在高度小的View之上，并带有阴影效果：
+View高度有2个因素组成：
+
+View高">
+<meta name="twitter:image" content="http://i.imgur.com/5ErhscG.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2015/08/25/Android-5-0新特性/"/>
+
+  <title> Android 5.0新特性 | ImportEffort的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">ImportEffort的博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android 5.0新特性
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-08-25T01:11:59+08:00" content="2015-08-25">
+              2015-08-25
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="View的高度与阴影"><a href="#View的高度与阴影" class="headerlink" title="View的高度与阴影"></a>View的高度与阴影</h3><p>官网介绍：<a href="https://developer.android.com/intl/zh-tw/training/material/shadows-clipping.html" target="_blank" rel="external">https://developer.android.com/intl/zh-tw/training/material/shadows-clipping.html</a></p>
+<ul>
+<li>注意这个内容是在5.0之后的出现的，所以只有在5.0后的手机上才能有效果</li>
+<li>View增加了高度的概念，高度大的View会覆盖在高度小的View之上，并<strong>带有阴影效果</strong>：</li>
+<li><p>View高度有2个因素组成：</p>
+<ul>
+<li>View高度 = elevation + translationZ</li>
+<li>elevation表示view的高度，高度越大，阴影越大，可以在xml中直接使用属性， 也可以<strong>在代码中使用： </strong> <code>view.setEvelvation()</code>;</li>
+<li><strong>在xml指定：</strong> <code>android:elevation=&quot;10dp</code></li>
+<li>transtionZ 属性表示view在Z方向移动的距离，一般用于属性动画中，translationZ也会影响View的高度，但是对阴影没有效，同时增加了改变translationZ的属性动画;在xml中指定：<code>android:translationZ=&quot;10dp&quot;</code></li>
+<li><p>动画效果，通过指定translationZ的方法来实现：</p>
+<pre><code>ObjectAnimator animator = ObjectAnimator.ofFloat(view,&quot;translationZ&quot;,0,100);
+    animator.setDuration(2000);
+
+    animator.start();
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<h3 id="View的轮廓与裁剪-在Android5-1以及以上才有效果"><a href="#View的轮廓与裁剪-在Android5-1以及以上才有效果" class="headerlink" title="View的轮廓与裁剪(在Android5.1以及以上才有效果)"></a>View的轮廓与裁剪(在Android5.1以及以上才有效果)</h3><p>官网介绍：<a href="https://developer.android.com/intl/zh-tw/training/material/shadows-clipping.html" target="_blank" rel="external">https://developer.android.com/intl/zh-tw/training/material/shadows-clipping.html</a></p>
+<p>5.1之后：View增加了轮廓概念，轮廓会影响阴影的效果和裁剪的形状。</p>
+<ul>
+<li><p>View的轮廓默认是依据于background的，也就是轮廓的形状依赖于我们对其指定的背景的形状来决定，这里需要注意所有的view的大小都是一个矩形。</p>
+<pre><code>android:outlineProvider=&quot;background&quot;//按照指定的背景的形状来描绘阴影的大小
+</code></pre></li>
+<li><p>有其他3个取值：bounds,none,paddingBounds，可以通过outlineProvider属性更改:<br>​      </p>
+<pre><code>android:outlineProvider=&quot;none&quot;//如果设置为none 即使view有背景形状和高度，也不会显示阴影
+android:outlineProvider=&quot;bounds&quot;//按照View的大小来描绘阴影
+android:outlineProvider=&quot;paddingBounds&quot; //与bounds类似，阴影会稍微向右平移一点
+</code></pre></li>
+<li><p>可以通过setOutlineProvider()方法自定义轮廓:</p>
+<p>首先不要为控件指定一个背景形状shape</p>
+<pre><code>&lt;TextView
+ android:layout_centerInParent=&quot;true&quot;
+ android:id=&quot;@+id/tv1&quot;
+ android:background=&quot;@mipmap/dog&quot;
+ android:gravity=&quot;center&quot;
+ android:elevation=&quot;20dp&quot;
+ android:text=&quot;textView1&quot;
+ android:textSize=&quot;30sp&quot;
+ android:layout_width=&quot;200dp&quot;
+ android:layout_height=&quot;200dp&quot; /&gt;
+</code></pre><p>然后再代码中调用：</p>
+<pre><code>tv1.setOutlineProvider(new ViewOutlineProvider() {
+      @Override
+      public void getOutline(View view, Outline outline) {
+          //参数轮廓的边缘的坐标，坐标值是相对于view本身左上角的坐标
+          //1. 设置轮廓为圆形，默认为直径为矩形的宽度
+          outline.setOval(0,0,view.getWidth(),view.getHeight());
+          //2. 设置轮廓为圆角矩形，最后一个参数为矩形圆角的弧度
+          //outline.setRoundRect(0,0,view.getWidth(),view.getHeight(),200);
+          //3. 设置轮廓为矩形  前两个参数为轮廓的左边和上边的起始坐标，后两个参数为宽度，和高度
+          //outline.setRect(0,0,view.getWidth()-100,view.getHeight()-100);
+          //4.自定义轮廓的形状，这里定义了一个三角形
+          //Path path = new Path();
+          //path.moveTo(view.getWidth()/2,0);
+          //path.lineTo(0,view.getHeight());
+          //path.lineTo(view.getWidth(),view.getHeight());
+          //outline.setConvexPath(path);
+      }
+  });
+  //根据轮廓裁剪view的形状 目前不支持自定义轮廓的形状的裁剪
+  //tv1.setClipToOutline(true);
+</code></pre></li>
+</ul>
+<p>  所以有了这个特性以后，我们就可以轻松的设置一个圆形头像了，并不需要背景图片是个圆形，只需要控制轮廓就可以了。</p>
+<hr>
+<h3 id="Palette-的使用"><a href="#Palette-的使用" class="headerlink" title="Palette 的使用"></a>Palette 的使用</h3><p> 使用Palette可以让我们从一张图片中拾取颜色，将拾取到的颜色赋予ActionBar，StatusBar以及背景色可以让界面色调实现统一</p>
+<ul>
+<li>简单使用：</li>
+</ul>
+<ol>
+<li>添加依赖：使用Palette需要添加以下依赖： <code>compile &#39;com.android.support:palette-v7:23.0.0+&#39;</code></li>
+<li><p>使用Palette提供的API，传入Bitmap即可获取Palette对象,以下是同步和异步使用方式:</p>
+<ol>
+<li><p>同步获取，需要在子线程中使用</p>
+<pre><code>Palette palette = Palette.from(drawable.getBitmap()).generate();
+</code></pre></li>
+<li><p>异步获取，可以在主线程中使用</p>
+<pre><code>Palette.from(drawable.getBitmap()).generate(new Palette.PaletteAsyncListener() {
+    @Override
+    public void onGenerated(Palette palette) {
+        //...
+    }
+});
+</code></pre></li>
+</ol>
+</li>
+<li><p>通过回调接口传回的Palette对象即可拿到bitmap中的相应颜色，拿到的颜色分为：</p>
+<pre><code>vibrant      -  有活力的颜色
+lightVibrant -  有活力的亮色
+darkVibrant  -  有活力的暗色
+muted        -  柔和暗淡的颜色
+lightMuted   -  柔和的亮色
+darkMuted    -  柔和的暗色
+</code></pre></li>
+<li><p>获取方法分为两种：第一种方法如下，返回值可以直接设置给相应的view对象：</p>
+<pre><code> Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.bird);
+//异步获取不需要手动开启线程
+Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+    @Override
+    public void onGenerated(Palette palette) {
+        //vibrant      -  有活力的颜色
+        int vibrantColor = palette.getVibrantColor(getResources().getColor(R.color.bg_deep_orange));
+        //lightVibrant -  有活力的亮色
+        int lightVibrantColor = palette.getLightVibrantColor(getResources().getColor(R.color.bg_deep_orange));
+        //darkVibrant  -  有活力的暗色
+        int darkVibrantColor = palette.getDarkVibrantColor(getResources().getColor(R.color.bg_deep_orange));
+        //muted        -  柔和暗淡的颜色
+        int mutedColor = palette.getMutedColor(getResources().getColor(R.color.bg_deep_orange));
+        //lightMuted   -  柔和的亮色
+        int lightMutedColor = palette.getLightMutedColor(getResources().getColor(R.color.bg_deep_orange));
+        //darkMuted    -  柔和的暗色
+        int darkMutedColor = palette.getDarkMutedColor(getResources().getColor(R.color.bg_deep_orange));
+
+        imageView1.setBackgroundColor(vibrantColor);
+        imageView2.setBackgroundColor(lightVibrantColor);
+        imageView3.setBackgroundColor(darkVibrantColor);
+        imageView4.setBackgroundColor(mutedColor);
+        imageView5.setBackgroundColor(darkMutedColor);
+</code></pre></li>
+</ol>
+<hr>
+<p>使用第二种方式获取Pattle的颜色，也是经常采取的方法：</p>
+<pre><code>//获取颜色的第二种方法
+
+//获取有活力颜色的采样对象 这里可以获取你想要的任何颜色类型的Swatch
+Palette.Swatch vibrantSwatch = palette.getVibrantSwatch();
+
+int bodyTextColor = vibrantSwatch.getBodyTextColor();//获取适合作为文字颜色
+float[] hsl = vibrantSwatch.getHsl();//the HSL value of this color，即色相，饱和度，明度.
+int population = vibrantSwatch.getPopulation();//获取明亮的颜色
+int rgb = vibrantSwatch.getRgb();//获取适合作为背景RGB颜色
+int titleTextColor = vibrantSwatch.getTitleTextColor();
+
+//一般会将getRgb设置给控件背景色，getBodyTextColor()设置给文字颜色
+
+textView.setBackgroundColor(rgb);
+textView.setTextColor(bodyTextColor);
+</code></pre><p>结果如下：<br><img src="http://i.imgur.com/5ErhscG.png" alt=""></p>
+<hr>
+<h3 id="CardView的使用"><a href="#CardView的使用" class="headerlink" title="CardView的使用"></a>CardView的使用</h3><p>CardLayout是一个拥有高度和阴影，以及轮廓裁剪，圆角的布局，在v7包中，本质继承自FrameLayout，所以要想在一个CardView中包含多个控件的需要使用另外的布局进行包裹，如LinearLayout；</p>
+<p>添加依赖：<br>​<br>     compile ‘com.android.support:cardview-v7:23.2.1’</p>
+<p>各属性说明:</p>
+<ol>
+<li>设置圆角：<code>card_view:cardCornerRadius=&quot;10dp&quot;</code></li>
+<li>设置高度：<code>card_view:cardElevation=&quot;10dp&quot;</code></li>
+<li>设置内边距：<code>card_view:contentPadding=&quot;10dp&quot;</code></li>
+<li><p>设置背景色：<code>card_view:cardBackgroundColor=&quot;?android:attr/colorPrimary&quot;</code></p>
+<pre><code>&lt;android.support.v7.widget.CardView
+    android:id=&quot;@+id/cardView&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    card_view:cardBackgroundColor=&quot;@color/button_normal_deep_purple&quot;
+    card_view:cardCornerRadius=&quot;30dp&quot;
+    card_view:cardElevation=&quot;20dp&quot;
+    card_view:contentPadding=&quot;10dp&quot;&gt;
+
+    &lt;TextView
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;100dp&quot;
+        android:gravity=&quot;center&quot;
+        android:text=&quot;我是CardView&quot;
+        android:textColor=&quot;#fff&quot;
+        android:textSize=&quot;20sp&quot; /&gt;
+&lt;/android.support.v7.widget.CardView&gt;
+
+  &lt;android.support.v7.widget.CardView
+    android:id=&quot;@+id/cardView&quot;
+    android:layout_marginTop=&quot;20dp&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    card_view:cardBackgroundColor=&quot;@color/button_normal_blue_grey&quot;
+    card_view:cardCornerRadius=&quot;30dp&quot;
+    card_view:cardElevation=&quot;20dp&quot;
+    card_view:contentPadding=&quot;10dp&quot;&gt;
+    &lt;LinearLayout
+        android:layout_width=&quot;match_parent&quot;
+        android:orientation=&quot;vertical&quot;
+        android:layout_height=&quot;wrap_content&quot;&gt;
+
+        &lt;TextView
+            android:background=&quot;@color/action_cyan&quot;
+            android:layout_width=&quot;match_parent&quot;
+            android:layout_height=&quot;100dp&quot;
+            android:gravity=&quot;center&quot;
+            android:text=&quot;我是CardView&quot;
+            android:textColor=&quot;#fff&quot;
+            android:textSize=&quot;20sp&quot; /&gt;
+        &lt;View
+            android:layout_marginTop=&quot;5dp&quot;
+            android:layout_marginBottom=&quot;5dp&quot;
+            android:layout_width=&quot;match_parent&quot;
+            android:layout_height=&quot;1dp&quot;
+            android:background=&quot;@color/action_cyan&quot;
+            /&gt;
+        &lt;TextView
+            android:background=&quot;@color/action_pink&quot;
+            android:layout_width=&quot;match_parent&quot;
+            android:layout_height=&quot;100dp&quot;
+            android:gravity=&quot;center&quot;
+            android:text=&quot;我是CardView&quot;
+            android:textColor=&quot;#fff&quot;
+            android:textSize=&quot;20sp&quot; /&gt;
+    &lt;/LinearLayout&gt;
+&lt;/android.support.v7.widget.CardView&gt;
+</code></pre></li>
+</ol>
+<p>效果如下：</p>
+<p><img src="http://i.imgur.com/UTxnctC.png" alt=""></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android笔记/" rel="tag">#android笔记</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/21/结合友盟统计进行美团多渠道打包/" rel="prev" title="结合友盟统计进行美团多渠道打包">
+                结合友盟统计进行美团多渠道打包 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="ImportEffort" />
+          <p class="site-author-name" itemprop="name">ImportEffort</p>
+          <p class="site-description motion-element" itemprop="description">说道做到，这就是我的忍道</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#View的高度与阴影"><span class="nav-number">1.</span> <span class="nav-text">View的高度与阴影</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#View的轮廓与裁剪-在Android5-1以及以上才有效果"><span class="nav-number">2.</span> <span class="nav-text">View的轮廓与裁剪(在Android5.1以及以上才有效果)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Palette-的使用"><span class="nav-number">3.</span> <span class="nav-text">Palette 的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CardView的使用"><span class="nav-number">4.</span> <span class="nav-text">CardView的使用</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ImportEffort</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

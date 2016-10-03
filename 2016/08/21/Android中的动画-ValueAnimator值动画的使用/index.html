@@ -1,0 +1,753 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android笔记," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="##Android中动画简单分类
+Android包含三种动画：View Animation、 Drawable Animation、Property Animation（Android3.0新引入）。
+View Animation（view动画）：view动画是一个比较旧的动画系统，并且它仅能用于View对象。主要的类别有： AlphaAnimation透明度动画, AnimationSet动画集">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android中的动画---ValueAnimator值动画的使用">
+<meta property="og:url" content="http://yoursite.com/2016/08/21/Android中的动画-ValueAnimator值动画的使用/index.html">
+<meta property="og:site_name" content="ImportEffort的博客">
+<meta property="og:description" content="##Android中动画简单分类
+Android包含三种动画：View Animation、 Drawable Animation、Property Animation（Android3.0新引入）。
+View Animation（view动画）：view动画是一个比较旧的动画系统，并且它仅能用于View对象。主要的类别有： AlphaAnimation透明度动画, AnimationSet动画集">
+<meta property="og:image" content="https://ooo.0o0.ooo/2016/08/21/57b9e31804673.gif">
+<meta property="og:image" content="https://ooo.0o0.ooo/2016/08/21/57b9e2d9d21f9.gif">
+<meta property="og:updated_time" content="2016-08-21T17:20:51.759Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android中的动画---ValueAnimator值动画的使用">
+<meta name="twitter:description" content="##Android中动画简单分类
+Android包含三种动画：View Animation、 Drawable Animation、Property Animation（Android3.0新引入）。
+View Animation（view动画）：view动画是一个比较旧的动画系统，并且它仅能用于View对象。主要的类别有： AlphaAnimation透明度动画, AnimationSet动画集">
+<meta name="twitter:image" content="https://ooo.0o0.ooo/2016/08/21/57b9e31804673.gif">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/08/21/Android中的动画-ValueAnimator值动画的使用/"/>
+
+  <title> Android中的动画---ValueAnimator值动画的使用 | ImportEffort的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">ImportEffort的博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android中的动画---ValueAnimator值动画的使用
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-21T08:49:59+08:00" content="2016-08-21">
+              2016-08-21
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>##Android中动画简单分类</p>
+<p>Android包含三种动画：View Animation、 Drawable Animation、Property Animation（Android3.0新引入）。</p>
+<h3 id="View-Animation（view动画）："><a href="#View-Animation（view动画）：" class="headerlink" title="View Animation（view动画）："></a>View Animation（view动画）：</h3><p>view动画是一个比较旧的动画系统，并且它仅能用于View对象。主要的类别有： AlphaAnimation透明度动画, AnimationSet动画集合, RotateAnimation缩放动画, ScaleAnimation旋转动画, TranslateAnimation平移动画<br>基于View的渐变动画，只改变了View的绘制效果，而实际属性值未变。比如动画移动一个按钮位置，但按钮点击的实际位置仍未改变。在代码中定义动画，可以参考AnimationSet类和Animation的子类；而如果使用XML，可以在res/anim/文件夹中定义XML文件。这个动画系统相对与容易创建，并且对于应用程序中所遇到的大多数需求提供了足够的能力。</p>
+<a id="more"></a>
+<ul>
+<li>基本的应用方法：</li>
+</ul>
+<blockquote>
+<p>就是new出对应的view动画的类，设置动画的持续时间，重复时间，以及动画停止后固定在哪里，最后使用view控件对象调用startAnimation方法参数为要执行的动画开启动画。</p>
+</blockquote>
+<pre><code>        //两者合并就会产生一种，图片从正着从有，到缩小到看不见，倒立且x方向反转，出现
+ScaleAnimation scaleAnimation = new ScaleAnimation(
+        1, -1, //x方向从不缩放，到反方向缩放一倍，效果相当于绕着Y轴，中轴线转圈
+        1, -1, //Y方向从不缩放，到反方向缩放一倍，效果相当于绕着x轴，中轴线转圈
+        Animation.RELATIVE_TO_SELF, 0.5f,
+        Animation.RELATIVE_TO_SELF, 0.5f);
+// 设置动画时间
+scaleAnimation.setDuration(2000);
+// 设置重复次数 ，这里是无限循环
+scaleAnimation.setRepeatCount(TranslateAnimation.INFINITE);
+// 设置重复播放模式，倒退回来播放
+scaleAnimation.setRepeatMode(TranslateAnimation.REVERSE);
+img.startAnimation(scaleAnimation);
+</code></pre><p><img src="https://ooo.0o0.ooo/2016/08/21/57b9e31804673.gif" alt="20160821233018.gif"></p>
+<ul>
+<li><p>view动画集合的使用：  </p>
+<blockquote>
+<p>使用view动画的集合，可以实现多个view动画一起播放的效果。使用方法为定义好想要执行的各种动画， 添加到AnimationSet中，使用控件startAnimation(animationSet);播放集合中的动画。<br><strong>注意：</strong>  这里并没有设置动画播放的方式，即是顺序播放（palySequentially）还是一起（palyTogether）播放，默认播放方式是一起播放的。</p>
+</blockquote>
+<pre><code>AnimationSet animationSet = new AnimationSet(false);
+
+    //设置缩放
+    ScaleAnimation sAnimation = new ScaleAnimation(
+            1, -1, 
+            1, -1, 
+            Animation.RELATIVE_TO_SELF, 0.5f,
+            Animation.RELATIVE_TO_SELF, 0.5f);
+    // 设置动画时间
+    sAnimation.setDuration(2000);
+    // 设置重复次数 ，这里是无限循环
+    sAnimation.setRepeatCount(TranslateAnimation.INFINITE);
+    // 设置重复播放模式，倒退回来播放
+    sAnimation.setRepeatMode(TranslateAnimation.REVERSE);
+    //设置旋转
+    RotateAnimation rAnimation = new RotateAnimation(
+            0, 90, 
+            Animation.RELATIVE_TO_SELF, 0.5f,
+            Animation.RELATIVE_TO_SELF, 0.5f);
+    // 设置动画时间
+    rAnimation.setDuration(2000);
+    // 设置重复次数 ，这里是无限循环
+    rAnimation.setRepeatCount(TranslateAnimation.INFINITE);
+    // 设置重复播放模式，倒退回来播放
+    rAnimation.setRepeatMode(TranslateAnimation.REVERSE);
+    // 将定义好的播放样式加入到集合中
+    animationSet.addAnimation(rAnimation);
+    animationSet.addAnimation(sAnimation);
+    //播放集合中的动画 
+    img.startAnimation(animationSet);
+</code></pre></li>
+</ul>
+<h3 id="Drawable-Animation（帧动画动画）："><a href="#Drawable-Animation（帧动画动画）：" class="headerlink" title="Drawable Animation（帧动画动画）："></a>Drawable Animation（帧动画动画）：</h3><p>加载一系列Drawable资源来创建动画，这种传统动画某种程度上就是创建不同图片序列，顺序播放，就像电影胶片。在代码中定义动画帧，使用AnimationDrawable类；XML文件能更简单的组成动画帧，在res/drawable文件夹，使用<animation-list>采用<item>来定义不同的帧。感觉只能设置的属性是动画间隔时间。</item></animation-list></p>
+<blockquote>
+<p>实质： 几张图片叠加起来，然后轮流播放，类似于电影中的一帧一帧的效果</p>
+</blockquote>
+<ol>
+<li>创建一个imageView </li>
+<li>res文件夹下创建一个drawable文件夹，并将想要展示的图片放入</li>
+<li><p>drawable文件夹下，创建一个xml文件 根标签animation-list，每标签一张图片为一个item</p>
+<pre><code>&lt;animation-list xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; 
+android:oneshot=&quot;false&quot;&gt;
+
+    &lt;item android:drawable=&quot;@drawable/logo1&quot; android:duration=&quot;200&quot; /&gt;
+    &lt;item android:drawable=&quot;@drawable/logo2&quot; android:duration=&quot;200&quot; /&gt;
+    &lt;item android:drawable=&quot;@drawable/logo3&quot; android:duration=&quot;200&quot; /&gt;
+&lt;/animation-list&gt;
+</code></pre><p> oneshot：true 表示帧动画展示一遍后将停在最后一张图片，false表示会连续播放（默认）</p>
+</li>
+<li><p>Acitivity中代码实现</p>
+<pre><code>ImageView img = (ImageView) findViewById(R.id.img);
+//设置背景，参数为我们在Drawable目录下定义的xml文件
+img.setBackgroundResource(R.drawable.items);
+//再次获取背景：并强转为AnimationDrawable类型
+AnimationDrawable imgAnimation = (AnimationDrawable) img.getBackground();
+imgAnimation.start();
+</code></pre></li>
+</ol>
+<h3 id="Property-Animation（属性动画）："><a href="#Property-Animation（属性动画）：" class="headerlink" title="Property Animation（属性动画）："></a>Property Animation（属性动画）：</h3><p>在Android3.0中被引入（API Level 11），属性动画系统会让任何对象具有动画属性，包括那些没有呈现在屏幕上的对象。这个系统是可扩展的，并且支持自定义的类型的动画属性。<br>能够通过改变View对象的实际属性来实现View动画。任何时候View属性的改变，View能自动调用invalidate()来试试刷新。</p>
+<p>#VlaueAnimator简介</p>
+<p>关于值动画的作用谷歌官方给出来的解释是：</p>
+<p>The main timing engine for property animation that also computes the values for the property to be animated. It has all of the core functionality that calculates animation values and contains the timing details of each animation, information about whether an animation repeats, listeners that receive update events, and the ability to set custom types to evaluate. There are two pieces to animating properties: calculating the animated values and setting those values on the object and property that is being animated. ValueAnimator does not carry out the second piece, so you must listen for updates to values calculated by the ValueAnimator and modify the objects that you want to animate with your own logic. See the section about Animating with ValueAnimator for more information.</p>
+<p>意思大概就是：我们只会帮我们计算我们计算我们设定的初始值和结束值之间的动画过渡的数值，并不会让控件执行具体的操作，从ValueAnimator的使用上也可以看出来，我们在定义ValueAnimator的时候并没有给他指定应用控件。</p>
+<p>乍一看ValueAnimator并不会帮我们实现动画的过程，只是帮我们计算出动画执行过程中要经历的值得变化，好像对我来说没什么用，毕竟我们是想让控件动起来。但是我们当然不可能只是得到这里的值那么简单了。首先我们要知道怎么拿到ValueAnimator计算出的这些值，这就要借助于监听器 ValueAnimator.AnimatorUpdateListener() ，这个监听器给我们提供了onAnimationUpdate的回调方法，我们可以使用 animation.getAnimatedValue(),来拿到这个实时变化的值。</p>
+<pre><code>ValueAnimator anim = ValueAnimator.ofFloat(0f, 1f);  
+anim.setDuration(300);  
+anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {  
+    @Override  
+    public void onAnimationUpdate(ValueAnimator animation) {  
+        float currentValue = (float) animation.getAnimatedValue();  
+        Log.d(&quot;TAG&quot;, &quot;cuurent value is &quot; + currentValue);  
+    }  
+});  
+anim.start();  
+</code></pre><p>当我们拿到这些变化的值以后我们就可以实现我们想要的效果了，比如说我们想要实现TextView的一个展开效果，我们就可以使用该方法实现：</p>
+<pre><code>ValueAnimator animator = null;
+if (isExpand) {
+    animator  = ValueAnimator.ofInt(maxHeight,minHeight);
+}else{
+    animator  = ValueAnimator.ofInt(minHeight,maxHeight);
+}
+animator.addUpdateListener(new AnimatorUpdateListener() {
+
+    @Override
+    public void onAnimationUpdate(ValueAnimator animation) {
+        int animatedValue = (Integer) animation.getAnimatedValue();
+        LayoutParams params = (LayoutParams) tv_des.getLayoutParams();
+        params.height = animatedValue;
+        tv_des.setLayoutParams(params);
+    }
+});
+</code></pre><p><img src="https://ooo.0o0.ooo/2016/08/21/57b9e2d9d21f9.gif" alt="20160821231108.gif"><br>ValueAnimator当中最常用的应该就是ofFloat()和ofInt()这两个方法了，另外还有一个ofObject()方法它需要传入一个TypeEvaluator，该对象用于告诉值动画如果从设置的两个值之间过度，由于不常用所以了解不深，不过有兴趣的看官可以去郭霖的博客去看一下，这里贴下网址：<a href="http://blog.csdn.net/guolin_blog/article/details/43816093" target="_blank" rel="external">http://blog.csdn.net/guolin_blog/article/details/43816093</a></p>
+<p>那么除此之外，我们还可以调用setStartDelay()方法来设置动画延迟播放的时间，调用setRepeatCount()和setRepeatMode()方法来设置动画循环播放的次数以及循环播放的模式，循环模式包括RESTART和REVERSE两种，分别表示重新播放和倒序播放的意思。</p>
+<h2 id="属性动画的其他API："><a href="#属性动画的其他API：" class="headerlink" title="属性动画的其他API："></a>属性动画的其他API：</h2><p><strong>定义动画一个属性的步骤：</strong></p>
+<ol>
+<li>ObjectAnimator animator = ObjectAnimator.ofFloat(target, propertyName, values)<ol>
+<li>参数一：target 绑定对象</li>
+<li>参数二：property() 中间为控件的属性值imagview;想要设置哪个属性通过img.setXXX获取</li>
+<li>参数三：可变参数;为动画的具体数值：指定多个可将播放过程设定为多段，from… to/from …to</li>
+</ol>
+</li>
+<li>动画设置播放方式：<ol>
+<li>设置播放的时间，重复的次数，重复的方式</li>
+<li>animator.setDuration(200);</li>
+<li>animator.setRepeatCount(ObjectAnimator.INFINITE);</li>
+<li>animator.setRepeatMode(ObjectAnimator.REVERSE);</li>
+</ol>
+</li>
+<li>开启动画：<ol>
+<li>由于调用静态方法生成animator对象的时候已经绑定了img 所以这里直接调用start方法即可</li>
+<li>animator.start();</li>
+</ol>
+</li>
+</ol>
+<p><strong>属性集合动画：</strong></p>
+<ol>
+<li><p>步骤1： 生成属性动画集合 注意与ofFloat不同这里是new出来的</p>
+<p> 通过AnimatorSet set = new Animator（）；</p>
+</li>
+<li><p>步骤2：设置多个属性</p>
+<p> … 与上述设置单个属性相同，没有start步骤</p>
+</li>
+<li><p>步骤3：设置动画集合播放集合中属性的方式：<strong>注意这里可以设置播放的顺序方式，这是ViewAnimation所不具有的</strong></p>
+<ol>
+<li>方式1： 一起播放：set.palyTogether(Animator….andimator);</li>
+<li>方式2： 顺序播放：set.palySequentially(Animator…animator);</li>
+</ol>
+</li>
+<li><p>步骤4： 播放集合中的动画：set.start();</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android笔记/" rel="tag">#android笔记</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/20/线程池的使用-自定义多线程下载/" rel="next" title="线程池的使用---自定义多线程下载">
+                <i class="fa fa-chevron-left"></i> 线程池的使用---自定义多线程下载
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/25/Android-6-0新特性/" rel="prev" title="Android 6.0新特性">
+                Android 6.0新特性 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="ImportEffort" />
+          <p class="site-author-name" itemprop="name">ImportEffort</p>
+          <p class="site-description motion-element" itemprop="description">说道做到，这就是我的忍道</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#View-Animation（view动画）："><span class="nav-number">1.</span> <span class="nav-text">View Animation（view动画）：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Drawable-Animation（帧动画动画）："><span class="nav-number">2.</span> <span class="nav-text">Drawable Animation（帧动画动画）：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Property-Animation（属性动画）："><span class="nav-number">3.</span> <span class="nav-text">Property Animation（属性动画）：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#属性动画的其他API："><span class="nav-number"></span> <span class="nav-text">属性动画的其他API：</span></a></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ImportEffort</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

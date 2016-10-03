@@ -1,0 +1,976 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android笔记," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="BaseHolder的抽取：
+抽取基类： 程序的多个地方用到大量重复的代码，这时候我们抽取基类，子类只需要关注必须实现的方法，来提高代码的编写效率，减少冗余代码。
+
+listView的Adapter常规写法：正常的listview的适配器Adapter的getView和ViewHolder的使用方法：
+public View getView(int position, View convertVi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="打造万能ListView的ViewHolder和Adapter">
+<meta property="og:url" content="http://yoursite.com/2016/08/13/打造万能ListView的ViewHolder和Adapter/index.html">
+<meta property="og:site_name" content="ImportEffort的博客">
+<meta property="og:description" content="BaseHolder的抽取：
+抽取基类： 程序的多个地方用到大量重复的代码，这时候我们抽取基类，子类只需要关注必须实现的方法，来提高代码的编写效率，减少冗余代码。
+
+listView的Adapter常规写法：正常的listview的适配器Adapter的getView和ViewHolder的使用方法：
+public View getView(int position, View convertVi">
+<meta property="og:image" content="http://i.imgur.com/Ad2mR1q.png">
+<meta property="og:updated_time" content="2016-08-13T06:40:37.396Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="打造万能ListView的ViewHolder和Adapter">
+<meta name="twitter:description" content="BaseHolder的抽取：
+抽取基类： 程序的多个地方用到大量重复的代码，这时候我们抽取基类，子类只需要关注必须实现的方法，来提高代码的编写效率，减少冗余代码。
+
+listView的Adapter常规写法：正常的listview的适配器Adapter的getView和ViewHolder的使用方法：
+public View getView(int position, View convertVi">
+<meta name="twitter:image" content="http://i.imgur.com/Ad2mR1q.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/08/13/打造万能ListView的ViewHolder和Adapter/"/>
+
+  <title> 打造万能ListView的ViewHolder和Adapter | ImportEffort的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">ImportEffort的博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                打造万能ListView的ViewHolder和Adapter
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-13T13:08:21+08:00" content="2016-08-13">
+              2016-08-13
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="BaseHolder的抽取："><a href="#BaseHolder的抽取：" class="headerlink" title="BaseHolder的抽取："></a>BaseHolder的抽取：</h2><blockquote>
+<p>抽取基类： 程序的多个地方用到大量重复的代码，这时候我们抽取基类，子类只需要关注必须实现的方法，来提高代码的编写效率，减少冗余代码。</p>
+</blockquote>
+<h3 id="listView的Adapter常规写法："><a href="#listView的Adapter常规写法：" class="headerlink" title="listView的Adapter常规写法："></a>listView的Adapter常规写法：</h3><p>正常的listview的适配器Adapter的getView和ViewHolder的使用方法：</p>
+<pre><code>public View getView(int position, View convertView, ViewGroup parent) {
+    ViewHolder viewHolder = null;
+    if (convertView == null) {
+        //1. 获取布局文件的view对象
+        convertView = View.inflate(GooglePalyApplication.context,
+            R.layout.home_list_item, null);
+        //2. 初始化viewholder
+        viewHolder = new ViewHolder();
+        //3. 为viewHolder的变量赋值，通过findViewbyId 
+        viewHolder.tv = (TextView) convertView.findViewById(R.id.tv);
+        //4. 为布局文件对象设置tag 以提高findViewbyId的效率
+        convertView.setTag(viewHolder);
+    }else{
+        viewHolder = (ViewHolder) convertView.getTag();
+    }
+    //5. 初始化数据
+    AppInfo appInfo = list.get(postion);
+    viewHolder.tv.setText(appInfo.name);
+    return convertView;
+}
+
+class ViewHolder{
+    TextView tv;
+}
+</code></pre><p>对getView执行的动作进行简单的分析我们可以发现，他做了如下几件事：</p>
+<ol>
+<li>获取布局文件的view对象</li>
+<li>初始化viewholder</li>
+<li>为viewHolder的变量赋值，通过findViewbyId </li>
+<li>为布局文件对象设置tag 以提高findViewbyId的效率</li>
+<li>初始化数据</li>
+</ol>
+<p>可以看出以上所有的步骤都与ViewHolder有关，这里我们要实现的就是将这些步骤放在ViewHolder内部完成，简化getView内部实现。<br><a id="more"></a></p>
+<h3 id="了解ListView中的convertView是怎么工作的"><a href="#了解ListView中的convertView是怎么工作的" class="headerlink" title="了解ListView中的convertView是怎么工作的"></a>了解ListView中的convertView是怎么工作的</h3><p>这里需要了解listview中convertView的缓存机制，我们可以理解为listview有一块内存用于存储划出屏幕的条目item的view对象（图中Recycler部分），而convertView这个引用就指向那块区域。convertView缓存的是getView方法返回的view对象。这是listView的中缓存机制，而与我们在getView返回什么view无关，<strong>无论我们返回convertView还是别的View，等条目划出屏幕的那一刻，listView就会帮我们缓存该条目的view对象，并使convertView指向该item的view对象。</strong></p>
+<p><img src="http://i.imgur.com/Ad2mR1q.png" alt=""></p>
+<h3 id="抽取BaseHolder"><a href="#抽取BaseHolder" class="headerlink" title="抽取BaseHolder"></a>抽取BaseHolder</h3><p>了解了上面内容，我们就已可使我们ViewHolder与convertView参数脱离关系了，只需要getView返回条目的view布局对象即可，我们在这里定义了viewholder的成员变量holderView充当该view对象。</p>
+<h4 id="将inflate布局和findviewbyId过程封装到viewholder的构造方法中。"><a href="#将inflate布局和findviewbyId过程封装到viewholder的构造方法中。" class="headerlink" title="将inflate布局和findviewbyId过程封装到viewholder的构造方法中。"></a>将inflate布局和findviewbyId过程封装到viewholder的构造方法中。</h4><p>抽取完成后ViewHolder使用方法：</p>
+<pre><code>class ViewHolder{
+    TextView tv;
+    View holderView;//定义自己的变量holderView用来接收布局inflate的结果
+    public ViewHolder(){
+        //1. 抽取初始化view的步骤 这里不能直接给临时变量赋值 解决这个问题 就是要使viewholder独立与getView方法
+        holderView = View.inflate(MyApplication.context, R.layout.home_list_item, null);
+
+        //2. 抽取findViewbyId  viewHolder.tv = (TextView)convertView.findViewById(R.id.tv);
+        tv = (TextView) holderView.findViewById(R.id.tv);
+
+        //3. 抽取setTag convertView.setTag(viewHolder);
+        holderView.setTag(this); 
+    }
+}
+</code></pre><p>getView就可以写成：</p>
+<pre><code>public View getView(int position, View convertView, ViewGroup parent) {
+    ViewHolder viewHolder = null;
+    if (convertView == null) {
+        viewHolder = new ViewHolder();
+    }else{
+        viewHolder = (ViewHolder) convertView.getTag();
+    }
+
+    AppInfo appInfo = list.get(postion);
+    viewHolder.tv.setText(appInfo.name);
+    return viewHolder.holderView;
+}
+</code></pre><p>这里疑惑的地方是<code>convertView.getTag();</code> 为什么能取出ViewHolder对象，那么首先让我们看下这次抽取中我们做了什么：</p>
+<p>我们通过getView的返回值<code>return viewHolder.holderView;</code>，可知我们item要展示的view对象实质是<code>viewHolder.holderView</code>；我们在ViewHolder内部对该变量的操作如下：</p>
+<ol>
+<li><code>holderView = View.inflate(GooglePalyApplication.context, R.layout.home_list_item, null);</code> 初始化holderView；</li>
+<li><code>holderView.setTag(this);</code> 设置holder的tag，这里的this即ViewHolder对象本身。</li>
+</ol>
+<p>而在getView中当<code>convertView！= null</code>即adapter有条目缓存的时候，我们使用convertView.getTag()，取出了我们set进入的ViewHolder对象。</p>
+<p>以上这一步做法，是我认为整个抽取过程中最难理解的一步，因为单纯从表面上看，我们从未对convertView进行过任何赋值操作，但是我们却使用 getTag 从中取出了viewHolder对象。 但是结合上面提到的listview是怎么对条目进行缓存的，我们就很好理解了。 </p>
+<ol>
+<li>当条目有缓存的时候，convertView指向listView条目缓存的view对象。</li>
+<li>listView这里展示的条目是 viewHolder.holderView 对象，所以缓存区域保存的肯定是该对象。</li>
+<li>我们在holderView中setTag了他原本以来的viewholder对象。即<code>holderView.setTag(this);</code></li>
+<li>那么当存在缓存的时候，convertView引用也就指向了 该holderView对象。 所以拿convertView取出Tag对象也是可以的。</li>
+</ol>
+<h4 id="抽取绑定数据操作："><a href="#抽取绑定数据操作：" class="headerlink" title="抽取绑定数据操作："></a>抽取绑定数据操作：</h4><p>ok，理解了上述最难的一点，关于ViewHolder，我们也就还有最后一步工作要做了。在getView方法中我们会为viewholder中的控件设置数据：</p>
+<pre><code>AppInfo appInfo = list.get(postion);
+viewHolder.tv.setText(appInfo.name);
+</code></pre><p>这一步其实为布局控件设置数据的步骤。那么我们也可以将这一步也封装起来，这样我们Adapter对象的getView方法。就完全不需要关注具体展示的view内部是怎么工作了。我们将这一步称为绑定数据过程。</p>
+<p>我们在ViewHolder内部提供bindData方法：</p>
+<pre><code>public void bindData(AppInfo appInfo){
+    tv.setText(appInfo.name);
+}
+</code></pre><p>提供该方法后ViewHolder写法如下：</p>
+<pre><code>class ViewHolder{
+    TextView tv;
+    View holderView;//定义自己的变量holderView用来接收布局inflate的结果
+    public ViewHolder(){
+        //1. 抽取初始化view的步骤 这里不能直接给临时变量赋值 解决这个问题 就是要使viewholder独立与getView方法
+        holderView = View.inflate(MyApplication.context, R.layout.home_list_item, null);
+
+        //2. 抽取findViewbyId  viewHolder.tv = (TextView) convertView.findViewById(R.id.tv);
+        tv = (TextView) holderView.findViewById(R.id.tv);
+
+        //3. 抽取setTag convertView.setTag(viewHolder);
+        holderView.setTag(this); 
+    }
+
+    //4. 抽取控件赋值步骤 对外提供bindData方法 只需要将条目对象传入该方法内部就实现赋值
+    public void bindData(AppInfo appInfo){
+        tv.setText(appInfo.name);
+    }
+}
+</code></pre><p>在getView中最终使用方法如下：</p>
+<pre><code>public View getView(int position, View convertView, ViewGroup parent) {
+    ViewHolder viewHolder = null;
+    if (convertView == null) {
+        viewHolder = new ViewHolder();
+    }else{
+        viewHolder = (ViewHolder) convertView.getTag();
+    }
+
+    AppInfo appInfo = list.get(postion);
+    //绑定view数据
+    viewHolder.bindData(appInfo);
+    return viewHolder.holderView;
+}
+</code></pre><p>这样看起来getView需要处理的工作已经所剩无几了，我们只需new出我们所依赖的ViewHolder对象。并在绑定数据的时候调用 viewHolder.bindData（info） 将条目的数据设置给viewHolder即可。</p>
+<h4 id="ViewHolder内部抽取-holderView的生成过程"><a href="#ViewHolder内部抽取-holderView的生成过程" class="headerlink" title="ViewHolder内部抽取 holderView的生成过程"></a>ViewHolder内部抽取 holderView的生成过程</h4><p>为了让我们的ViewHolder中的功能更加单一，也方便我们进一步抽取BaseHolder：我们将1，2步，提取成一个getHolderView方法，返回值当然是holderView。</p>
+<pre><code>class ViewHolder{
+    TextView tv;
+    View holderView;
+    public ViewHolder(){
+        //  抽取holderView的获得方法以及控件赋值的方法
+        holderView = getHolderView();
+
+        holderView.setTag(this); 
+    }
+    //绑定数据
+    public void bindData(AppInfo appInfo){
+        tv.setText(appInfo.name);
+    }
+
+    // 这里仅仅是将构造方法中的holderView初始化过程抽取到一个方法中
+    private View getHolderView(){
+        View view = View.inflate(MyApplication.context, R.layout.home_list_item, null);
+        tv = (TextView) view.findViewById(R.id.tv);
+        return view;
+    }
+}
+</code></pre><p>ok，截止到目前为止，我们已经将ViewHolder这个类完全和Adapter分离。我们可以看出ViewHolder的功能如下： </p>
+<ol>
+<li>初始化布局view 即得到holdeView，并设置tag</li>
+<li>找到布局中的控件 findViewById</li>
+<li>为控件绑定数据 bindData</li>
+</ol>
+<h4 id="抽取BaseHolder的初衷："><a href="#抽取BaseHolder的初衷：" class="headerlink" title="抽取BaseHolder的初衷："></a>抽取BaseHolder的初衷：</h4><p>对于应用程序，我们可能在多个页面应用了ListView对象，而每个listView都会对应一个Adapter和一个ViewHolder，我们程序员是很懒的，如果让我们在每个ViewHolder中都写这么多代码，在每个Adapter中都写这么多代码，这显然不是一个高级程序员应该做的事情。那么我们就做一个高级程序员应该做的事情（哈哈，这一个大写的 X）。 打造一个基类BaseHolder，所有的ViewHolder继承该BaseHolder，然后我们只需关注，ViewHolder不同的两个功能：</p>
+<ol>
+<li>getHolderView的返回值，即条目布局对象。</li>
+<li>bindData绑定什么数据，即我们要展示的布局控件的内容。</li>
+</ol>
+<p>先看下BaseHolder的写法：</p>
+<pre><code>public abstract class BaseViewHolder&lt;T&gt; {
+    //getView要展示的view对象
+    public View holderView;
+
+    public BaseViewHolder() {
+        holderView = getHolderView();
+        holderView.setTag(this);
+    }
+
+    /**
+     * 功能： 初始化holderView inflate布局文件，findviewbyid控件
+     * @return
+     */
+    public abstract View getHolderView();
+
+    /**
+     * 为getholderView中的控件赋值
+     * @param t 需要显示的条目的bean对象
+     */ 
+    public abstract void bindData(T t);//这里不知道具体页面需要展示的内容是什么数据 所以可以采用泛型来接收
+}
+</code></pre><p>相信经过了上边ViewHolder抽取，这个基类的抽取已经小菜一碟了，这里主要关注一点，因为我们不知道具体的Holder要绑定什么类型的数据，所以我们采用了泛型来接收。 ok，接下来我们来看下具体的使用方法：我们让之前的ViewHolder继承自我们的BaseHolder：</p>
+<pre><code>public class HomeHolder extends BaseHolder&lt;AppInfo&gt;{
+    TextView tv_des;
+    @Override
+    public View getHolderView() {
+
+        View view = View.inflate(MyApplication.context, R.layout.adapter_home, null);
+
+        tv_des = (TextView) view.findViewById(R.id.tv_des);
+
+        return view;
+    }
+
+    @Override
+    public void bindData(AppInfo appInfo) {
+
+        tv_des.setText(appInfo.des);
+    }
+}
+</code></pre><p>是不是很简单了，有了个这个BaseHolder，在写ViewHolder的时候只需要继承该BaseHolder并实现getHolderView 和 bindData方法就可。 </p>
+<hr>
+<h2 id="BaseAdaper的抽取："><a href="#BaseAdaper的抽取：" class="headerlink" title="BaseAdaper的抽取："></a>BaseAdaper的抽取：</h2><p>经过了BaseHolder的抽取我们回过头再看看我们的Adapter适配器的写法：</p>
+<pre><code>public class HomeAdapter extends BaseAdapter {
+    private ArrayList&lt;AppInfo&gt; list;
+    //构造参数接收条目数据内容集合
+    public HomeAdapter(ArrayList&lt;AppInfo&gt; list) {
+        this.list = list;
+    }
+
+    @Override
+    public int getCount() {
+        return list.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return list.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        // 1. 初始化holder
+        HomeViewHolder viewHolder = null;
+        if (convertView == null) {
+            viewHolder = new HomeViewHolder();
+        } else {
+            viewHolder = (HomeViewHolder) convertView.getTag();
+        }
+        // 2. 绑定数据
+        viewHolder.bindData(list.get(position));
+        return viewHolder.holderView;
+    }
+}
+</code></pre><p>我们可以看出 每一个Adapter的getView方法都做了以上这两件事，不同之处是就是 </p>
+<ol>
+<li>Holder对象类型不同，但都是BaseHolder的子类 </li>
+<li>数据不同，但与构造方法传进来list存储的数据类型有关</li>
+</ol>
+<p>可以看出除了我们要关注的getView方法，我们还有还有好多冗余代码，那么我们又可以抽取了，抽取的时候我们需要关注内容有哪些，不同Adapter功能实现时候不同的地方，就是我们需要关注的地方。</p>
+<p>我们可以看出：只需要关注的只有一点： <strong>getView使用的ViewHolder对象</strong>。但是我们可知，所有的holder都是我们BaseHolder的子类</p>
+<p><strong>抽取思路：</strong></p>
+<p>BasicAdapter提供抽象方法 getHolder() 来初始化所要使用的holder对象并返回，getView内部拿BaseHolder接收即可。list集合的数据类型还是由构造方法传入部传入。实现如下：</p>
+<pre><code>/***
+ *
+ * @param &lt;T&gt; 泛型为Adapter展示view所需的数据对象类型
+ */
+public abstract class BasicAdapter&lt;T&gt; extends BaseAdapter{
+        public ArrayList&lt;T&gt; list;
+        public BasicAdapter(ArrayList&lt;T&gt; list){
+            this.list = list;
+        }
+
+        @Override
+        public int getCount() {
+            return list.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return list.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            //1.初始化holder对象
+            BaseHolder&lt;T&gt; holder = null;
+            if(convertView==null){
+                //这个地方每个子的adapter所需要的holder都不一样，应该由子类自己实现
+                holder = getHolder();
+            }else {
+                holder = (BaseHolder&lt;T&gt;) convertView.getTag();
+            }
+
+            //2.绑定数据到holder
+            T t = list.get(position);
+            holder.bindData(t);
+
+            return holder.holderView;
+        }
+        /**
+         * 返回不同的holder，子类来实现
+         * @return
+         */
+        protected abstract BaseHolder&lt;T&gt; getHolder();
+    }
+</code></pre><p>可以看出，BasicAdapter交给子类的工作只有两个，构造参数中将数据集合传入，复写getHolder()方法，将我们BaseHolder的子类返回。如下实现：</p>
+<pre><code>public class HomeAdapter extends BasicAdapter&lt;AppInfo&gt; {
+
+    public HomeAdapter(ArrayList&lt;AppInfo&gt; list) {
+        super(list);
+    }
+
+    @Override
+    public BaseViewHolder&lt;AppInfo&gt; getHolder() {
+        HomeViewHolder holder = new HomeViewHolder();
+        return holder;
+    }
+}
+</code></pre><p> 哈哈，可以看出我们的Apater的代码量已经减少为短短10行代码了，需要我们关注的只有ViewHolder的子类实现了（HomeViewHolder）。而viewHolder的实现经过我们抽取，我们需要关注的也就只有getHolderView(),和bindData两个方法了。</p>
+<hr>
+<h2 id="使用方法："><a href="#使用方法：" class="headerlink" title="使用方法："></a>使用方法：</h2><p> 至此，我们的抽取过程完全完成。综上，我们为所有的listView的ViewHolder提取了一个BaseHolder，为所有Adapter提取了一个基类BasicAdapter。之后我们就可以在我们的项目中这样使用了：</p>
+<ol>
+<li><p>listView的初始化</p>
+<pre><code>//list存储的数据类型为AppInfo
+private ArrayList&lt;AppInfo&gt; list = new ArrayList&lt;AppInfo&gt;();
+
+.....
+
+ListView listView = new ListView(getActivity());
+//将要展示的数据由构造参数传入 
+HomeAdapter mHomeAdapter = new HomeAdapter(list);
+//设置Adapter
+listView.setAdapter(mHomeAdapter);  
+</code></pre></li>
+<li><p>HomeApdater实现：</p>
+<pre><code>public class HomeAdapter extends BasicAdapter&lt;AppInfo&gt; {
+
+    public HomeAdapter(ArrayList&lt;AppInfo&gt; list) {
+        super(list);
+    }
+
+    @Override
+    public BaseViewHolder&lt;AppInfo&gt; getHolder() {
+        //初始化ViewHolder 
+        HomeViewHolder holder = new HomeViewHolder();
+        return holder;
+    }
+
+}
+</code></pre></li>
+<li><p>HomeViewHolder的实现：</p>
+<pre><code>public class HomeHolder extends BaseHolder&lt;AppInfo&gt;{
+    TextView tv_des;
+    @Override
+    public View getHolderView() {
+        // 在这里初始化View
+        View view = View.inflate(GooglePlayApplication.context, R.layout.adapter_home, null);
+
+        tv_des = (TextView) view.findViewById(R.id.tv_des);
+
+        return view;
+    }
+
+    @Override
+    public void bindData(AppInfo appInfo) {
+        //在这里为控件赋值
+        tv_des.setText(appInfo.des);
+    }
+}
+</code></pre></li>
+</ol>
+<p>这解释一点： AppInfo（List集合） 的数据时怎么传递个HomeHolder的：</p>
+<p><strong>new HomeAdapter(list) —— BaseAdapter 中的ArrayList&lt;Tlist  —— BaseAdapter中getView方法 调用 BaseHolder的bindData方法：viewHolder.bindData(list.get(position)); —— HomeHolder 的bindData（APPInfo appInfo） 即为 list集合中指定位置的AppInfo对象。 </strong></p>
+<p>我们使用的时候只需要保证， </p>
+<ol>
+<li><p>new HomeAdapter 的泛型 与list集合中的数据类型相同， </p>
+<pre><code>public HomeAdapter(ArrayList&lt;AppInfo&gt; list) {
+    super(list);
+}
+</code></pre></li>
+<li><p>new HomeHolder 的时候bindData中的参数类型与list集合中的数据类型相同即可；</p>
+<pre><code>@Override
+public void bindData(AppInfo appInfo) {
+    tv_des.setText(appInfo.des);
+}
+</code></pre></li>
+</ol>
+<hr>
+<p>例子源码下载地址： <a href="https://github.com/ImportEffort/ListViewUseBaseHolder" target="_blank" rel="external">https://github.com/ImportEffort/ListViewUseBaseHolder</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android笔记/" rel="tag">#android笔记</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/29/自定义控件之自定View实现开关（ToggleButton）效果/" rel="next" title="自定义控件之自定View实现开关（ToggleButton）效果">
+                <i class="fa fa-chevron-left"></i> 自定义控件之自定View实现开关（ToggleButton）效果
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/13/UniversalImageLoader的初体验/" rel="prev" title="UniversalImageLoader的初体验">
+                UniversalImageLoader的初体验 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="ImportEffort" />
+          <p class="site-author-name" itemprop="name">ImportEffort</p>
+          <p class="site-description motion-element" itemprop="description">说道做到，这就是我的忍道</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#BaseHolder的抽取："><span class="nav-number">1.</span> <span class="nav-text">BaseHolder的抽取：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#listView的Adapter常规写法："><span class="nav-number">1.1.</span> <span class="nav-text">listView的Adapter常规写法：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#了解ListView中的convertView是怎么工作的"><span class="nav-number">1.2.</span> <span class="nav-text">了解ListView中的convertView是怎么工作的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#抽取BaseHolder"><span class="nav-number">1.3.</span> <span class="nav-text">抽取BaseHolder</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#将inflate布局和findviewbyId过程封装到viewholder的构造方法中。"><span class="nav-number">1.3.1.</span> <span class="nav-text">将inflate布局和findviewbyId过程封装到viewholder的构造方法中。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#抽取绑定数据操作："><span class="nav-number">1.3.2.</span> <span class="nav-text">抽取绑定数据操作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ViewHolder内部抽取-holderView的生成过程"><span class="nav-number">1.3.3.</span> <span class="nav-text">ViewHolder内部抽取 holderView的生成过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#抽取BaseHolder的初衷："><span class="nav-number">1.3.4.</span> <span class="nav-text">抽取BaseHolder的初衷：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BaseAdaper的抽取："><span class="nav-number">2.</span> <span class="nav-text">BaseAdaper的抽取：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用方法："><span class="nav-number">3.</span> <span class="nav-text">使用方法：</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ImportEffort</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

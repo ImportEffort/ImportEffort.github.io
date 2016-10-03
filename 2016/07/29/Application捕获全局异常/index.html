@@ -1,0 +1,645 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android笔记," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="##自定义全局Appliction　　我们都知道我们的可以自定义四大组件，并且在配置文件中声明并使用，其实Application也可以。而且定义一个全局的Appliction其内部的方法，参数等生命周期都是整个应用的生命周期。也就是只有用户退出应用了，才会被回收。所以这里非常适合定义一些全局使用的方法或者常量。
+
+在配置文件中使用自定义的Applcation：
+ &amp;lt;application">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Application捕获全局异常">
+<meta property="og:url" content="http://yoursite.com/2016/07/29/Application捕获全局异常/index.html">
+<meta property="og:site_name" content="ImportEffort的博客">
+<meta property="og:description" content="##自定义全局Appliction　　我们都知道我们的可以自定义四大组件，并且在配置文件中声明并使用，其实Application也可以。而且定义一个全局的Appliction其内部的方法，参数等生命周期都是整个应用的生命周期。也就是只有用户退出应用了，才会被回收。所以这里非常适合定义一些全局使用的方法或者常量。
+
+在配置文件中使用自定义的Applcation：
+ &amp;lt;application">
+<meta property="og:updated_time" content="2016-07-28T17:07:18.407Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Application捕获全局异常">
+<meta name="twitter:description" content="##自定义全局Appliction　　我们都知道我们的可以自定义四大组件，并且在配置文件中声明并使用，其实Application也可以。而且定义一个全局的Appliction其内部的方法，参数等生命周期都是整个应用的生命周期。也就是只有用户退出应用了，才会被回收。所以这里非常适合定义一些全局使用的方法或者常量。
+
+在配置文件中使用自定义的Applcation：
+ &amp;lt;application">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/07/29/Application捕获全局异常/"/>
+
+  <title> Application捕获全局异常 | ImportEffort的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">ImportEffort的博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Application捕获全局异常
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-29T00:57:01+08:00" content="2016-07-29">
+              2016-07-29
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>##自定义全局Appliction<br>　　我们都知道我们的可以自定义四大组件，并且在配置文件中声明并使用，其实Application也可以。而且定义一个全局的Appliction其内部的方法，参数等生命周期都是整个应用的生命周期。也就是只有用户退出应用了，才会被回收。所以这里非常适合定义一些全局使用的方法或者常量。</p>
+<ol>
+<li><p>在配置文件中使用自定义的Applcation：</p>
+<pre><code> &lt;application
+        android:name=&quot;.MyApplication&quot;
+        ······&gt;
+    ·····
+    ·····
+&lt;/application&gt;
+</code></pre></li>
+<li><p>自定义一个类继承自Application：</p>
+<pre><code>public class MobileSafeApplication extends Application {
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        // 设置未捕获异常处理器
+        Thread.setDefaultUncaughtExceptionHandler(new MyUncaughtExceptionHandler());
+    }
+
+    class MyUncaughtExceptionHandler implements UncaughtExceptionHandler {
+
+        // 未捕获的异常都会走到此方法中
+        // Throwable是Exception和Error的父类
+        @Override
+        public void uncaughtException(Thread thread, Throwable ex) {
+            System.out.println(&quot;产生了一个未处理的异常, 但是被哥捕获了...&quot;);
+            // 将异常日志输入到本地文件中, 找机会上传到服务器,供技术人员分析
+            File file = new File(Environment.getExternalStorageDirectory(),
+                    &quot;error.log&quot;);
+            try {
+                PrintWriter writer = new PrintWriter(file);
+                ex.printStackTrace(writer);
+                writer.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // 结束当前进程
+            android.os.Process.killProcess(android.os.Process.myPid());
+        }
+    }
+}
+</code></pre></li>
+<li><p>捕获全局异常，一般我们的应用程序异常都在使用的时候捕获，但是总有一些奇怪的异常，出现概率非常小，比如一个功能使用几百次，只有一次崩溃了。这种问题很难进行预测处理，这时候我们就需要使用全局异常来捕获了：</p>
+<pre><code>// 设置未捕获异常处理器
+Thread.setDefaultUncaughtExceptionHandler(new MyUncaughtExceptionHandler());
+</code></pre></li>
+<li><p>捕获异常我们都会上传到服务器，但是这种异常很特殊，很可能发生异常程序就崩溃退出了，所以良好的做法是先保存到本地，然后带用户下次使用的时候，偷偷上传服务器。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android笔记/" rel="tag">#android笔记</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/28/为你的应用添加守护进程，实现应用页面跳转/" rel="next" title="为你的应用添加守护进程，实现应用页面跳转">
+                <i class="fa fa-chevron-left"></i> 为你的应用添加守护进程，实现应用页面跳转
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/29/自定义控件之自定View实现开关（ToggleButton）效果/" rel="prev" title="自定义控件之自定View实现开关（ToggleButton）效果">
+                自定义控件之自定View实现开关（ToggleButton）效果 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="ImportEffort" />
+          <p class="site-author-name" itemprop="name">ImportEffort</p>
+          <p class="site-description motion-element" itemprop="description">说道做到，这就是我的忍道</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ImportEffort</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

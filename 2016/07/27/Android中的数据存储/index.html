@@ -1,0 +1,985 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android笔记," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="#总结首先说一个面试中常问的问题： Android中数据存储有哪个几种方式？ 
+答案应该是： SharedPreference ，数据库（SQLite） ，网络存储（数据提交服务器） ，ContentProvider（内容提供者） 
+SharedPreferenceSharepreference 一般用于存储标记性的数据 和 设置性的配置数据；
+
+如系统的设置界面中各个内容的选项
+Sharepre">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android中的数据存储">
+<meta property="og:url" content="http://yoursite.com/2016/07/27/Android中的数据存储/index.html">
+<meta property="og:site_name" content="ImportEffort的博客">
+<meta property="og:description" content="#总结首先说一个面试中常问的问题： Android中数据存储有哪个几种方式？ 
+答案应该是： SharedPreference ，数据库（SQLite） ，网络存储（数据提交服务器） ，ContentProvider（内容提供者） 
+SharedPreferenceSharepreference 一般用于存储标记性的数据 和 设置性的配置数据；
+
+如系统的设置界面中各个内容的选项
+Sharepre">
+<meta property="og:updated_time" content="2016-07-26T16:49:59.930Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android中的数据存储">
+<meta name="twitter:description" content="#总结首先说一个面试中常问的问题： Android中数据存储有哪个几种方式？ 
+答案应该是： SharedPreference ，数据库（SQLite） ，网络存储（数据提交服务器） ，ContentProvider（内容提供者） 
+SharedPreferenceSharepreference 一般用于存储标记性的数据 和 设置性的配置数据；
+
+如系统的设置界面中各个内容的选项
+Sharepre">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/07/27/Android中的数据存储/"/>
+
+  <title> Android中的数据存储 | ImportEffort的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">ImportEffort的博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android中的数据存储
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-27T00:48:37+08:00" content="2016-07-27">
+              2016-07-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>#总结<br>首先说一个面试中常问的问题： Android中数据存储有哪个几种方式？ </p>
+<p>答案应该是： SharedPreference ，数据库（SQLite） ，网络存储（数据提交服务器） ，ContentProvider（内容提供者） </p>
+<h2 id="SharedPreference"><a href="#SharedPreference" class="headerlink" title="SharedPreference"></a>SharedPreference</h2><p>Sharepreference 一般用于存储标记性的数据 和 设置性的配置数据；</p>
+<ul>
+<li>如系统的设置界面中各个内容的选项</li>
+<li>Sharepreference保存的数据其实是保存在私有目录下的shared_prfs目录下；是一个xml文件；</li>
+</ul>
+<h3 id="Sharepreference的使用："><a href="#Sharepreference的使用：" class="headerlink" title="Sharepreference的使用："></a>Sharepreference的使用：</h3><ul>
+<li><p>保存数据：</p>
+<pre><code>//1.通过Context对象获取SharePreference对象
+//name：SharedPreference的文件名称  mode:模式
+SharedPreferences sharedPreferences = context.getSharedPreferences(&quot;userinfo.txt&quot;, Context.MODE_PRIVATE);
+//2.通过SharePreference对象获取一个Editor对象 
+Editor editor = sharedPreferences.edit();
+//3.使用Editor对象 添加键值对的数据
+editor.putString(&quot;username&quot;, username);
+editor.putString(&quot;password&quot;, password);
+//4.提交数据
+editor.commit();
+</code></pre></li>
+<li><p>读取数据：</p>
+<pre><code>//1.通过Context对象获取SharePreference对象
+//name：SharedPreference的文件名称  mode:模式
+SharedPreferences sharedPreferences = context.getSharedPreferences(&quot;userinfo.txt&quot;, Context.MODE_PRIVATE);
+//2.使用sharedPreferences对象通过key获取value
+String username = sharedPreferences.getString(&quot;username&quot;, &quot;&quot;);
+String password = sharedPreferences.getString(&quot;password&quot;, &quot;&quot;);
+</code></pre></li>
+</ul>
+<a id="more"></a>
+<h3 id="获取SharaPreferences的三个方法："><a href="#获取SharaPreferences的三个方法：" class="headerlink" title="获取SharaPreferences的三个方法："></a>获取SharaPreferences的三个方法：</h3><ol>
+<li>Context类中的getSharedPrefences()方法，接收两个参数一个是文件的名称，一个是Context.MODE_PRIVATE    <ul>
+<li>Activity来中的getPreferences方法，接收一个参数Mode，默认保存的文件名称以当前Activity的名字进行保存</li>
+</ul>
+</li>
+<li>所有类中都可以用了： PreferenceManager.getDefaultSharedPreferences(context)</li>
+<li>sharaPreference存放的文件默认是存放在该应用程序私有目录下的shared_prfs目录，所以在应用程序的任意一个地方调用getSharedPreferences都能访问到该文件。</li>
+</ol>
+<ul>
+<li><p>下面是我在开发常用的自定义的一个SP工具类：</p>
+<pre><code>import android.content.Context;
+import android.content.SharedPreferences;
+
+public class PreferenceUtils {
+
+    private static SharedPreferences sp;
+    /**
+     * 存储字符串
+     */
+    public static void getSharedPreference(Context context) {
+        if (sp == null) {
+            sp = context.getSharedPreferences(&quot;config&quot;, context.MODE_PRIVATE);
+        }
+    }
+    /**
+     * 取出字符串
+     */
+    public static void putString(Context context, String key, String value) {
+        getSharedPreference(context);
+        sp.edit().putString(key, value).commit();
+    }
+
+    public static String getString(Context context, String key, String defValue) {
+        getSharedPreference(context);
+        return sp.getString(key, defValue);
+    }
+    /**
+     * 存储整数
+     */
+    public static void putInt(Context context, String key, int value) {
+        getSharedPreference(context);
+        sp.edit().putInt(key, value).commit();
+    }
+    /**
+     * 取出整数
+     */
+    public static int getInt(Context context, String key, int defValue) {
+        getSharedPreference(context);
+        return sp.getInt(key, defValue);
+    }
+    /**
+     * 存储布尔值
+     */
+    public static void putBoolean(Context context, String key, boolean value) {
+        getSharedPreference(context);
+        sp.edit().putBoolean(key, value).commit();
+    }
+    /**
+     * 取出布尔值
+     */
+    public static boolean getBoolean(Context context, String key,
+            boolean defValue) {
+        getSharedPreference(context);
+        return sp.getBoolean(key, defValue);
+    }
+
+    /**
+     * 移除
+     */
+    public static void remove(Context context, String key) {
+        getSharedPreference(context);
+        sp.edit().remove(key).commit();
+    }
+}
+</code></pre></li>
+</ul>
+<pre><code>这样一来省去了开发中每次都要写一个SP的繁琐工作。
+</code></pre><hr>
+<p>##数据存储sdcard</p>
+<pre><code>操作sdcard的注意事项：
+1.加权限：
+
+         &lt;uses-permission android:name=&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot;/&gt;
+
+2.硬性编码：
+
+        /使用Environment获取sdcard目录的路径
+        String path = Environment.getExternalStorageDirectory().getPath();    
+
+3.判断sdcard的状态
+
+    if(!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
+            Toast.makeText(this, &quot;sdcard未挂载或不存在&quot;, 0).show();
+            return;
+        }
+    //Environment.getExternalStorageState() 获取sd卡是否挂载和可读写
+    //Environment.MEDIA_MOUNTED sd卡以挂载且可读写
+
+4.sdcard剩余空间
+
+        //获取sdcard剩余空间，需要获取一个sdcard目录类型的文件
+        File sdcard_dirFile = Environment.getExternalStorageDirectory();
+        //获取sdcard剩余空间获取一个File的可用空间
+        long usableSpace = sdcard_dirFile.getUsableSpace();
+        //获取总空间
+        //long totalSpace = sdcard_dirFile.getTotalSpace();
+        //格式化文件大小到字符串类型的 M  G  K   context:上下文   fileSize：文件大小
+        String usableSpace_str = Formatter.formatFileSize(this, usableSpace);
+
+        if(usableSpace &lt; 200 *1024*1024){//sdcard空间小于200M 
+            Toast.makeText(this, &quot;sdcard空间不足，剩余&quot;+usableSpace_str, 0).show();
+            return;
+        }          
+
+5. 写入sd卡的步骤：
+    获取路径：String path = Environment.getExternalStorageDirectory().getPath();
+    建立file文件： File file = new File(path,&quot;stuInfo.xml&quot;);
+    建立文件输入流： FileOutputStream output = new FileOutputStream(file);
+6.读取sd卡的步骤：
+    获取路径：String path = Environment.getExternalStorageDirectory().getPath();
+    建立file文件： File file = new File(path,&quot;stuInfo.xml&quot;);
+    建立文件输入流： FileInputStream input = new FileInputStream(file);
+</code></pre><p>##文件到底应该保存在哪里：</p>
+<p>如果需要往sdcard中保存特定类型的内容，可以考虑使用Environment.getExternalStoragePublicDirectory(String type)函数，该函数可以返回特定类型的目录，目前支持如下类型：</p>
+<pre><code>DIRECTORY_ALARMS //警报的铃声
+DIRECTORY_DCIM //相机拍摄的图片和视频保存的位置
+DIRECTORY_DOWNLOADS //下载文件保存的位置
+DIRECTORY_MOVIES //电影保存的位置， 比如 通过google play下载的电影
+DIRECTORY_MUSIC //音乐保存的位置
+DIRECTORY_NOTIFICATIONS //通知音保存的位置
+DIRECTORY_PICTURES //下载的图片保存的位置
+DIRECTORY_PODCASTS //用于保存podcast(博客)的音频文件
+DIRECTORY_RINGTONES //保存铃声的位置
+</code></pre><blockquote>
+<p>以上几种类型所获取的文件路径均不在应用程序的包下，而在系统默认指定存放这些东西的位置。</p>
+<p>这样以来，我们删除应用程序的时，保存在这些文件下的文件并不会被删除。</p>
+<p>这些文件夹即使我们步手动发送系统扫描sd卡的广播，系统也会查询到这个文件夹下的内容。可以称之为 被系统监视了</p>
+</blockquote>
+<p>想必你也很讨厌App在SD卡根目录乱建目录吧，那就从我做起，来遵守Google的这一规定吧，Google规定：第三方软件应该将文件保存在自己的包下：</p>
+<ol>
+<li>通过Context.getExternalFilesDir()方法可以获取到 SDCard/Android/data/{package_name}/files/ ，储存一些长时间保存的数据；</li>
+<li>通过Context.getExternalCacheDir()方法可以获取到 SDCard/Android/data/{package_name}/cache/，储存临时缓存数据；</li>
+</ol>
+<p>这两个目录分别对应 设置-&gt;应用-&gt;应用详情里面的”清除数据“与”清除缓存“选项。因此像视频音频这种不想因为程序被卸载而被删除的东西，就不要放在以上目录下。</p>
+<h2 id="SQL数据库："><a href="#SQL数据库：" class="headerlink" title="SQL数据库："></a>SQL数据库：</h2><p>###创建数据库的流程</p>
+<ol>
+<li><p>写个类继承SqliteOpenHelper</p>
+</li>
+<li><p>重写一些抽象方法 oncreate onupgread 和一个构造方法</p>
+<p> a. 构造方法：用来指定当前帮助类要创建的数据库的名称及版本号;</p>
+<pre><code>public MySqliteOpenHelper(Context context) {
+        //name：数据库文件的名称  factory:用来为用户创建cursor（结果集）对象,默认传null //version:数据库的版本号，从1开始；版本发生改变，onUpgrade方法将执行;
+            super(context, &quot;my.db&quot;, null, 1);
+    }
+</code></pre><p> b.oncreate方法：数据库第一次创建的时候调用,特别适合做表结构的初始化，可以创建多个表，也就是多个db.exeSQL()语句</p>
+<pre><code>public void onCreate(SQLiteDatabase db) {
+    //如何做表结构的初始化 ？执行sql语句即可。 SQLiteDatabase  db：数据库操作对象,可以执行sql语句
+    db.execSQL(&quot;create table user (_id  integer  primary key autoincrement,name varchar(20))&quot;);
+        System.out.println(&quot;没有执行&quot;);
+    }
+</code></pre><p> c.onupgrade方法：当数据库版本发生改变时调用, 特别适合做表结构的修改，在这里也可是在升级数据库的时候添加一张表，或者为一张表添加删除一个字段。</p>
+<pre><code>public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    // 数据库升级时调用，我们可以在这里修改表结构，为表添加字段
+    // db.execSQL(&quot;alter table user add phone varchar(11)&quot;);
+    System.out.println(&quot;older:&quot; + oldVersion + &quot; new:&quot; + newVersion);
+
+｝
+</code></pre></li>
+<li><p>创建一个dbUtilts帮助类的对象，并调用getReadableDatabase()即可创建数据库。</p>
+<pre><code>//创建帮助类对象
+ MySqliteOpenHelper mySqliteOpenHelper = new MySqliteOpenHelper(this);
+ //调用getReadableDatabase可以帮助我们创建或打开一个数据库，并返回一个数据库操作对象
+    SQLiteDatabase db = mySqliteOpenHelper.getReadableDatabase();
+  //SQLiteDatabase db = mySqliteOpenHelper.getWritableDatabase();
+</code></pre></li>
+</ol>
+<ol>
+<li><p>getReadableDatabase与getWritableDatabase的区别</p>
+<p>  a.getReadableDatabase:首先会尝试读写方式打开数据库，如果数据库文件的磁盘空间满了，会再次尝试以只读方式打开数据库</p>
+<p> b.getWritableDatabase:直接以读写方式打开数据库，如果数据库文件的磁盘空间满了，直接报错。</p>
+</li>
+</ol>
+<p>###数据库的增删改查方式：execSQL做增删改</p>
+<ol>
+<li><p>开发一个app包含数据库的时候 </p>
+<p> a. 建立数据库管理有关的类，需要从新创建一个包默认包名加db，这里边存放所有的数据库有关的类</p>
+<p> b. 建立数据库所管理的bean类对象的时候需要新建一个包以默认包名加bean结尾</p>
+</li>
+<li><p>使用db中execSQL做增删改，使用rawQuery做查询； execSQL有两种重载方式，采用传两个参数的方式可以避免sql注入；</p>
+</li>
+<li><p>特点：增删改没有返回值，我们无法判断sql语句是否执行成功； 查询比较灵活，可以进行多表查询。</p>
+</li>
+<li><p>查询的流程：能使用execSQL方法 因为该方法没有返回值，不能的到处结果集使用rawQuery做查询；</p>
+</li>
+<li>Cursor的get方法传递的是列的索引；没有传递列名的方法</li>
+</ol>
+<pre><code>public void query(String name) {
+    // 调用getReadableDatabse方法，返回一个数据库操作对象 SqliteDabase
+    SQLiteDatabase db = userInfoOpenHelper.getReadableDatabase();
+    //使用db执行插入方法 sql: 语句 selectionArgs:sql语句中占位符的值
+    Cursor cursor = db.rawQuery(&quot;select * from student where name = ?&quot;,
+                    new String[] { name });
+    // 解析结果集中的数据
+    if (cursor != null &amp;&amp; cursor.getCount() &gt; 0) {// 判断结果集是否有数据
+        while (cursor.moveToNext()) {
+            int id = cursor.getInt(0);// 列的索引
+            String name1 = cursor.getString(1);// 列的索引
+            String phone = cursor.getString(2);// 列的索引
+            System.out.println(&quot;id :&quot; + id + &quot;name1 :&quot; + name1 + &quot;phone :&quot;
+                            + phone);
+        }
+    }    
+    cursor.close();
+    // 关闭db
+    db.close();
+}
+</code></pre><h3 id="Android下另外一种数据库增删改查方式-（常用方法）"><a href="#Android下另外一种数据库增删改查方式-（常用方法）" class="headerlink" title="Android下另外一种数据库增删改查方式 （常用方法）"></a>Android下另外一种数据库增删改查方式 （常用方法）</h3><p>使用db中insert ,update ,delete做增删改，使用query做查询；这种方法本身可以防止Sql注入。<br>特点：增删改有返回值，我们可以判断sql语句是否执行成功,  查询不能进行多表查询:多表查询需要有两个表名，但该方式，只能传一个表名.</p>
+<ol>
+<li>增删改查：</li>
+</ol>
+<p>（1） update(String table, ContentValues values, String whereClause, String[] whereArgs)</p>
+<ul>
+<li>ContentValues values:要更新的列的数据的封装  每次存放一个属性的名和值</li>
+<li>whereClause:更新条件  </li>
+<li>whereArgs：条件占位符的值</li>
+<li>返回值：成功修改多少行</li>
+</ul>
+<p>（2） delete(String table, String whereClause, String[] whereArgs)</p>
+<ul>
+<li>各参数的意思同上 update</li>
+<li>返回值也是成功删除多少行</li>
+</ul>
+<p>（3）insert(String table, String nullColumnHack, ContentValues values)</p>
+<ul>
+<li>table 数据库的名称 注意是：student 而不是student.db 也就是说没有后缀名</li>
+<li>nullColumnHack：这个参数在values不为空的时候没有用，一般穿null即可</li>
+<li>ContentValues values 将添加的对象values </li>
+<li>返回值为：所添加的对象的id也就是行号，如果没添加成功则返回-1</li>
+</ul>
+<p>（4）query方法中的参数：query(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy）</p>
+<ul>
+<li>String table：数据库名称； </li>
+<li>String[] columns 要查询的列名 以字符串数据进行封装；</li>
+<li>String selection ：条件查询 与where作用相同 ；</li>
+<li>String[] selectionArgs：占位符的内容</li>
+<li>String groupBy：查询结果以什么进行分组；</li>
+<li>String having：查询结果过滤的条件  </li>
+<li>orderBy： 查询结果排列方式</li>
+<li>返回值：</li>
+</ul>
+<p>###1.改</p>
+<pre><code>public int update(StudentBean newbean) {
+
+// 调用getReadableDatabse方法，返回一个数据库操作对象 SqliteDabase
+    SQLiteDatabase db = userInfoOpenHelper.getReadableDatabase();
+// 使用db执行插入方法 sql: 语句 bindArgs:sql语句中占位符的值
+    ContentValues values = new ContentValues();
+    values.put(&quot;phone&quot;, newbean.phone);//key :列名 values:值
+    //values:要更新的列的数据的封装  whereClause:更新条件  whereArgs：条件占位符的值
+    //返回值：成功修改多少行
+    int result = db.update(&quot;student&quot;, values,&quot;name =?&quot;, new String []{newbean.name});
+    // 关闭db
+    db.close();
+    return result;                    
+}        
+</code></pre><p>###2.查询：</p>
+<pre><code>public void query(String name) {
+    // 调用getReadableDatabse方法，返回一个数据库操作对象 SqliteDabase
+        SQLiteDatabase db = userInfoOpenHelper.getReadableDatabase();
+    // 使用db执行插入方法 sql: 语句 selectionArgs:sql语句中占位符的值
+    Cursor cursor = db.query(&quot;student&quot;, new String[]{&quot;_id&quot;,&quot;name&quot;,&quot;phone&quot;}, &quot;name = ?&quot;, new String[]{name}, null, null, &quot;_id desc &quot;);
+    // 4.解析结果集中的数据
+    if (cursor != null &amp;&amp; cursor.getCount() &gt; 0) {// 判断结果集是否有数据
+        while (cursor.moveToNext()) {
+        int id = cursor.getInt(0);// 列的索引
+        String name1 = cursor.getString(1);// 列的索引
+        String phone = cursor.getString(2);// 列的索引
+        System.out.println(&quot;id :&quot; + id + &quot;name1 :&quot; + name1 + &quot;phone :&quot;+ phone);
+        }
+     }
+    cursor.close();
+    // 关闭db
+    db.close();
+}
+</code></pre><p>###3.增</p>
+<pre><code>public boolean insert(StudentBean bean) {
+    SQLiteDatabase db = userInfoOpenHelper.getReadableDatabase();
+
+    ContentValues values = new ContentValues();
+    values.put(&quot;name&quot;, bean.name);
+    values.put(&quot;phone&quot;, bean.phone);
+
+    long result = db.insert(&quot;student&quot;, null, values);
+    db.close();
+    if (result == -1) {
+        return false;
+    }
+    return true;
+}
+</code></pre><p>###4.删除</p>
+<pre><code>public void delete(String name) {
+    db = studentOpeanHelper.getReadableDatabase();
+
+    int result = db.delete(&quot;student&quot;, &quot;name=?&quot;, new String[] { name });
+
+    if (result &gt; 0)
+        Toast.makeText(context, &quot;删除成功&quot; + result + &quot;项&quot;, Toast.LENGTH_SHORT)
+                .show();
+    else
+        Toast.makeText(context, &quot;删除失败&quot;, Toast.LENGTH_SHORT).show();
+
+    db.close();
+
+}
+</code></pre><p>##数据库的事务：</p>
+<blockquote>
+<p>由于事务是在进行事务提交时将要执行的SQL操作一次性打开数据库连接执行，其执行速度比逐条执行SQL语句的速度快了很多倍。</p>
+</blockquote>
+<p>事务：同时执行多条sql语句，要么同时成功要么同时失败：案例： 银行转账。</p>
+<pre><code>// 转账按钮的点击事件
+public void transfer(View v) {
+            // 创建帮助类
+    BankSqliteOpenHelper bankSqliteOpenHelper = new BankSqliteOpenHelper(
+                                this);
+    // 创建和打开数据库，获取数据库操作对象
+    SQLiteDatabase db = bankSqliteOpenHelper.getReadableDatabase();
+                        // 通过事务来保证多条sql同时成功或同时失败
+    db.beginTransaction();// 开启事务
+    try {
+        // 转账：李四账户转张三200
+        db.execSQL(&quot;update account set money= money-200 where name=?&quot;,
+                                    new String[] { &quot;李四&quot; });
+        db.execSQL(&quot;update account set money= money+200 where name=?&quot;,
+                                    new String[] { &quot;张三&quot; });
+
+        // 标记事务执行成功
+        db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();// 结束事务,会判断事务成功的标记是否被设置，如果没有设置，就将之前执行成功的sql全部回滚恢复
+        }
+
+        db.close();
+    }
+</code></pre><p> 对事物的理解：</p>
+<ul>
+<li>开启事务的时候用try进行封装操作内容 这时候默认事务结束的标记为false</li>
+<li>当所有的操作内容都执行完了 把事务的标记设置为ture 如果没有执行到设置标记表示没有完成操作</li>
+<li>最后使用end判断事物是否成功的标记 如果true 则执行完成，如果false则会滚已经执行的操作</li>
+<li>什么时候需要使用事务，如：删除文件 如果没删除完之前点击了取消</li>
+<li>由于事务是在进行事务提交时将要执行的SQL操作一次性打开数据库连接执行，其执行速度比逐条执行SQL语句的速度快了很多倍。</li>
+<li>数据库用事务么?<ul>
+<li>这个就可以说，多表操作，或者是循环操作一个表时会用，其他情况不用。</li>
+<li>多表操作，例如转账。循环操作，比如缓存listview数据，要循环插入listview的每一个item对象。</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android笔记/" rel="tag">#android笔记</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/27/从Eclipse迁移到AndroidStudio遇到的坑/" rel="next" title="从Eclipse迁移到AndroidStudio遇到的坑">
+                <i class="fa fa-chevron-left"></i> 从Eclipse迁移到AndroidStudio遇到的坑
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/27/Android中的手势识别（-）/" rel="prev" title="Android中的手势识别（-）">
+                Android中的手势识别（-） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="ImportEffort" />
+          <p class="site-author-name" itemprop="name">ImportEffort</p>
+          <p class="site-description motion-element" itemprop="description">说道做到，这就是我的忍道</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SharedPreference"><span class="nav-number">1.</span> <span class="nav-text">SharedPreference</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Sharepreference的使用："><span class="nav-number">1.1.</span> <span class="nav-text">Sharepreference的使用：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取SharaPreferences的三个方法："><span class="nav-number">1.2.</span> <span class="nav-text">获取SharaPreferences的三个方法：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL数据库："><span class="nav-number">2.</span> <span class="nav-text">SQL数据库：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Android下另外一种数据库增删改查方式-（常用方法）"><span class="nav-number">2.1.</span> <span class="nav-text">Android下另外一种数据库增删改查方式 （常用方法）</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ImportEffort</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

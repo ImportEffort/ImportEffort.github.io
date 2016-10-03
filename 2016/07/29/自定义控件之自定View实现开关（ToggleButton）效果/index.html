@@ -1,0 +1,956 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android笔记," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="##自定控件简介：
+　　Android系统本身没有自带实现像，IOS那种ToggleButton的效果API。但需求往往是IOS和Android两个平台的产品UI效果要尽可能统一。我们经常见到手机系统中，数据流量开关功能的UI就是进行了这样的自定义。
+　　要使用自定义控件，我们往往需要进行自定义一个类继承，View或者ViewGroup，让后进行自己需要功能的添加。但是如何能把自己定义的控件成功展">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自定义控件之自定View实现开关（ToggleButton）效果">
+<meta property="og:url" content="http://yoursite.com/2016/07/29/自定义控件之自定View实现开关（ToggleButton）效果/index.html">
+<meta property="og:site_name" content="ImportEffort的博客">
+<meta property="og:description" content="##自定控件简介：
+　　Android系统本身没有自带实现像，IOS那种ToggleButton的效果API。但需求往往是IOS和Android两个平台的产品UI效果要尽可能统一。我们经常见到手机系统中，数据流量开关功能的UI就是进行了这样的自定义。
+　　要使用自定义控件，我们往往需要进行自定义一个类继承，View或者ViewGroup，让后进行自己需要功能的添加。但是如何能把自己定义的控件成功展">
+<meta property="og:updated_time" content="2016-08-13T06:40:50.717Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自定义控件之自定View实现开关（ToggleButton）效果">
+<meta name="twitter:description" content="##自定控件简介：
+　　Android系统本身没有自带实现像，IOS那种ToggleButton的效果API。但需求往往是IOS和Android两个平台的产品UI效果要尽可能统一。我们经常见到手机系统中，数据流量开关功能的UI就是进行了这样的自定义。
+　　要使用自定义控件，我们往往需要进行自定义一个类继承，View或者ViewGroup，让后进行自己需要功能的添加。但是如何能把自己定义的控件成功展">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/07/29/自定义控件之自定View实现开关（ToggleButton）效果/"/>
+
+  <title> 自定义控件之自定View实现开关（ToggleButton）效果 | ImportEffort的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">ImportEffort的博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                自定义控件之自定View实现开关（ToggleButton）效果
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-29T22:48:42+08:00" content="2016-07-29">
+              2016-07-29
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>##自定控件简介：</p>
+<p>　　Android系统本身没有自带实现像，IOS那种ToggleButton的效果API。但需求往往是IOS和Android两个平台的产品UI效果要尽可能统一。我们经常见到手机系统中，数据流量开关功能的UI就是进行了这样的自定义。</p>
+<p>　　要使用自定义控件，我们往往需要进行自定义一个类继承，View或者ViewGroup，让后进行自己需要功能的添加。但是如何能把自己定义的控件成功展示出想要的效果，就需要了解系统View的绘制过程了：简单来说一个view从XML布局文件展示到界面上都需要经过三个阶段：测量阶段（onMeasure  ）,          布局(onLayout),画控件(onDraw)；</p>
+<ol>
+<li><p>onMeasure()方法，该方法实现的功能如下：    </p>
+<ol>
+<li>设置本View视图的最终大小，该功能的实现通过调用setMeasuredDimension()方法去设置实际的高(对应属性mMeasuredHeight)和宽(对应属性：mMeasureWidth)；</li>
+<li>如果该View对象是个ViewGroup类型，需要重写该onMeasure()方法，对其子视图进行遍历的measure()过程。我们需要该方法内部调用子view本身的measure方法来确定，每个子view控件的大小。</li>
+</ol>
+</li>
+<li><p>layout布局过程：</p>
+<ol>
+<li>主要作用 ：为将整个根据子视图的大小以及布局参数将View树放到合适的位置上。</li>
+<li>如果我们要实现的是一个View如本例中的ToggleButton而本身不包含子控件，那么我们不需要手动去实现这个方法。</li>
+</ol>
+</li>
+<li><p>onDraw绘制过程：</p>
+<ol>
+<li>主要作用就是初始view的视图，并和 invalidate（）组合来实现控件的动态绘制（移动控件的位置）；</li>
+<li>另外如果我们的自定义控件继承自ViewGroup那么我们就可以省略这个过程，因为系统的dispatchDraw()方法内部会遍历每个子视图，调用drawChild()去重新回调每个子视图的draw()方法。</li>
+</ol>
+</li>
+<li><p>invalidate() 重新绘制</p>
+<ol>
+<li>从该方法实现的功能来看很类与ListView的notifyDatehasChanged方法，功能就是当我改变View或者子View的内容的时候，调用这个方法就会为我们重画当前当前的View</li>
+<li>官方解释的话大概是下面这个意思：invalidate();使整个View无效化, 如果当前的View可见，那么会在未来的某一时刻调用onDraw invalidate()只能在主线程调用 如果想在子线程刷新界面 那么需要调用postInvalidate();</li>
+</ol>
+</li>
+</ol>
+<hr>
+<a id="more"></a>
+<h2 id="自定义ToggleButton的实现过程："><a href="#自定义ToggleButton的实现过程：" class="headerlink" title="自定义ToggleButton的实现过程："></a>自定义ToggleButton的实现过程：</h2><ol>
+<li><p>首先我们自定义MyToggleButton继承自View，然后实现其三个构造方法：</p>
+<pre><code>public ToggleButton(Context context, AttributeSet attrs, int defStyle) {
+    super(context, attrs, defStyle);
+}
+
+public ToggleButton(Context context, AttributeSet attrs) {
+    super(context, attrs);
+}
+
+public ToggleButton(Context context) {
+    super(context);
+}
+</code></pre></li>
+<li><p>其次我们对外暴露设置开关背景和开关按钮资源ID的方法：可以看到我们在该方法内部得到了两个资源的Bitmap对象，并通过Bitmap对象获得背景和开关按钮的宽高。</p>
+<pre><code>public void setBackgroundAndIcon(int backgroundResID, int iconResID) {
+    mBgBitmap = BitmapFactory.decodeResource(getResources(),
+            backgroundResID);
+    viewWidth = mBgBitmap.getWidth();
+    viewHight = mBgBitmap.getHeight();
+
+    mBtnBitmap = BitmapFactory.decodeResource(getResources(), iconResID);
+    iconWidth = mBtnBitmap.getWidth();
+    maxIconLeft = viewWidth - iconWidth;
+};
+</code></pre></li>
+<li><p>然后我们开始画出我们的自定义控件第一步覆写onMeasure方法：内容很简单就是调用了setMeasuredDimension方法将我们控件背景的大小传递进去，用来表示我们整个控件的大小。</p>
+<pre><code>@Override
+protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    //super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    setMeasuredDimension(viewWidth, viewHight);
+}
+</code></pre></li>
+<li><p>我们说过如果我们布局并不是继承自ViewGroup也就是我们自定的View中仅有一个控件需要摆放，那么我们就不需要覆写onLayout方法。相反我们却要覆写onDraw方法，画出我们控件的具体位置：</p>
+<pre><code>@Override
+protected void onDraw(Canvas canvas) {
+    // canvas.drawBitmap(bitmap, left, top, paint);
+    // 第二个参数 left 从x坐标的 具体哪个值开始画这张图片
+    // 第三个参数 top 从y坐标的 具体哪个值开始画这张图片
+    // 第四个参数 paint画笔 这里由于画的是图片 不需要修改 所以paint传null就可以了
+    canvas.drawBitmap(mBgBitmap, 0, 0, null);
+    //画button图标的方法被我们单独抽出来实现其功能
+    drawIcon(canvas);
+}
+</code></pre></li>
+<li><p>drawIcon方法的实现：</p>
+<pre><code>private void drawIcon(Canvas canvas) {
+// 第一次 画button的时候iconLeft= 0;
+        // 经历过TouchEvent后iconLeft随着手指滑动的位置改变,为了不让按钮画出背景，做出如下限制
+        if (iconLeft &lt; 0) {
+            iconLeft = 0;
+        } else if (iconLeft &gt; maxIconLeft) {
+            iconLeft = maxIconLeft;
+        }
+
+        canvas.drawBitmap(mBtnBitmap, iconLeft, 0, null);
+
+        //如果状态改变则去
+        if (canChangeState) {
+            canChangeState = false;
+
+            //定义临时变量 记录上一次的开关状态
+            boolean lastState = getOpen();
+
+            if (iconLeft == 0) {
+                //说明滑块在最左边 关闭的状态
+                isOpen = false;
+            }else{
+                isOpen = true;
+            }
+            if (lastState!= isOpen &amp;&amp; mLisener != null) {
+                mLisener.onButtonStateChangeLisener(this);
+            }
+        }
+
+    }
+</code></pre></li>
+<li><p>我们可以看到上述代码中canvas.drawBitmap(mBtnBitmap, iconLeft, 0, null);第二个参数传递的并不是0，而是一个IconLeft。这里不写死的原因是我们需要让button的位置发生变化，我们通过onTouchEvent中获取的坐标为iconLeft动态赋值：</p>
+<pre><code>@Override
+public boolean onTouchEvent(MotionEvent event) {
+
+    switch (event.getAction()) {
+    case MotionEvent.ACTION_DOWN:
+        // 设置我们按下后手指点的位置正好为按钮的中间 getX为到达自定义控件左边界的距离
+        iconLeft = event.getX() - iconWidth / 2;
+        break;
+    case MotionEvent.ACTION_MOVE:
+        iconLeft = event.getX() - iconWidth / 2;
+        break;
+    case MotionEvent.ACTION_UP:
+        //当停止滑动的时候设置最终显示结果：
+        if(event.getX()&gt; viewWidth/2){
+            iconLeft = maxIconLeft;
+        }else if(event.getX()&lt;= viewWidth/2){
+            iconLeft = 0;
+        }
+        //状态是否改变
+        canChangeState = true;
+        break;
+    }
+    // 重新绘制界面
+    invalidate();
+    return true;
+}
+</code></pre></li>
+<li><p>可以看到我们每次点击结束后都调用了invalidate()来进行页面的重画，这样一来就是实现button随着我们的手滑动改变位置了。</p>
+</li>
+<li><p>我们往往使用开关的时候需要进行在对应的状态实现相应的操作，如果开关关上我们停用数据网络，打开开启数据网络。</p>
+<ol>
+<li><p>我们让外部控件知道我们内部是否处于相应的位置，换句话说我们想要在对应的状态实现对应的方法，就需要对外暴露一个回调接口，当内部绘制完成后，调用接口的方法，而接口方法的具体实现交给外部调用者来实现。这种接口回调思想跟我们经常适应的button的onClickLisener的思路是相同的。</p>
+<pre><code>/**
+ * 对外暴露 回调接口 
+ */
+public interface onStateChangeLisener{
+    void onButtonStateChangeLisener(ToggleButton button);
+}
+
+public void setonStateChangeListener(onStateChangeLisener lisener){
+    this.mLisener = lisener;
+}
+</code></pre></li>
+<li><p>我们还需要有一个标志位，通过这个标志位，外部可以实现对开关的打开关闭进行设置</p>
+<pre><code>private boolean isOpean；
+public boolean getOpen() {
+    return isOpen;
+}
+public void setOpen(boolean isOpen) {
+    this.isOpen = isOpen;
+    //设置对应的显示的位置
+    if(!isOpen){
+        iconLeft = 0;
+    }else{
+        iconLeft = maxIconLeft;
+    }
+}
+</code></pre></li>
+<li><p>具体使用方法：</p>
+<pre><code>toggleButton.setonStateChangeListener(new onStateChangeLisener() {
+
+    @Override
+    public void onButtonStateChangeLisener(ToggleButton button) {
+        Toast.makeText(getApplicationContext(), toggleButton.getOpen()+&quot;&quot;,
+                Toast.LENGTH_SHORT).show();
+    }
+});
+</code></pre></li>
+</ol>
+</li>
+<li><p>到这里我们的基本功能就已经实现了：完整代码如下：</p>
+<pre><code>package com.itheima.togglebutton;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.View;
+
+public class ToggleButton extends View {
+
+    private Bitmap mBgBitmap;
+    private Bitmap mBtnBitmap;
+    private int viewWidth;
+    private int viewHight;
+    private int iconWidth;
+    private float iconLeft;
+    private int maxIconLeft;
+    private boolean canChangeState = false;
+    private onStateChangeLisener mLisener;
+    private boolean isOpen;
+    /**
+     * 对外提供设置 lisener
+     * @param lisener
+     */
+    public void setonStateChangeListener(onStateChangeLisener lisener){
+        this.mLisener = lisener;
+    }
+    public ToggleButton(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }
+
+    public ToggleButton(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public ToggleButton(Context context) {
+        super(context);
+    }
+
+    public void setBackgroundAndIcon(int backgroundResID, int iconResID) {
+        mBgBitmap = BitmapFactory.decodeResource(getResources(),
+                backgroundResID);
+        viewWidth = mBgBitmap.getWidth();
+        viewHight = mBgBitmap.getHeight();
+
+        mBtnBitmap = BitmapFactory.decodeResource(getResources(), iconResID);
+        iconWidth = mBtnBitmap.getWidth();
+        maxIconLeft = viewWidth - iconWidth;
+    };
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        setMeasuredDimension(viewWidth, viewHight);
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        // canvas.drawBitmap(bitmap, left, top, paint);
+        // 第二个参数 left 从x坐标的 具体哪个值开始画这张图片
+        // 第三个参数 top 从y坐标的 具体哪个值开始画这张图片
+        // 第四个参数 paint画笔 这里由于画的是图片 不需要修改 所以paint传null就可以了
+        canvas.drawBitmap(mBgBitmap, 0, 0, null);
+        drawIcon(canvas);
+    }
+
+    private void drawIcon(Canvas canvas) {
+        // 第一次 画button的时候iconLeft= 0;
+        // 经历过TouchEvent后iconLeft随着手指滑动的位置改变,为了不让按钮画出背景，做出如下限制
+        if (iconLeft &lt; 0) {
+            iconLeft = 0;
+        } else if (iconLeft &gt; maxIconLeft) {
+            iconLeft = maxIconLeft;
+        }
+
+        canvas.drawBitmap(mBtnBitmap, iconLeft, 0, null);
+
+        //如果状态改变则去
+        if (canChangeState) {
+            canChangeState = false;
+
+            //定义临时变量 记录上一次的开关状态
+            boolean lastState = getOpen();
+
+            if (iconLeft == 0) {
+                //说明滑块在最左边 关闭的状态
+                isOpen = false;
+            }else{
+                isOpen = true;
+            }
+            if (lastState!= isOpen &amp;&amp; mLisener != null) {
+                mLisener.onButtonStateChangeLisener(this);
+            }
+        }
+
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        switch (event.getAction()) {
+        case MotionEvent.ACTION_DOWN:
+            // 设置我们按下后手指点的位置正好为按钮的中间
+            iconLeft = event.getX() - iconWidth / 2;
+            break;
+        case MotionEvent.ACTION_MOVE:
+            iconLeft = event.getX() - iconWidth / 2;
+            break;
+        case MotionEvent.ACTION_UP:
+            //当停止滑动的时候设置最终显示结果：
+            if(event.getX()&gt; viewWidth/2){
+                iconLeft = maxIconLeft;
+            }else if(event.getX()&lt;= viewWidth/2){
+                iconLeft = 0;
+            }
+            canChangeState = true;
+            break;
+        }
+        // 重新绘制界面
+        invalidate();
+        return true;
+    }
+
+    public boolean getOpen() {
+        return isOpen;
+    }
+    public void setOpen(boolean isOpen) {
+        this.isOpen = isOpen;
+        //设置对应的显示
+        if(!isOpen){
+            iconLeft = 0;
+        }else{
+            iconLeft = maxIconLeft;
+        }
+    }
+
+    /**
+     * 对外暴露 回调接口 
+     */
+    public interface onStateChangeLisener{
+        void onButtonStateChangeLisener(ToggleButton button);
+    }
+}
+</code></pre><p> ——– Acitivty方法———-</p>
+<pre><code>public class MainActivity extends Activity {
+
+    private ToggleButton toggleButton;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        toggleButton = (ToggleButton) findViewById(R.id.togglebutton);
+
+        toggleButton.setBackgroundAndIcon(R.drawable.switch_background,
+                R.drawable.slide_button_background);
+
+        toggleButton.setonStateChangeListener(new onStateChangeLisener() {
+
+            @Override
+            public void onButtonStateChangeLisener(ToggleButton button) {
+                Toast.makeText(getApplicationContext(), toggleButton.getOpen()+&quot;&quot;,
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+}
+</code></pre><p> ——– 布局文件方法———-</p>
+<pre><code>&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+        xmlns:tools=&quot;http://schemas.android.com/tools&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;match_parent&quot;
+        tools:context=&quot;.MainActivity&quot; &gt;
+
+        &lt;com.itheima.togglebutton.ToggleButton
+            android:id=&quot;@+id/togglebutton&quot;
+            android:layout_width=&quot;wrap_content&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            android:layout_centerInParent=&quot;true&quot; /&gt;
+
+    &lt;/RelativeLayout&gt;
+</code></pre></li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android笔记/" rel="tag">#android笔记</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/29/Application捕获全局异常/" rel="next" title="Application捕获全局异常">
+                <i class="fa fa-chevron-left"></i> Application捕获全局异常
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/13/打造万能ListView的ViewHolder和Adapter/" rel="prev" title="打造万能ListView的ViewHolder和Adapter">
+                打造万能ListView的ViewHolder和Adapter <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="ImportEffort" />
+          <p class="site-author-name" itemprop="name">ImportEffort</p>
+          <p class="site-description motion-element" itemprop="description">说道做到，这就是我的忍道</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义ToggleButton的实现过程："><span class="nav-number">1.</span> <span class="nav-text">自定义ToggleButton的实现过程：</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ImportEffort</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

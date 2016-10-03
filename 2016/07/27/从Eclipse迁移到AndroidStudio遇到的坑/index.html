@@ -1,0 +1,797 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="AndroidStudio," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="从Eclipse迁移到Android studio你所需要知道快捷键
+下述为一些在Eclipse中常用的快捷键，另外说明下，网上好多提示说将AS的快捷见切换为Eclipse文本就跟Eclipse原来的快捷键一样。亲身实验就算你切换成Eclipse模版，还是有好多不一样。所以之后默默开始去熟悉默认的AS快捷键了。用多了你会感觉他的确很强大。拿前两天亲身的例子来讲：编写的代码由于仅适用与API16以上">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从Eclipse迁移到AndroidStudio遇到的坑">
+<meta property="og:url" content="http://yoursite.com/2016/07/27/从Eclipse迁移到AndroidStudio遇到的坑/index.html">
+<meta property="og:site_name" content="ImportEffort的博客">
+<meta property="og:description" content="从Eclipse迁移到Android studio你所需要知道快捷键
+下述为一些在Eclipse中常用的快捷键，另外说明下，网上好多提示说将AS的快捷见切换为Eclipse文本就跟Eclipse原来的快捷键一样。亲身实验就算你切换成Eclipse模版，还是有好多不一样。所以之后默默开始去熟悉默认的AS快捷键了。用多了你会感觉他的确很强大。拿前两天亲身的例子来讲：编写的代码由于仅适用与API16以上">
+<meta property="og:image" content="http://i.imgur.com/MkQcq32.png">
+<meta property="og:image" content="http://i.imgur.com/Fing1EA.jpg">
+<meta property="og:image" content="http://i.imgur.com/yIVLE9l.png">
+<meta property="og:image" content="http://i.imgur.com/5u86Tbk.png">
+<meta property="og:image" content="http://i.imgur.com/J6eiXyE.png">
+<meta property="og:image" content="http://i.imgur.com/PTlXX7u.png">
+<meta property="og:image" content="http://i.imgur.com/tNcMrsI.png">
+<meta property="og:image" content="http://i.imgur.com/GEkpeFH.png">
+<meta property="og:image" content="http://i.imgur.com/MVPqEvU.png">
+<meta property="og:image" content="http://i.imgur.com/QXmPcQs.png">
+<meta property="og:updated_time" content="2016-07-26T16:49:31.610Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从Eclipse迁移到AndroidStudio遇到的坑">
+<meta name="twitter:description" content="从Eclipse迁移到Android studio你所需要知道快捷键
+下述为一些在Eclipse中常用的快捷键，另外说明下，网上好多提示说将AS的快捷见切换为Eclipse文本就跟Eclipse原来的快捷键一样。亲身实验就算你切换成Eclipse模版，还是有好多不一样。所以之后默默开始去熟悉默认的AS快捷键了。用多了你会感觉他的确很强大。拿前两天亲身的例子来讲：编写的代码由于仅适用与API16以上">
+<meta name="twitter:image" content="http://i.imgur.com/MkQcq32.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/07/27/从Eclipse迁移到AndroidStudio遇到的坑/"/>
+
+  <title> 从Eclipse迁移到AndroidStudio遇到的坑 | ImportEffort的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">ImportEffort的博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                从Eclipse迁移到AndroidStudio遇到的坑
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-27T00:48:19+08:00" content="2016-07-27">
+              2016-07-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/AndroidStudio/" itemprop="url" rel="index">
+                    <span itemprop="name">AndroidStudio</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="从Eclipse迁移到Android-studio你所需要知道快捷键"><a href="#从Eclipse迁移到Android-studio你所需要知道快捷键" class="headerlink" title="从Eclipse迁移到Android studio你所需要知道快捷键"></a>从Eclipse迁移到Android studio你所需要知道快捷键</h2><blockquote>
+<p>下述为一些在Eclipse中常用的快捷键，另外说明下，网上好多提示说将AS的快捷见切换为Eclipse文本就跟Eclipse原来的快捷键一样。亲身实验就算你切换成Eclipse模版，还是有好多不一样。所以之后默默开始去熟悉默认的AS快捷键了。用多了你会感觉他的确很强大。拿前两天亲身的例子来讲：编写的代码由于仅适用与API16以上，正常来说Eclipse只会给你提示，而Studio我按了下Alt + enter 直接给我语句包裹了SDK版本判断的语句。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>Eclipse</th>
+<th>AndroidStudio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>删除一行</td>
+<td>ctrl + d</td>
+<td>ctrl + y</td>
+</tr>
+<tr>
+<td>复制一行</td>
+<td>ctrl + alt + ↑/↓</td>
+<td>ctrl + d</td>
+</tr>
+<tr>
+<td>移动一行</td>
+<td>ctrl + ↑/↓</td>
+<td>Shift+Alt+↑/↓</td>
+</tr>
+<tr>
+<td>大小写切换</td>
+<td>ctrl + shift+Y/X</td>
+<td>Ctrl+Shift+U</td>
+</tr>
+<tr>
+<td>生成成员变量</td>
+<td>ctrl + 2 + l</td>
+<td>ctrl+alt + v</td>
+</tr>
+<tr>
+<td>生成类变量</td>
+<td>ctrl + 2 + f</td>
+<td>ctrl+alt + f</td>
+</tr>
+<tr>
+<td>错误修改提示</td>
+<td>ctrl + 1</td>
+<td>alt + enter</td>
+</tr>
+<tr>
+<td>提示方法参数</td>
+<td>Alt + /</td>
+<td>自动/ctrl+p</td>
+</tr>
+<tr>
+<td>格式化代码</td>
+<td>ctrl + shift + f</td>
+<td>Ctrl+Alt+L</td>
+</tr>
+<tr>
+<td>修改变量名</td>
+<td>ctrl + shift + R</td>
+<td>shift + f6</td>
+</tr>
+<tr>
+<td>自动倒包</td>
+<td>Ctrl+Alt+O</td>
+<td>Ctrl+Alt+O</td>
+</tr>
+<tr>
+<td>智能代码提示</td>
+<td>自定义代码模版</td>
+<td>Ctrl+J很实用</td>
+</tr>
+<tr>
+<td>打开关闭所有函数</td>
+<td>无</td>
+<td>ctrl shift +/-</td>
+</tr>
+<tr>
+<td>打开关闭当前函数</td>
+<td>无</td>
+<td>ctrl +/-</td>
+</tr>
+<tr>
+<td>查看源码</td>
+<td>ctrl + 左键</td>
+<td>ctrl + 左键</td>
+</tr>
+<tr>
+<td>内部类与外部类切换</td>
+<td>无</td>
+<td>Alt + Up/Down</td>
+</tr>
+<tr>
+<td>回到上次编辑位置</td>
+<td>无</td>
+<td>Ctrl + Shift + Backspace﻿</td>
+</tr>
+<tr>
+<td>实现父类的方法</td>
+<td>alt + shift + s + v</td>
+<td>ctrl + I</td>
+</tr>
+<tr>
+<td>复写父类的方法</td>
+<td>alt + shift + s + o</td>
+<td>ctrl + o</td>
+</tr>
+<tr>
+<td>构造器、Getter、Setter等</td>
+<td>alt + shift + s</td>
+<td>alt + Insert</td>
+</tr>
+<tr>
+<td>搜索当前类中的方法等</td>
+<td>ctrl + o</td>
+<td>ctrl + f12</td>
+</tr>
+<tr>
+<td>版本控制操作弹窗</td>
+<td>无</td>
+<td>Alt + `</td>
+</tr>
+<tr>
+<td>查找操作</td>
+<td>ctrl + f</td>
+<td>Ctrl + Shift + A</td>
+</tr>
+<tr>
+<td>定位到父类</td>
+<td>ctrl + 左键</td>
+<td>Ctrl + U</td>
+</tr>
+<tr>
+<td>提取方法</td>
+<td>Ctrl + Alt + M</td>
+<td>Ctrl + Alt + M</td>
+</tr>
+<tr>
+<td>提取参数</td>
+<td>Ctrl + Alt + P</td>
+<td>Ctrl + Alt + P</td>
+</tr>
+<tr>
+<td>合并文本</td>
+<td>没发现</td>
+<td>Ctrl + Shift + J</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<a id="more"></a>
+<blockquote>
+<p>如果你需要更多的AndoridStudio快捷键使用技巧可以参考一下的网址内容：<br>[转] 还有我敬爱的张哥stromzhang的AndroidStudio使用技巧：<a href="http://stormzhang.com/devtools/2015/06/17/android-studio-all/" target="_blank" rel="external">http://stormzhang.com/devtools/2015/06/17/android-studio-all/</a><br>[转] 最强 Android Studio 使用小技巧和快捷键 ：<a href="http://www.open-open.com/lib/view/open1458715872710.html" target="_blank" rel="external">http://www.open-open.com/lib/view/open1458715872710.html</a></p>
+<p>还有两张可以当壁纸的快捷键图（注：图片来自网络）：</p>
+</blockquote>
+<p><img src="http://i.imgur.com/MkQcq32.png" alt="图片来自网络"></p>
+<p><img src="http://i.imgur.com/Fing1EA.jpg" alt="图片来自网络"></p>
+<hr>
+<p>##下面是我AndroidStudio中的一些配置：</p>
+<ol>
+<li><p>设置类变量自动加m:也就是说设置这个以后你的alt + ctrl + f 代码提示中自动为你添加m</p>
+<p> <img src="http://i.imgur.com/yIVLE9l.png" alt=""></p>
+</li>
+<li><p>我的AndroidStudio主题：Sublime Text 2，下载地址：<a href="http://color-themes.com/?view=theme&amp;id=563a1a6380b4acf11273ae40" target="_blank" rel="external">http://color-themes.com/?view=theme&amp;id=563a1a6380b4acf11273ae40</a>需要翻墙。<br>更多主题请参考知乎：<a href="https://www.zhihu.com/question/38958773" target="_blank" rel="external">https://www.zhihu.com/question/38958773</a></p>
+<p> <img src="http://i.imgur.com/5u86Tbk.png" alt=""></p>
+</li>
+<li><p>对了用了上边的主题：你肯能会感觉Log信息有点别扭，没关系我也感觉别扭，当然是有解决方案的：</p>
+<ul>
+<li><p>设置方法：<br>File-&gt;Settings 或Ctrl + Alt +S 找到 Editor -&gt; Colors &amp;Fonts -&gt; Android Logcat 或在上面的搜索框中输入Logcat 点中Verbose , Info, Debug等选项，然后在后面将Use Inberited attributes 去掉勾选 再将 Foreground 前的复选框选上，就可以双击后面的框框去选择颜色了 Apply–&gt;OK；下面图片来自网络：</p>
+<p><img src="http://i.imgur.com/J6eiXyE.png" alt=""></p>
+</li>
+</ul>
+</li>
+<li><p>如果添加Jar包依赖：</p>
+<blockquote>
+<p>如果你在github上下载的是jar包，恭喜你依赖很简单，复制到libs目录下，右键点击add library就好。</p>
+</blockquote>
+</li>
+</ol>
+<ul>
+<li>步骤1：复制到libs目录下<br>  <img src="http://i.imgur.com/PTlXX7u.png" alt=""></li>
+<li>步骤2：右键点击add library<br>  <img src="http://i.imgur.com/tNcMrsI.png" alt=""></li>
+<li>步骤3： 结果<br>  <img src="http://i.imgur.com/GEkpeFH.png" alt=""></li>
+</ul>
+<ol>
+<li><p>如果添加gradle 依赖：这里以StickyListHeaders为例：</p>
+<ul>
+<li>步骤1： 当然是去github上寻找对应的第三方包：</li>
+<li>步骤2： 找到对应的gradle依赖说明： 这里说明一下第三方包，的版本号都是三位的即使官方给出的最新版本是v2.7 后边的xxx也要写成2.7.0<br>  <img src="http://i.imgur.com/MVPqEvU.png" alt=""></li>
+<li><p>步骤3： 去项目的app目录下的build.gradle中添加dependencies：</p>
+<p>  <img src="http://i.imgur.com/QXmPcQs.png" alt=""></p>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<blockquote>
+<p>总结： 虽然万分的不习惯，加上AndroidStudio也十分的消耗电脑配置，想windows这样的系统，我想再高的系统配置也会不流畅。所有土豪们要是有钱的话就去换个macpro把，不要问我mac air和macpro要买哪一个，问这句话我能想到的原因只有两个，一个是你能钱只够买一个mac air的，考虑要不要借钱买pro，另一个是你两个都买不起就是问问。当然我是属于后者。哈哈哈。。。开玩笑呢。<br>总之，google官方推荐的方法使用的IDE当然是有他的好处。</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/AndroidStudio/" rel="tag">#AndroidStudio</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/27/一个单例Toast的工具类/" rel="next" title="一个单例Toast的工具类">
+                <i class="fa fa-chevron-left"></i> 一个单例Toast的工具类
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/27/Android中的数据存储/" rel="prev" title="Android中的数据存储">
+                Android中的数据存储 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="ImportEffort" />
+          <p class="site-author-name" itemprop="name">ImportEffort</p>
+          <p class="site-description motion-element" itemprop="description">说道做到，这就是我的忍道</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#从Eclipse迁移到Android-studio你所需要知道快捷键"><span class="nav-number">1.</span> <span class="nav-text">从Eclipse迁移到Android studio你所需要知道快捷键</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ImportEffort</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

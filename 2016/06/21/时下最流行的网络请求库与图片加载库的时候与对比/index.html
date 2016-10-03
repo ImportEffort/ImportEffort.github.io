@@ -1,0 +1,831 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android笔记," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="常用开源网络请求库与图片加载库的比较网络请求库
+概述：所有网络库的原理是： 网络请求一般是基于HttpURLConnection和HttpClient进行封装的，也有自己编写Socket实现的，比如ion和OkHttp；请求的执行一般是通过线程池来管理，异步请求得到结果，则通过回调接口接收；并且一般接收结果的回调都通过Handler去在主线程执行
+
+
+​
+
+网络请求库
+概述：所有网络库的原理是：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常用开源网络请求库与图片加载库的比较">
+<meta property="og:url" content="http://yoursite.com/2016/06/21/时下最流行的网络请求库与图片加载库的时候与对比/index.html">
+<meta property="og:site_name" content="ImportEffort的博客">
+<meta property="og:description" content="常用开源网络请求库与图片加载库的比较网络请求库
+概述：所有网络库的原理是： 网络请求一般是基于HttpURLConnection和HttpClient进行封装的，也有自己编写Socket实现的，比如ion和OkHttp；请求的执行一般是通过线程池来管理，异步请求得到结果，则通过回调接口接收；并且一般接收结果的回调都通过Handler去在主线程执行
+
+
+​
+
+网络请求库
+概述：所有网络库的原理是：">
+<meta property="og:image" content="https://ooo.0o0.ooo/2016/09/22/57e3da39f1b5f.png">
+<meta property="og:updated_time" content="2016-09-23T03:12:09.968Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="常用开源网络请求库与图片加载库的比较">
+<meta name="twitter:description" content="常用开源网络请求库与图片加载库的比较网络请求库
+概述：所有网络库的原理是： 网络请求一般是基于HttpURLConnection和HttpClient进行封装的，也有自己编写Socket实现的，比如ion和OkHttp；请求的执行一般是通过线程池来管理，异步请求得到结果，则通过回调接口接收；并且一般接收结果的回调都通过Handler去在主线程执行
+
+
+​
+
+网络请求库
+概述：所有网络库的原理是：">
+<meta name="twitter:image" content="https://ooo.0o0.ooo/2016/09/22/57e3da39f1b5f.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/06/21/时下最流行的网络请求库与图片加载库的时候与对比/"/>
+
+  <title> 常用开源网络请求库与图片加载库的比较 | ImportEffort的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">ImportEffort的博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                常用开源网络请求库与图片加载库的比较
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-21T00:47:59+08:00" content="2016-06-21">
+              2016-06-21
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="常用开源网络请求库与图片加载库的比较"><a href="#常用开源网络请求库与图片加载库的比较" class="headerlink" title="常用开源网络请求库与图片加载库的比较"></a>常用开源网络请求库与图片加载库的比较</h1><h2 id="网络请求库"><a href="#网络请求库" class="headerlink" title="网络请求库"></a>网络请求库</h2><blockquote>
+<p>概述：所有网络库的原理是： 网络请求一般是基于HttpURLConnection和HttpClient进行封装的，也有自己编写Socket实现的，比如ion和OkHttp；请求的执行一般是通过线程池来管理，异步请求得到结果，则通过回调接口接收；并且一般接收结果的回调都通过Handler去在主线程执行</p>
+</blockquote>
+<ul>
+<li>​</li>
+</ul>
+<h2 id="网络请求库-1"><a href="#网络请求库-1" class="headerlink" title="网络请求库"></a>网络请求库</h2><blockquote>
+<p>概述：所有网络库的原理是： 网络请求一般是基于HttpURLConnection和HttpClient进行封装的，也有自己编写Socket实现的，比如ion和OkHttp；请求的执行一般是通过线程池来管理，异步请求得到结果，则通过回调接口接收；并且一般接收结果的回调都通过Handler去在主线程执行</p>
+</blockquote>
+<h3 id="Ion的使用"><a href="#Ion的使用" class="headerlink" title="Ion的使用"></a>Ion的使用</h3><blockquote>
+<p>详情查看Github主页<a href="https://github.com/koush/ion" target="_blank" rel="external">https://github.com/koush/ion</a></p>
+</blockquote>
+<ul>
+<li><p>介绍：</p>
+<ul>
+<li>它支持网络请求和进行图片加载的双重功能</li>
+<li>拥有链式api风格(Fluent API)</li>
+<li>当Activity结束的时候支持自动的取消操作</li>
+<li>支持SPDY/HTTP2，缓存，Gzip压缩，HTTP连接的重用等</li>
+<li>并且是基于AndroidAsync实现的，AndroidAsync是作者的另一个使用socket实现的，遵循http协议的类库</li>
+</ul>
+</li>
+<li><p>添加依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">    compile &apos;com.koushikdutta.ion:ion:2.+&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用ion进行get请求</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">  Ion.with(this)</div><div class="line">   .load(Api.TEST)</div><div class="line">   .asString()//以字符串形式返回,服务器返回的都是流，只是类库将流转为字符串了</div><div class="line">   .setCallback(callback);//设置接收结果的回调接口</div><div class="line"></div><div class="line">    FutureCallback&lt;String&gt; callback = new FutureCallback&lt;String&gt;() &#123;</div><div class="line">    /**</div><div class="line">     * 回调是在主线程执行的，所以可以直接更新UI</div><div class="line">     * @param e</div><div class="line">     * @param result</div><div class="line">     */</div><div class="line">    @Override</div><div class="line">    public void onCompleted(Exception e, String result) &#123;</div><div class="line">        text.setText(e == null ? result : e.getMessage());</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用ion进行post请求，提交key-value形式的参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Ion.with(this)</div><div class="line">   .load(Api.LOGIN)</div><div class="line">   .setBodyParameter(&quot;username&quot;,&quot;俊哥&quot;)//设置请求参数</div><div class="line">   .setBodyParameter(&quot;password&quot;,&quot;123&quot;)</div><div class="line">   .asString()</div><div class="line">   .setCallback(callback);</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用ion进行post请求，提交json对象参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">//构造json对象</div><div class="line">JsonObject json = new JsonObject();</div><div class="line">json.addProperty(&quot;city&quot;,&quot;北京&quot;);</div><div class="line">json.addProperty(&quot;year&quot;,&quot;2016&quot;);</div><div class="line"></div><div class="line">Ion.with(this)</div><div class="line">   .load(Api.POST_JSON)</div><div class="line">   .setJsonObjectBody(json)</div><div class="line">   .asString()</div><div class="line">   .setCallback(callback);</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用ion进行上传文件，并显示进度</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"> File file = new File(Environment.getExternalStorageDirectory(),&quot;dog.jpg&quot;);</div><div class="line"></div><div class="line">Ion.with(this)</div><div class="line">        .load(Api.UPLOAD)</div><div class="line">        .uploadProgress(new ProgressCallback() &#123;</div><div class="line">            @Override</div><div class="line">            public void onProgress(long downloaded, long total) &#123;</div><div class="line">                int percent = (int) (downloaded*100f/total+0.5f);</div><div class="line">                Log.e(&quot;tag&quot;,&quot;上传进度：&quot;+percent+&quot;%&quot;);</div><div class="line">            &#125;</div><div class="line">        &#125;)</div><div class="line">        .setMultipartFile(&quot;file&quot;,file)</div><div class="line">        .asString()</div><div class="line">        .setCallback(callback);</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用ion进行下载文件，并且显示进度</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">File file = new File(Environment.getExternalStorageDirectory(),&quot;a.jpg&quot;);</div><div class="line">Ion.with(this)</div><div class="line">        .load(Api.IMAGE)</div><div class="line">        .progress(new ProgressCallback() &#123;</div><div class="line">            @Override</div><div class="line">             public void onProgress(long downloaded, long total) &#123;</div><div class="line">                int percent = (int) (downloaded*100f/total+0.5f);</div><div class="line">                text.setText(&quot;下载进度：&quot;+percent+&quot;%&quot;);</div><div class="line">            &#125;</div><div class="line">        &#125;)</div><div class="line">        .write(file)</div><div class="line">        .setCallback(new FutureCallback&lt;File&gt;() &#123;</div><div class="line">            @Override</div><div class="line">            public void onCompleted(Exception e, File file) &#123;</div><div class="line">                text.setText(&quot;下载成功：&quot;+file.getAbsolutePath());</div><div class="line">            &#125;</div><div class="line">        &#125;);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="Retrofit的使用"><a href="#Retrofit的使用" class="headerlink" title="Retrofit的使用"></a>Retrofit的使用</h3><blockquote>
+<p>详情查看<a href="https://github.com/square/retrofit" target="_blank" rel="external">https://github.com/square/retrofit</a></p>
+</blockquote>
+<ul>
+<li><p>介绍</p>
+<ul>
+<li>Square公司为Android开源的类型安全的Http客户端</li>
+<li>底层基于OkHttp，使用OkHttp进行请求</li>
+<li>将java API的定义转换为interface形式</li>
+<li>使用annotation描述http请求</li>
+<li>支持配置json解析器</li>
+</ul>
+</li>
+<li><p>添加依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">compile &apos;com.squareup.retrofit2:retrofit:2.1.0&apos;</div><div class="line">compile &apos;com.squareup.retrofit2:converter-gson:2.0.2&apos;</div></pre></td></tr></table></figure>
+</li>
+<li><p>创建Retrofit实例对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">//创建Retrofit</div><div class="line">Retrofit retrofit = new Retrofit.Builder()</div><div class="line">        //注意，服务器主机应该以/结束，</div><div class="line">        .baseUrl(&quot;http://192.168.2.103:8080/apitest/&quot;)//设置服务器主机</div><div class="line">        .addConverterFactory(GsonConverterFactory.create())//配置Gson作为json的解析器</div><div class="line">        .build();</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<ul>
+<li><p>​</p>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">    /**</div><div class="line">* 定义了一个业务方法，获取订单，</div><div class="line">*/</div></pre></td></tr></table></figure>
+<p>public interface MyApi {</p>
+<pre><code>@GET(&quot;test&quot;)//指定该方法要请求的url，注意方法的路径不要以/开头，如/test，是错误的
+Call&lt;Stu&gt; getOrder();
+</code></pre><p>  }</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"> </div></pre></td></tr></table></figure>
+</li>
+<li><p>创建接口实例对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">MyApi myApi = retrofit.create(MyApi.class);</div></pre></td></tr></table></figure>
+</li>
+<li><p>获取业务方法的调用对象，并进行请求</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"> //调用业务方法，得到要执行的业务请求对象</div><div class="line">Call&lt;Stu&gt; order = myApi.getOrder();</div><div class="line"></div><div class="line">//执行请求对象</div><div class="line">//1.同步执行，得到响应对象,会阻塞UI,不推荐</div><div class="line">//Response&lt;Stu&gt; response = order.execute();</div><div class="line">//Stu stu = response.body();</div><div class="line">//2.异步执行业务方法</div><div class="line">order.enqueue(new Callback&lt;Stu&gt;() &#123;</div><div class="line">    @Override</div><div class="line">    public void onResponse(Call&lt;Stu&gt; call, Response&lt;Stu&gt; response) &#123;</div><div class="line">        Stu stu = response.body();</div><div class="line">        text.setText(stu.toString());</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    public void onFailure(Call&lt;Stu&gt; call, Throwable t) &#123;</div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</li>
+<li><p>Retrofit的url注解处理</p>
+<ul>
+<li>使用@Path注解来处理url路径不固定的需求，如</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"> @GET(&quot;test/&#123;order&#125;&quot;)//获取订单的某段路径不固定，</div><div class="line">Call&lt;Stu&gt; getOrder(@Path(&quot;order&quot;)String order);</div><div class="line"></div><div class="line">​</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用@Query注解来替换url后面跟的参数，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">//url为：test?id=333</div><div class="line">//使用@Query来替换查询参数</div><div class="line">@GET(&quot;test&quot;)</div><div class="line">Call&lt;Stu&gt; getOrderById(@Query(&quot;id&quot;) String id);</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用@QueryMap来替换多个查询参数，如</p>
+<pre><code>​<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">//假设url为：login?username=heima&amp;password=111</div><div class="line">//使用@QueryMay来替换多个查询参数</div><div class="line">@GET(&quot;login&quot;)</div><div class="line">Call&lt;Stu&gt; login(@QueryMap Map&lt;String,String&gt; map);</div><div class="line"></div><div class="line">​</div></pre></td></tr></table></figure>
+</code></pre><ul>
+<li><p>使用@Post注解进行post请求，提交key-value数据，如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">@FormUrlEncoded//配置对请求体参数进行url编码</div><div class="line">@POST(&quot;login&quot;)</div><div class="line">Call&lt;Login&gt; postLogin(@Field(&quot;username&quot;)String username, @Field(&quot;password&quot;)String password);</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用@Post注解进行post请求，提交json数据，如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">//使用@Body设置请求体参数</div><div class="line">//注意，@Body不需要配置@FormUrlEncoded或者@Multipart</div><div class="line">@POST(&quot;login&quot;)</div><div class="line">Call&lt;Login&gt; postJson(@Body JsonObject jsonObject);</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用@Headers定义请求头，如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"> //定义请求头</div><div class="line">@Headers(&#123;</div><div class="line">        &quot;Accept: application/vnd.github.v3.full+json&quot;,</div><div class="line">        &quot;User-Agent: Retrofit-Sample-App&quot;</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用ResponseBody来接收流的数据，比如下载文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">//下载文件</div><div class="line">@GET(&quot;image&quot;)</div><div class="line">Call&lt;ResponseBody&gt; getImage();</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用@Muptipart和@Part或者@PartMao封装多块请求体</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">//上传文件和其他参数</div><div class="line">@Multipart//将请求体进行Multipart拼接</div><div class="line">@POST(&quot;uploadMulti&quot;) //RequestBody表示数据和数据类型的封装体</div><div class="line">//Call&lt;UploadResult&gt; upload(@Part(&quot;file&quot;) RequestBody       file,@Part(&quot;params1&quot;) RequestBody params1);</div><div class="line">//或者使用@PartMap</div><div class="line">Call&lt;UploadResult&gt; upload(@PartMap Map&lt;String, RequestBody&gt; map);</div></pre></td></tr></table></figure>
+<p>需要注意的是，构建RequestBody的时候要注意拼接：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">File file = new File(Environment.getExternalStorageDirectory(),&quot;a.jpg&quot;);</div><div class="line">File file2 = new File(Environment.getExternalStorageDirectory(),&quot;dog.jpg&quot;);</div><div class="line">RequestBody fileBody = RequestBody.create(MediaType.parse(&quot;image/jpeg&quot;),file);</div><div class="line">RequestBody fileBody2 = RequestBody.create(MediaType.parse(&quot;image/jpeg&quot;),file2);</div><div class="line"></div><div class="line">HashMap&lt;String,RequestBody&gt; map = new HashMap&lt;&gt;();</div><div class="line">map.put(&quot;file\&quot;; filename=\&quot;&quot;+file.getName(),fileBody);</div><div class="line">map.put(&quot;file\&quot;; filename=\&quot;&quot;+file2.getName(),fileBody2);</div><div class="line"></div><div class="line">Call&lt;UploadResult&gt; uploadResultCall = myApiClient.create().heiMaApi.upload(map);</div><div class="line">uploadResultCall.enqueue(new Callback&lt;UploadResult&gt;() &#123;</div><div class="line">    @Override</div><div class="line">    public void onResponse(Call&lt;UploadResult&gt; call, Response&lt;UploadResult&gt; response) &#123;</div><div class="line">        text.setText(response.body().toString());</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    public void onFailure(Call&lt;UploadResult&gt; call, Throwable t) &#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="Volley的使用"><a href="#Volley的使用" class="headerlink" title="Volley的使用"></a>Volley的使用</h3><ul>
+<li><p>介绍</p>
+<ul>
+<li>谷歌开源的，专注于处理高频率的数据比较小的请求</li>
+<li>内部仍然是使用的HttpURLConnection和HttpClient进行网络请求的，只是对于不同的Android版本进行了响应的切换，2.3之前使用的HttpClient，2.3之后使用的是HttpURLConnection</li>
+<li>支持取消请求</li>
+<li>具有网络请求和图片加载的功能</li>
+</ul>
+</li>
+<li><p>添加依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">compile &apos;com.android.volley:volley:1.0.0&apos;</div></pre></td></tr></table></figure>
+</li>
+<li><p>创建RequestQueue请求队列，它是用来执行请求对象的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">RequestQueue queue = Volley.newRequestQueue(this);</div></pre></td></tr></table></figure>
+</li>
+<li><p>创建请求对象，这里使用最简单的StringRequest：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">StringRequest stringRequest = new StringRequest(Api.TEST, new com.android.volley.Response.Listener&lt;String&gt;() &#123;</div><div class="line">    @Override</div><div class="line">    public void onResponse(String response) &#123;</div><div class="line">        text.setText(response);</div><div class="line">    &#125;</div><div class="line">&#125;, new com.android.volley.Response.ErrorListener() &#123;</div><div class="line">    @Override</div><div class="line">    public void onErrorResponse(VolleyError error) &#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</li>
+<li><p>执行请求，将Request对象添加到RequestQueue中，即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"> //3.执行请求</div><div class="line">queue.add(stringRequest);</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用JsonRequest进行请求，返回的是json对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">//1.创建JsonRequest请求</div><div class="line">JsonObjectRequest joRequest = new JsonObjectRequest(url, null, new Listener&lt;JSONObject&gt;() &#123;</div><div class="line">    @Override</div><div class="line">    public void onResponse(JSONObject response) &#123;</div><div class="line">        tv_result.setText(response.toString());</div><div class="line">    &#125;</div><div class="line">&#125;, new MyErrorListener());</div><div class="line">//2.执行请求</div><div class="line">queue.add(joRequest);</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用Volley发送post请求，需要自己重写Request的getParams方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">public class PostReuqest extends StringRequest &#123;</div><div class="line">    private Map&lt;String, String&gt; params;</div><div class="line">    public PostReuqest(String url, Response.Listener&lt;String&gt; listener, Response.ErrorListener errorListener) &#123;</div><div class="line">        super(url, listener, errorListener);</div><div class="line">    &#125;</div><div class="line">    public PostReuqest(int method,String url, Response.Listener&lt;String&gt; listener, Response.ErrorListener errorListener) &#123;</div><div class="line">        super(method,url, listener, errorListener);</div><div class="line">    &#125;</div><div class="line">    public void setParams(Map&lt;String, String&gt; params)&#123;</div><div class="line">        this.params = params;</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    protected Map&lt;String, String&gt; getParams() throws AuthFailureError &#123;</div><div class="line">        return params;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">PostReuqest stringRequest = new PostReuqest(Request.Method.POST,Api.LOGIN, new com.android.volley.Response.Listener&lt;String&gt;() &#123;</div><div class="line">    @Override</div><div class="line">    public void onResponse(String response) &#123;</div><div class="line">        text.setText(response);</div><div class="line">    &#125;</div><div class="line">&#125;, new com.android.volley.Response.ErrorListener() &#123;</div><div class="line">    @Override</div><div class="line">    public void onErrorResponse(VolleyError error) &#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;);</div><div class="line">HashMap&lt;String,String&gt; map = new HashMap&lt;&gt;();</div><div class="line">map.put(&quot;username&quot;,&quot;hehehe&quot;);</div><div class="line">map.put(&quot;password&quot;,&quot;12321&quot;);</div><div class="line">stringRequest.setParams(map);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h2 id="图片加载库"><a href="#图片加载库" class="headerlink" title="图片加载库"></a>图片加载库</h2><blockquote>
+<p>原理概述：图片加载的工作流(task flow)都是3级缓存的流程；图片的内存缓存一定是LruCache实现；图片下载和读取线程的调度一定是通过线程池管理</p>
+<p>画图说明图片加载原理</p>
+</blockquote>
+<p><img src="https://ooo.0o0.ooo/2016/09/22/57e3da39f1b5f.png" alt="图片加载类库的工作原理图.png"></p>
+<h3 id="Glide的使用"><a href="#Glide的使用" class="headerlink" title="Glide的使用"></a>Glide的使用</h3><blockquote>
+<p>详情查看<a href="https://github.com/bumptech/glide" target="_blank" rel="external">https://github.com/bumptech/glide</a></p>
+</blockquote>
+<ul>
+<li><p>介绍：</p>
+<ul>
+<li>专注于处理平滑滑动的图片类库</li>
+<li>默认使用HttpUrlConnection下载图片</li>
+<li>支持设置渐渐显示的动画</li>
+<li>支持设置加载中的图片</li>
+</ul>
+</li>
+<li><p>添加依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">compile &apos;com.github.bumptech.glide:glide:3.7.0&apos;</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用Glide加载图片</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Glide.with(this)</div><div class="line">       .load(&quot;&quot;)</div><div class="line">       .centerCrop()//设置从中间剪切</div><div class="line">       .placeholder(R.mipmap.ic_launcher)//设置加载过程中显示的图片</div><div class="line">       .error(R.mipmap.ic_launcher)//设置加载失败显示的图片</div><div class="line">       .crossFade()//设置渐渐显示的效果</div><div class="line">       .into(image);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="Picasso的使用"><a href="#Picasso的使用" class="headerlink" title="Picasso的使用"></a>Picasso的使用</h3><blockquote>
+<p>详情查看<a href="https://github.com/square/picasso" target="_blank" rel="external">https://github.com/square/picasso</a></p>
+</blockquote>
+<ul>
+<li><p>介绍：</p>
+<ul>
+<li>Square开源的比较早的图片加载类库</li>
+<li>自动处理adapter中的ImageView的回收时取消下载图片</li>
+<li>支持加载多种来源的图片，比如网络，sd卡，res资源</li>
+<li>支持设置占位图片</li>
+<li>支持对图片的自定义处理</li>
+</ul>
+</li>
+<li><p>添加依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">compile &apos;com.squareup.picasso:picasso:2.5.2&apos;</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用Picasso加载图片</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">Picasso.with(this)</div><div class="line">        .load(&quot;url&quot;)</div><div class="line">        .placeholder(R.mipmap.ic_launcher)</div><div class="line">        .error(R.mipmap.ic_launcher)</div><div class="line">        .centerCrop()</div><div class="line">        .noFade()//设置不需要渐渐显示的动画效果</div><div class="line">        .resize(120,120)//指定压缩参考的宽高比</div><div class="line">        .into(image);</div></pre></td></tr></table></figure>
+</li>
+<li><p>加载其他资源路径的图片</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Picasso.with(context).load(R.drawable.landing_screen).into(imageView1);</div><div class="line">Picasso.with(context).load(&quot;file:///android_asset/DvpvklR.png&quot;).into(imageView2);</div><div class="line">Picasso.with(context).load(new File(...)).into(imageView3);</div></pre></td></tr></table></figure>
+</li>
+<li><p>注意：如果不设置resize(120,120)，则Picasso会加载整个图片，显然这样消耗的内存比较大，一般都需要指定一下，而Glide内部已经默认参考了控件的宽高来进行缩放了。</p>
+</li>
+</ul>
+<h3 id="Fresco的使用"><a href="#Fresco的使用" class="headerlink" title="Fresco的使用"></a>Fresco的使用</h3><blockquote>
+<p>详情查看<a href="https://github.com/facebook/fresco" target="_blank" rel="external">https://github.com/facebook/fresco</a></p>
+</blockquote>
+<ul>
+<li><p>介绍：</p>
+<ul>
+<li>Facebook开源的专注于优化java堆内存，最大程度减少OOM</li>
+<li>在Android4.4以及以下，将图片存储在Android的一块特殊的内存区域，这会让图片处理更加快速</li>
+<li>支持Gif和WebP格式的图片</li>
+</ul>
+</li>
+<li><p>添加依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">compile &apos;com.facebook.fresco:fresco:0.11.0&apos;</div></pre></td></tr></table></figure>
+</li>
+<li><p>首先初始化Fresco，一般在Application的onCreate中初始化</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">//先初始化Fresco</div><div class="line">Fresco.initialize(this);</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用Fresco提供的SimpleDraweeView显示图片</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">draweeView.setImageURI(&quot;url&quot;);</div></pre></td></tr></table></figure>
+</li>
+<li><p>由于使用的是自定义控件加载图片，那么通过定义属性来进行设置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">&lt;com.facebook.drawee.view.SimpleDraweeView</div><div class="line">    android:id=&quot;@+id/image_view&quot;</div><div class="line">    android:layout_width=&quot;300dp&quot;</div><div class="line">    android:layout_height=&quot;300dp&quot;</div><div class="line">    fresco:fadeDuration=&quot;300&quot;</div><div class="line">    fresco:actualImageScaleType=&quot;focusCrop&quot;</div><div class="line">    fresco:placeholderImage=&quot;@color/wait_color&quot;</div><div class="line">    fresco:placeholderImageScaleType=&quot;fitCenter&quot;</div><div class="line">    fresco:failureImage=&quot;@drawable/error&quot;</div><div class="line">    fresco:failureImageScaleType=&quot;centerInside&quot;</div><div class="line">    fresco:retryImage=&quot;@drawable/retrying&quot;</div><div class="line">    fresco:retryImageScaleType=&quot;centerCrop&quot;</div><div class="line">    fresco:progressBarImage=&quot;@drawable/progress_bar&quot;</div><div class="line">    fresco:progressBarImageScaleType=&quot;centerInside&quot;</div><div class="line">    fresco:progressBarAutoRotateInterval=&quot;1000&quot;</div><div class="line">    fresco:backgroundImage=&quot;@color/blue&quot;</div><div class="line">    fresco:overlayImage=&quot;@drawable/watermark&quot;</div><div class="line">    fresco:pressedStateOverlayImage=&quot;@color/red&quot;</div><div class="line">    fresco:roundAsCircle=&quot;false&quot;</div><div class="line">    fresco:roundedCornerRadius=&quot;1dp&quot;</div><div class="line">    fresco:roundTopLeft=&quot;true&quot;</div><div class="line">    fresco:roundTopRight=&quot;false&quot;</div><div class="line">    fresco:roundBottomLeft=&quot;false&quot;</div><div class="line">    fresco:roundBottomRight=&quot;true&quot;</div><div class="line">    fresco:roundWithOverlayColor=&quot;@color/corner_color&quot;</div><div class="line">    fresco:roundingBorderWidth=&quot;2dp&quot;</div><div class="line">    fresco:roundingBorderColor=&quot;@color/border_color&quot;</div><div class="line">/&gt;</div><div class="line"></div><div class="line">属性解释：</div><div class="line">placeholderImage就是所谓的展位图啦，在图片没有加载出来之前你看到的就是它</div><div class="line"></div><div class="line">failureIamge看到名字就知道是什么了，图片加载失败时显示的图片就是它了</div><div class="line"></div><div class="line">retryImage图片加载失败时显示，提示用户点击重新加载，重复加载4次还是没有加载出来的时候才会显示failureImage的图片</div><div class="line"></div><div class="line">progressBarImage进度条图片</div><div class="line">backgroundImage背景图片，这里的背景图片首先被绘制</div><div class="line"></div><div class="line">overlayImage设置叠加图，在xml中只能设置一张叠加图片，如果需要多张图片的话，需要在java代码中设置哦</div><div class="line">pressedStateOverlayImage设置点击状态下的叠加图，此叠加图不能缩放</div><div class="line"></div><div class="line">ImageScaleType这个就是各种各样的图片缩放样式了，center，centerCrop，fouseCrop，centerInside，fitCenter，fitStart，fitEnd，fitXY</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>​    同样我们也需要对网上流行的几个图片加载库进行选择，相信大家看过下面的这些对比之后就会发现那个更好用了。</p>
+<blockquote>
+<ul>
+<li><strong>UniversalImageLoader</strong>：老牌优秀的图片加载类库，<strong>特点是配置项丰富，支持圆形图片效果显示以及添加图片加载动画</strong>。</li>
+<li><strong>Picasso</strong> ： Square公司出品。也是很早期出现的图片加载库。<strong>默认加载图片不会压缩，并且图片渲染模式是ARGB_8888，占用内存相比Glide稍微高一点，但是可以指定图片加载的宽高，便会依据图片的宽高进行缩放</strong>。</li>
+<li><strong>Glide</strong>：专门为优化Picasso而生，所以API和Picasso简直一模一样。<strong>内部会自动根据图片的宽高来压缩图片，并且图片渲染模式为RGB_565，内存占用会减少一半，专门针对滑动中的图片加载有优化</strong>。和Picasso相比，推荐使用Glide。</li>
+<li><strong>Fresco</strong> : Facebook公司开源的。特点是在android4.4以及以下，<strong>将图片的放入Android native的C++内存中，而不是Java堆内存</strong>，所以占用的Java堆内存很小，大大减小了程序出现OOM的几率；支持WebP和Gif显示；支持多种图片的显示配置，比如圆形。</li>
+</ul>
+</blockquote>
+<p>分析完了，如果你还不知道选择哪个请跟我一起移步</p>
+<p><a href="http://stormzhang.com/opensource/2016/06/26/android-open-source-project-recommend1/" target="_blank" rel="external">ANDROID开源项目推荐之「图片加载到底哪家强」</a>    </p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android笔记/" rel="tag">#android笔记</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/22/使用极光推送/" rel="next" title="使用极光推送">
+                <i class="fa fa-chevron-left"></i> 使用极光推送
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/27/一个单例Toast的工具类/" rel="prev" title="一个单例Toast的工具类">
+                一个单例Toast的工具类 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="ImportEffort" />
+          <p class="site-author-name" itemprop="name">ImportEffort</p>
+          <p class="site-description motion-element" itemprop="description">说道做到，这就是我的忍道</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#常用开源网络请求库与图片加载库的比较"><span class="nav-number">1.</span> <span class="nav-text">常用开源网络请求库与图片加载库的比较</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#网络请求库"><span class="nav-number">1.1.</span> <span class="nav-text">网络请求库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络请求库-1"><span class="nav-number">1.2.</span> <span class="nav-text">网络请求库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Ion的使用"><span class="nav-number">1.2.1.</span> <span class="nav-text">Ion的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Retrofit的使用"><span class="nav-number">1.2.2.</span> <span class="nav-text">Retrofit的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Volley的使用"><span class="nav-number">1.2.3.</span> <span class="nav-text">Volley的使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图片加载库"><span class="nav-number">1.3.</span> <span class="nav-text">图片加载库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Glide的使用"><span class="nav-number">1.3.1.</span> <span class="nav-text">Glide的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Picasso的使用"><span class="nav-number">1.3.2.</span> <span class="nav-text">Picasso的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fresco的使用"><span class="nav-number">1.3.3.</span> <span class="nav-text">Fresco的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">1.3.4.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ImportEffort</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,600 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android笔记," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="AndrodiStudios使用极光推送：配置的时候注意事项
+一定要赋值进去的so文件，
+
+12345  dependencies &amp;#123; compile fileTree(include:&apos;*.so&apos;,dir:&apos;libs&apos;) //一定要添加这句话，否则会抛找不到so文件异常   	 compile fileTree(include: [&apos;*.jar&apos;], dir: &apos;libs&apos;)    t">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用极光推送">
+<meta property="og:url" content="http://yoursite.com/2016/05/22/使用极光推送/index.html">
+<meta property="og:site_name" content="ImportEffort的博客">
+<meta property="og:description" content="AndrodiStudios使用极光推送：配置的时候注意事项
+一定要赋值进去的so文件，
+
+12345  dependencies &amp;#123; compile fileTree(include:&apos;*.so&apos;,dir:&apos;libs&apos;) //一定要添加这句话，否则会抛找不到so文件异常   	 compile fileTree(include: [&apos;*.jar&apos;], dir: &apos;libs&apos;)    t">
+<meta property="og:updated_time" content="2016-09-21T16:26:31.372Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用极光推送">
+<meta name="twitter:description" content="AndrodiStudios使用极光推送：配置的时候注意事项
+一定要赋值进去的so文件，
+
+12345  dependencies &amp;#123; compile fileTree(include:&apos;*.so&apos;,dir:&apos;libs&apos;) //一定要添加这句话，否则会抛找不到so文件异常   	 compile fileTree(include: [&apos;*.jar&apos;], dir: &apos;libs&apos;)    t">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/05/22/使用极光推送/"/>
+
+  <title> 使用极光推送 | ImportEffort的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">ImportEffort的博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                使用极光推送
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-22T00:11:26+08:00" content="2016-05-22">
+              2016-05-22
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="AndrodiStudios使用极光推送："><a href="#AndrodiStudios使用极光推送：" class="headerlink" title="AndrodiStudios使用极光推送："></a>AndrodiStudios使用极光推送：</h2><h3 id="配置的时候注意事项"><a href="#配置的时候注意事项" class="headerlink" title="配置的时候注意事项"></a>配置的时候注意事项</h3><ol>
+<li>一定要赋值进去的so文件，</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">  dependencies &#123;</div><div class="line"> <span class="function">compile <span class="title">fileTree</span><span class="params">(include:<span class="string">'*.so'</span>,dir:<span class="string">'libs'</span>)</span> <span class="comment">//一定要添加这句话，否则会抛找不到so文件异常   	 compile fileTree(include: ['*.jar'], dir: 'libs')   </span></span></div><div class="line"> testCompile 'junit:junit:4.12'  </div><div class="line">   compile 'com.android.support:appcompat-v7:24.2.0'</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ol>
+<li><p>​ 按官方配置清单文件 recevier 并不是必须的</p>
+<p>定义application 并添加</p>
+<p> <code>JPushInterface.setDebugMode(true);   JPushInterface.init(this)</code></p>
+</li>
+</ol>
+<h3 id="推送能干什么？"><a href="#推送能干什么？" class="headerlink" title="推送能干什么？"></a>推送能干什么？</h3><p>JPush SDK 收到推送，通过广播的方式，转发给开发者App，这样开发者就可以灵活地进行处理。</p>
+<p>这个动作不是必须的。用户有需要才定义 Receiver 类来处理 SDK过来的广播。</p>
+<p>如果不做这个动作，即不写自定义 Receiver，也不在 AndroidManifest.xml 里配置这个 Receiver，则默认的行为是：接收到推送的自定义消息，则没有被处理可以正常收到通知，用户点击打开应用主界面通过我们自定义的广播接受者，过滤定义的这些action，使我们以至我们通过通知来作出相应的动作。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">receiver</span> <span class="attr">android:name</span>=<span class="string">".myReceiver"</span> <span class="attr">android:enabled</span>=<span class="string">"true"</span>&gt;</span>        </div><div class="line">	<span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span>            </div><div class="line">		<span class="comment">&lt;!--Required 用户注册SDK的intent--&gt;</span>         </div><div class="line">      <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"cn.jpush.android.intent.REGISTRATION"</span> /&gt;</span>            </div><div class="line">      <span class="comment">&lt;!--Required 用户接收SDK消息的intent--&gt;</span>            </div><div class="line">      <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"cn.jpush.android.intent.MESSAGE_RECEIVED"</span> /&gt;</span>            </div><div class="line">      <span class="comment">&lt;!--Required 用户接收SDK通知栏信息的intent--&gt;</span>            </div><div class="line">      <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"cn.jpush.android.intent.NOTIFICATION_RECEIVED"</span> /&gt;</span>           </div><div class="line">      <span class="comment">&lt;!--Required 用户打开自定义通知栏的intent--&gt;</span>            </div><div class="line">      <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"cn.jpush.android.intent.NOTIFICATION_OPENED"</span> /&gt;</span>           </div><div class="line">      <span class="comment">&lt;!--Optional 用户接受Rich Push Javascript 回调函数的intent--&gt;</span>            </div><div class="line">      <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"cn.jpush.android.intent.ACTION_RICHPUSH_CALLBACK"</span> /&gt;</span>           </div><div class="line">      <span class="comment">&lt;!-- 接收网络变化 连接/断开 since 1.6.3 --&gt;</span>            </div><div class="line">      <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"cn.jpush.android.intent.CONNECTION"</span> /&gt;</span>            </div><div class="line">      <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"com.zheteng.wsj.sharedemo"</span> /&gt;</span>        </div><div class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></div><div class="line"> <span class="tag">&lt;/<span class="name">receiver</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>如：</p>
+<p>页面跳转 ACTION_NOTIFICATION_OPENED</p>
+<p>通过自定义消息后者附加字段传递一定的信息：如果传递json数据，或者更新版本的连接，本地通过判断自定义消息的字段，作出相应的动作。</p>
+<p>可以定义一个服务器发送推送，表示新的信息个数，然后用户刷新就可以得到新的数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"> -package com.zheteng.wsj.sharedemo;</div><div class="line"> import android.content.BroadcastReceiver;</div><div class="line"> import android.content.Context;</div><div class="line"> import android.content.Intent;</div><div class="line"> import android.os.Bundle;</div><div class="line"> import android.util.Log;</div><div class="line"> import cn.jpush.android.api.JPushInterface;</div><div class="line"> /**</div><div class="line">  * Created by on 2016/9/16. </div><div class="line">  */</div><div class="line"></div><div class="line">public class myReceiver extends BroadcastReceiver &#123; </div><div class="line">	private static final String TAG = &quot;ha&quot;; </div><div class="line">	</div><div class="line">	@Override </div><div class="line">	public void onReceive(Context context, Intent intent) &#123;</div><div class="line">		Bundle bundle = intent.getExtras(); </div><div class="line">		Log.d(TAG, &quot;onReceive - &quot; + intent.getAction());</div><div class="line">		</div><div class="line">		if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) &#123;   </div><div class="line">          </div><div class="line">		  &#125; else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) &#123;     </div><div class="line">			// 自定义消息不会展示在通知栏，完全要开发者写代码去处理</div><div class="line">			System.out.println(</div><div class="line">					&quot;收到了自定义消息。消息内容是：&quot; + </div><div class="line">					bundle.getString(JPushInterface.EXTRA_MESSAGE));    </div><div class="line">          &#125; else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) &#123;</div><div class="line">				System.out.println(&quot;收到了通知&quot;);    // 在这里可以做些统计，或者做些其他工作</div><div class="line">		  &#125; else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) &#123;</div><div class="line">			// 在这里可以自己写代码去定义用户点击后的行为</div><div class="line">             System.out.println(&quot;用户点击打开了通知&quot;);       		</div><div class="line">			 Intent i = new Intent(context, MainActivity.class);  //自定义打开的界面    						 </div><div class="line">			 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);  </div><div class="line">             context.startActivity(i);</div><div class="line">        &#125; else &#123;    </div><div class="line">			Log.d(TAG, &quot;Unhandled intent - &quot; + intent.getAction());&#125;</div><div class="line">        &#125; </div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="推送的原理："><a href="#推送的原理：" class="headerlink" title="推送的原理："></a>推送的原理：</h3><p>有一个服务在维护和服务器之间的连接 能接受到推送通知，就必须通过长连接。</p>
+<p>客户端与服务器端是通过xmpp或者mqtt保持连接的，因为如果服务器会存在一定的检测机制，如果客户端与服务器长时间不保持联系的话，就会断开长连接。</p>
+<p>心跳：客户端定时向服务器端发送一次消息，30s 1min ，。。 去告诉服务器我还需要这个长连接</p>
+<p>如果服务器端设置的连接时间超时了，那么客户端就需要再次发送一次请求，建立连接</p>
+<p>推送在通讯中的作用</p>
+<p>当用户不在线的时候保存服务器端发送来的消息，等用户连接的时候发发送给客户端</p>
+<p>即时通信中，客户端接受的消息并非来自服务器，而是来自推送</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android笔记/" rel="tag">#android笔记</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/21/结合友盟统计进行美团多渠道打包/" rel="next" title="结合友盟统计进行美团多渠道打包">
+                <i class="fa fa-chevron-left"></i> 结合友盟统计进行美团多渠道打包
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/21/时下最流行的网络请求库与图片加载库的时候与对比/" rel="prev" title="常用开源网络请求库与图片加载库的比较">
+                常用开源网络请求库与图片加载库的比较 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="ImportEffort" />
+          <p class="site-author-name" itemprop="name">ImportEffort</p>
+          <p class="site-description motion-element" itemprop="description">说道做到，这就是我的忍道</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#AndrodiStudios使用极光推送："><span class="nav-number">1.</span> <span class="nav-text">AndrodiStudios使用极光推送：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置的时候注意事项"><span class="nav-number">1.1.</span> <span class="nav-text">配置的时候注意事项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#推送能干什么？"><span class="nav-number">1.2.</span> <span class="nav-text">推送能干什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#推送的原理："><span class="nav-number">1.3.</span> <span class="nav-text">推送的原理：</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ImportEffort</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

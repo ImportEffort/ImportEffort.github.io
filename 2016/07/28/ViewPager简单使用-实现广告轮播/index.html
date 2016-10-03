@@ -1,0 +1,948 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android笔记," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="ViewPager实现广告轮播官方support包的作用1.v4，v7，v13包都是干什么用的？
+support包是android发布的支持库；提供给老版本使用新版本的功能。
+v4 – 最低android为API1.6的手及以上提供新版本的功能 
+v7 – 最低Android为API2.1手机及以上提供新版本的功能，注意，v7是要依赖v4这个包的，如果需要使用v7，两个包必须被同时加入工程
+v13">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ViewPager简单使用--实现广告轮播">
+<meta property="og:url" content="http://yoursite.com/2016/07/28/ViewPager简单使用-实现广告轮播/index.html">
+<meta property="og:site_name" content="ImportEffort的博客">
+<meta property="og:description" content="ViewPager实现广告轮播官方support包的作用1.v4，v7，v13包都是干什么用的？
+support包是android发布的支持库；提供给老版本使用新版本的功能。
+v4 – 最低android为API1.6的手及以上提供新版本的功能 
+v7 – 最低Android为API2.1手机及以上提供新版本的功能，注意，v7是要依赖v4这个包的，如果需要使用v7，两个包必须被同时加入工程
+v13">
+<meta property="og:image" content="http://i.imgur.com/v8Zwyxv.png">
+<meta property="og:updated_time" content="2016-07-28T17:37:04.829Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ViewPager简单使用--实现广告轮播">
+<meta name="twitter:description" content="ViewPager实现广告轮播官方support包的作用1.v4，v7，v13包都是干什么用的？
+support包是android发布的支持库；提供给老版本使用新版本的功能。
+v4 – 最低android为API1.6的手及以上提供新版本的功能 
+v7 – 最低Android为API2.1手机及以上提供新版本的功能，注意，v7是要依赖v4这个包的，如果需要使用v7，两个包必须被同时加入工程
+v13">
+<meta name="twitter:image" content="http://i.imgur.com/v8Zwyxv.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/07/28/ViewPager简单使用-实现广告轮播/"/>
+
+  <title> ViewPager简单使用--实现广告轮播 | ImportEffort的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">ImportEffort的博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                ViewPager简单使用--实现广告轮播
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-28T12:20:15+08:00" content="2016-07-28">
+              2016-07-28
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="ViewPager实现广告轮播"><a href="#ViewPager实现广告轮播" class="headerlink" title="ViewPager实现广告轮播"></a>ViewPager实现广告轮播</h1><h2 id="官方support包的作用"><a href="#官方support包的作用" class="headerlink" title="官方support包的作用"></a>官方support包的作用</h2><h3 id="1-v4，v7，v13包都是干什么用的？"><a href="#1-v4，v7，v13包都是干什么用的？" class="headerlink" title="1.v4，v7，v13包都是干什么用的？"></a>1.v4，v7，v13包都是干什么用的？</h3><ol>
+<li>support包是android发布的支持库；提供给老版本使用新版本的功能。</li>
+<li>v4 – 最低android为API1.6的手及以上提供新版本的功能 </li>
+<li>v7 – 最低Android为API2.1手机及以上提供新版本的功能，注意，v7是要依赖v4这个包的，如果需要使用v7，两个包必须被同时加入工程</li>
+<li>v13– 这个包我们用的就比较少了,一般在开发平板应用的时候才会用到。</li>
+<li><strong>ViewPager在Android-support-V4包中</strong>。</li>
+</ol>
+<p>###2.如何关联v4的源码</p>
+<ol>
+<li>libs新建一个file名字为v4包名adnroid-suport-v4.jar.properties,</li>
+<li>在该文件中添加一行src=D:\eclipse\eclipseForAndorid_18\sdk\extras\android\support\v4\src （没有分号），即为sdk中v4包中src的全路径。</li>
+<li>关闭当前工程（closeProject），再次打开工程就可以看到源码了。</li>
+<li>导入源码后我们在eclipse中就可以看到对应viewpager的方法参数了，而不是arg0.1.2···之类的了。</li>
+</ol>
+<a id="more"></a>
+<h2 id="viewPager是工作原理是什么？"><a href="#viewPager是工作原理是什么？" class="headerlink" title="viewPager是工作原理是什么？"></a>viewPager是工作原理是什么？</h2><p>查看API文档可以看到有关于Viewpager的简介(这里只选取两段，详情还往自己翻阅官方文档)：</p>
+<blockquote>
+<p>When you implement a PagerAdapter, you must override the following methods at minimum:</p>
+</blockquote>
+<pre><code>instantiateItem(ViewGroup, int)
+destroyItem(ViewGroup, int, Object)
+getCount()
+isViewFromObject(View, Object)
+</code></pre><blockquote>
+<p>ViewPager associates each page with a key Object instead of working with Views directly. This key is used to track and uniquely identify a given page independent of its position in the adapter. A call to the PagerAdapter method startUpdate(ViewGroup) indicates that the contents of the ViewPager are about to change. One or more calls to instantiateItem(ViewGroup, int) and/ordestroyItem(ViewGroup, int, Object) will follow, and the end of an update will be signaled by a call to finishUpdate(ViewGroup). By the time finishUpdate returns the views associated with the key objects returned by instantiateItem should be added to the parent ViewGroup passed to these methods and the views associated with the keys passed to destroyItem should be removed. The method isViewFromObject(View, Object) identifies whether a page View is associated with a given key object.</p>
+</blockquote>
+<p>上边这段主要的意思翻译下就是说：</p>
+<blockquote>
+<p>viewpager不直接处理每一个视图而是将各个视图与一个键联系起来。这个键用来跟踪且唯一代表一个页面，不仅如此，该键还独立于这个页面所在adapter的位置。当pageradapter将要改变的时候他会调用startUpdate函数，接下来会调用一次或多次的instantiateItem或者destroyItem。最后在更新的后期会调用finishUpdate。当finishUpdate返回时 instantiateItem返回的对象应该添加到父ViewGroup destroyItem返回的对象应该被ViewGroup删除。methodisViewFromObject(View, Object)代表了当前的页面是否与给定的键相关联。</p>
+</blockquote>
+<p>这里我们可以联想到Listview是怎么处理条目的，Listview采用了convertView缓存机制，来对Item进行重复利用，viewpager则不同，我理解viewpager是通过在管理item的引用来进行条目的管理，即在startUpdate的时候调用instantiateItem，来对view对象的创建，并放到对应的continer中。在finishupdate的时候调用destroy将对象从container中删除。这样对象就是失去了原有的引用，也就是对象不再拥有对应的引用，不久也就会被gc回收了。</p>
+<p>ViewPager 正常情况下(在不手动设置预加载个数时)，最多缓存3个存在1条目，当滑动到两头的时候postiton = getCout 只会显示一个条目缓存一个条目。因此滑动的时候可以把下个条目或者上个条目展示出来。当缓存达到三个条目时，随着滑动会销毁一个旧的。</p>
+<h2 id="ViewPager简单实现"><a href="#ViewPager简单实现" class="headerlink" title="ViewPager简单实现"></a>ViewPager简单实现</h2><ul>
+<li>布局文件中使用viewpager，需要跟其他第三包一样使用全类名即：<code>android.support.v4.viewpager</code></li>
+<li><p>viewpager主要的功能实现，跟ListView一样主要是在代码中定义。所以布局文件只需要：</p>
+<pre><code>&lt;android.support.v4.view.ViewPager    
+    android:id=&quot;@+id/viewpager&quot;  
+    android:layout_width=&quot;wrap_content&quot;  
+    android:layout_height=&quot;wrap_content&quot;/&gt;  
+</code></pre></li>
+<li><p>Activity中的功能实现：</p>
+<ol>
+<li>对应的ViewPager控件</li>
+<li>为viewPager控件创建适配器PagerAdapter</li>
+</ol>
+</li>
+<li>PagerAdapter适配器：<br>自定义一个类继承PagerAdapter复写四个方法<ol>
+<li>getcount: 要显示条目的数量 </li>
+<li>isViewFromObject(View view, Object object): 返回boolean <ol>
+<li>用来判断接下来要展示的view是否来自instanteItem</li>
+<li>要想正确显示条目，必须使该方法的两个参数相同</li>
+</ol>
+</li>
+<li>instantiateItem(ViewGroup container, int position)<ol>
+<li>实例化一条目，</li>
+<li>要想要展示的View创建，然后添加到参数viewGroup container中 </li>
+<li>并将创建的返回条目</li>
+</ol>
+</li>
+<li>destroyItem(ViewGroup container, int position, Object object)<ol>
+<li>用来销毁已经展示过的view引用。</li>
+<li>使用container.remove(object);来移除对应的引用</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+<pre><code>public class MainActivity extends Activity {
+
+    private ViewPager mVp;
+    private int[] imageResIds = { 
+                    R.drawable.a, 
+                    R.drawable.b, 
+                    R.drawable.c,
+                    R.drawable.d, 
+                    R.drawable.e, };
+
+    private String[] descs = { 
+                    &quot;巩俐不低俗，我就不能低俗&quot;, 
+                    &quot;扑树又回来啦！再唱经典老歌引万人大合唱&quot;,
+                    &quot;揭秘北京电影如何升级&quot;, 
+                    &quot;乐视网TV版大派送&quot;, 
+                    &quot;热血屌丝的反杀&quot;, };
+
+            // 声明一个存放的ImageViews
+    private ImageView imageViews[] = new ImageView[imageResIds.length];
+
+            @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        mVp = (ViewPager) findViewById(R.id.viewPager);
+
+        // 初始化ImageView数组
+        for (int i = 0; i &lt; imageViews.length; i++) {
+        imageViews[i] = new ImageView(this);
+        //这里设置图片资源为ImageView的背景 填充整片viewpage区域
+        imageViews[i].setBackgroundResource(imageResIds[i]);
+        //设置为src的话则填充不了整个屏幕
+        //imageViews[i].setImageResource(imageResIds[i]);
+        } 
+
+        mVp.setAdapter(new Myadapter());
+    }
+    /**
+     *自定义pagerAdapter
+     */    
+    private class Myadapter extends PagerAdapter {
+
+                @Override
+                public int getCount() {
+                    return imageViews.length;
+                }
+
+                @Override
+                public boolean isViewFromObject(View view, Object object) {
+                    return view == object;
+                }
+
+                @Override
+                public Object instantiateItem(ViewGroup container, int position) {
+                    // 获取对应显示位置的ImageView
+                    ImageView imageView = imageViews[position];
+                    // 添加到Container
+                    container.addView(imageView);
+                    // 返回ImageView
+                    return imageView;
+                }
+
+                @Override
+                public void destroyItem(ViewGroup container, int position, Object object) {
+                    // 销毁不用的ImageView引用
+                    container.removeView(imageViews[position]);
+                }
+
+            }
+        }
+</code></pre><h2 id="实现对应的广告标题展示和进度提示"><a href="#实现对应的广告标题展示和进度提示" class="headerlink" title="实现对应的广告标题展示和进度提示"></a>实现对应的广告标题展示和进度提示</h2><p>实现如果下图片下方透明标题，以及进度小点效果：</p>
+<p><img src="http://i.imgur.com/v8Zwyxv.png" alt=""></p>
+<ol>
+<li><p>首先标题就是一个设置半透明背景的TextView，而进度则是用一个LinearLayout容器动态添加的：</p>
+<pre><code>&lt;LinearLayout
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:layout_alignBottom=&quot;@id/viewPager&quot;
+    android:background=&quot;#77000000&quot;
+    android:gravity=&quot;center_horizontal&quot;
+    android:orientation=&quot;vertical&quot;
+    android:padding=&quot;5dp&quot; &gt;
+
+    &lt;TextView
+        android:id=&quot;@+id/tv_desc&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:text=&quot;我是说明&quot;
+        android:textColor=&quot;#ffffff&quot; /&gt;
+
+    &lt;LinearLayout
+        android:id=&quot;@+id/ll_dots&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:orientation=&quot;horizontal&quot; &gt;
+    &lt;/LinearLayout&gt;
+
+&lt;/LinearLayout&gt;
+</code></pre></li>
+<li><p>我们需要进度点的个数应该与我们要展示的资源个数相同，本例中要展示的图片个数为5个：</p>
+<pre><code>for (int i = 0; i &lt; imageViews.length; i++) {
+    //声明一个view对象
+    View dotsView = new View(this);
+    // 参数一：宽 参数二 高
+    LayoutParams params = new LayoutParams(5, 5);
+    // params.setMargins(left, top, right, bottom)
+    params.setMargins(5, 7, 0, 0);
+    // 将属性赋值dotsView
+    dotsView.setLayoutParams(params);
+    // 设置view的背景
+    dotsView.setBackgroundResource(R.drawable.dots_select_selector);
+    // 设置view的选中状态
+    dotsView.setSelected(false);
+    // 添加到父布局中，父布局设置了水平居中
+    mLldots.addView(dotsView);
+}
+</code></pre></li>
+<li><p>进度点的状态我们使用自定一的shape来实现：</p>
+<ol>
+<li><p>正常：</p>
+<pre><code>&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; 
+        android:shape=&quot;oval&quot;&gt;
+        &lt;!-- 透明 --&gt;
+        &lt;solid android:color=&quot;#99000000&quot;/&gt;
+  &lt;/shape&gt;
+</code></pre></li>
+<li><p>选中的shape</p>
+<pre><code>&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; 
+android:shape=&quot;oval&quot;&gt;
+  &lt;!--白色 --&gt;
+    &lt;solid android:color=&quot;#ffffff&quot;/&gt;
+&lt;/shape&gt;
+</code></pre></li>
+<li><p>创建selector  state——seleted false/true 其他状态 normal</p>
+<pre><code>&lt;selector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;
+
+       &lt;item android:drawable=&quot;@drawable/dots_select_select&quot; android:state_selected=&quot;true&quot;&gt;&lt;/item&gt;
+       &lt;item android:drawable=&quot;@drawable/dots_select_normal&quot; android:state_selected=&quot;false&quot;&gt;&lt;/item&gt;
+    &lt;item android:drawable=&quot;@drawable/dots_select_normal&quot;&gt;&lt;/item&gt;
+
+    &lt;/selector&gt;
+</code></pre></li>
+</ol>
+</li>
+<li><p>textView显示的内容与小点的显示状态：</p>
+<ol>
+<li><p>首先如何实现进度与文字展示，这里我们抽取了一个方法setTextAndDots，参数是传进来对应位置：</p>
+<pre><code>/**
+ * 设置轮播显示文字内容即小点的选中状态
+ * 
+ * @param position
+ */
+private void setTextAndDots(int position) {
+    // 设置TextView显示的文字
+    mTvDesc.setText(descs[position]);
+    // 设置小点的选中状态
+    for (int i = 0; i &lt; mLldots.getChildCount(); i++) {
+        View view = mLldots.getChildAt(i);
+        view.setSelected(false);
+    }
+    View seletedView = mLldots.getChildAt(position);
+    seletedView.setSelected(true);
+}
+</code></pre><p>2.设置viewpager的滑动监听：</p>
+<pre><code>// 设置滑动监听
+mVp.setOnPageChangeListener(new OnPageChangeListener() {
+    // 被选中的时候(停留在某个图片的时候)
+    @Override
+    public void onPageSelected(int position) {
+        //调用我们定义好的方法，并将对应图片的位置坐标传进来
+        setTextAndDots(position);
+    }
+
+    // 被滑动的时候时候
+    @Override
+    public void onPageScrolled(int position, float positionOffset,
+            int positionOffsetPixels) {
+    }
+
+    // 滑动状态改变的时候
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+});
+</code></pre></li>
+<li><p>为了在第一次加载的时候也能正确显示我们还需要在noCreate方法中调用一次：</p>
+<pre><code>setTextAndDots(0);
+</code></pre></li>
+</ol>
+</li>
+</ol>
+<h2 id="如何实现循环轮播"><a href="#如何实现循环轮播" class="headerlink" title="如何实现循环轮播"></a>如何实现循环轮播</h2><p>###实现无限循环的思路：</p>
+<ol>
+<li><p>为Adapter指定一个特别大的count值，如：Integer.MAX_VALUE。让用户滑倒累死也滑不到边界</p>
+<pre><code>public int getCount() {
+    return count;//这里是类变量，值为Integer.MAX_VALUE
+}
+</code></pre></li>
+<li><p>但是简单这样设置就会造成滑动是时候角标越界，因为我们集合的大小，资源的数量又没那么多。所以我们就需要处理，真正要展示的内容在集合中的“真实”角标 进行position与要实际资源条目数进行模除。</p>
+<ol>
+<li><p>首先在instantiateItem添加view的时候：</p>
+<pre><code>ImageView imageView = imageViews[position % imageViews.length];
+</code></pre></li>
+<li><p>在滑动监听中设置文字中：</p>
+<pre><code>public void onPageSelected(int position) {
+    setTextAndDots(position % imageViews.length);
+}
+</code></pre></li>
+</ol>
+</li>
+<li><p>设置完成后我们发现我们是可以往右无限滑动了，但是在却无法往左滑动，用户体验还是不好，解决方法就是设置我们第一要展示的图片位置：</p>
+<pre><code>// 设置当前显示的条目，及对应位置的文字显示内容
+mVp.setCurrentItem(count / 2);
+setTextAndDots(count / 2 % imageViews.length);
+</code></pre></li>
+</ol>
+<h2 id="如何实现自动播放"><a href="#如何实现自动播放" class="headerlink" title="如何实现自动播放"></a>如何实现自动播放</h2><p>接下来要实现的功能就是实现图片自动滚动播放了，原理也很简单，就是利用Handler发送一条空消息，在handler处理消息的时候，我们重新设置viewpager的角标，处理完成后我们在发送一条同样的消息。这样就可以自动播放了；</p>
+<ol>
+<li><p>首先在滑动监听中监听滑动状态：如果处于空闲状态（），表示用户没有主动滑动，那么我们就发送一条延迟消息，开启自动播放，如果不是子啊空闲状态则代表用户手动滑动了，那我们就取消轮播。</p>
+<pre><code>// 滑动状态改变的时候
+@Override
+public void onPageScrollStateChanged(int state) {
+    // 当空闲的时候发送一条空闲handler
+    if (state == ViewPager.SCROLL_STATE_IDLE) {
+        // 整个轮播事件的起源
+        handler.sendEmptyMessageDelayed(UPDATE_ITEM, 2000);
+    } else {
+        // 当用户滑动的时候就不要在进行轮播了 因此移除消息
+        handler.removeMessages(UPDATE_ITEM);
+    }
+}
+</code></pre></li>
+<li><p>handler中处理消息接收到的消息：</p>
+<pre><code>/**
+ * handler处理消息消息的方式
+ */
+protected void changeCurrentItem() {
+    // 获取当前条目的位置
+    int postion = mVp.getCurrentItem();
+    // 设置显示下一张图片
+    mVp.setCurrentItem(postion + 1);
+    // 再次发送改变的消息
+    handler.sendEmptyMessageDelayed(UPDATE_ITEM, 2000);
+}
+
+private Handler handler = new Handler() {
+
+    @Override
+    public void handleMessage(Message msg) {
+        super.handleMessage(msg);
+        if（msg.what == UPDATE_ITEM）{
+            changeCurrentItem();
+        }
+    }
+
+};    
+</code></pre></li>
+</ol>
+<h2 id="自动播放的细节优化"><a href="#自动播放的细节优化" class="headerlink" title="自动播放的细节优化"></a>自动播放的细节优化</h2><p>经过上述步骤，我们的viewPager已经可以正常运作了，但是还有一些细节需要优化。</p>
+<ol>
+<li><p>在用户离开当前页面的时候需要自动播放，如用户按了home键，我们只需要在onStop方法中移除handler中的消息即可：</p>
+<pre><code>@Override
+protected void onStop() {
+    super.onStop();
+    // 在当前页面不可用的时候设置取消轮播 节约内存
+    handler.removeMessages(UPDATE_ITEM);
+    //或者移除所有的消息，
+    //handler.removeCallbacksAndMessages(null);
+}
+</code></pre></li>
+<li><p>当用户重新回到这个页面的时候我们仍需要继续播放，我们可以在onStart或者onResume的生命周期方法中重新发送这条消息：</p>
+<p> @Override<br> protected void onResume() {</p>
+<pre><code>super.onResume();
+// 对应的在页面可见的时候设置viewpage轮播开始
+handler.sendEmptyMessageDelayed(UPDATE_ITEM, 2000);
+</code></pre><p> }</p>
+</li>
+</ol>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><blockquote>
+<p>文章只是介绍了Viewpager的一些简单使用方法，google官方认为viewpager是和Fragment一起使用比较好，现在市面上的大部分应用也都是如此。有关其他的使用方法，以后用到了会继续记录。文章不足之处还请多多指教。</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android笔记/" rel="tag">#android笔记</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/27/Android的Activity的四种启动模式/" rel="next" title="Android的Activity的四种启动模式">
+                <i class="fa fa-chevron-left"></i> Android的Activity的四种启动模式
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/28/为你的应用添加守护进程，实现应用页面跳转/" rel="prev" title="为你的应用添加守护进程，实现应用页面跳转">
+                为你的应用添加守护进程，实现应用页面跳转 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="ImportEffort" />
+          <p class="site-author-name" itemprop="name">ImportEffort</p>
+          <p class="site-description motion-element" itemprop="description">说道做到，这就是我的忍道</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ViewPager实现广告轮播"><span class="nav-number">1.</span> <span class="nav-text">ViewPager实现广告轮播</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#官方support包的作用"><span class="nav-number">1.1.</span> <span class="nav-text">官方support包的作用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-v4，v7，v13包都是干什么用的？"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.v4，v7，v13包都是干什么用的？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#viewPager是工作原理是什么？"><span class="nav-number">1.2.</span> <span class="nav-text">viewPager是工作原理是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ViewPager简单实现"><span class="nav-number">1.3.</span> <span class="nav-text">ViewPager简单实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现对应的广告标题展示和进度提示"><span class="nav-number">1.4.</span> <span class="nav-text">实现对应的广告标题展示和进度提示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何实现循环轮播"><span class="nav-number">1.5.</span> <span class="nav-text">如何实现循环轮播</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何实现自动播放"><span class="nav-number">1.6.</span> <span class="nav-text">如何实现自动播放</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自动播放的细节优化"><span class="nav-number">1.7.</span> <span class="nav-text">自动播放的细节优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结："><span class="nav-number">1.8.</span> <span class="nav-text">总结：</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ImportEffort</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

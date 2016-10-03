@@ -1,0 +1,850 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android笔记," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="6.0新特性TextInputLayout的使用高级炫酷带有提示的输入框，相当于输入框中的战斗框使用需要依赖design类库：
+  compile &amp;#39;com.android.support:design:23.0.0+&amp;#39;
+使用步骤：
+
+在布局文件中使用TextInputLayout并再其内部包裹一个EditText
+&amp;lt;android.support.design.widget">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 6.0新特性">
+<meta property="og:url" content="http://yoursite.com/2016/08/25/Android-6-0新特性/index.html">
+<meta property="og:site_name" content="ImportEffort的博客">
+<meta property="og:description" content="6.0新特性TextInputLayout的使用高级炫酷带有提示的输入框，相当于输入框中的战斗框使用需要依赖design类库：
+  compile &amp;#39;com.android.support:design:23.0.0+&amp;#39;
+使用步骤：
+
+在布局文件中使用TextInputLayout并再其内部包裹一个EditText
+&amp;lt;android.support.design.widget">
+<meta property="og:image" content="http://i.imgur.com/q13IwH4.png">
+<meta property="og:image" content="http://i.imgur.com/BhvMpyh.gif">
+<meta property="og:image" content="http://i.imgur.com/YAHrczS.gif">
+<meta property="og:updated_time" content="2016-08-24T17:13:43.027Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android 6.0新特性">
+<meta name="twitter:description" content="6.0新特性TextInputLayout的使用高级炫酷带有提示的输入框，相当于输入框中的战斗框使用需要依赖design类库：
+  compile &amp;#39;com.android.support:design:23.0.0+&amp;#39;
+使用步骤：
+
+在布局文件中使用TextInputLayout并再其内部包裹一个EditText
+&amp;lt;android.support.design.widget">
+<meta name="twitter:image" content="http://i.imgur.com/q13IwH4.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/08/25/Android-6-0新特性/"/>
+
+  <title> Android 6.0新特性 | ImportEffort的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">ImportEffort的博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android 6.0新特性
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-25T01:11:45+08:00" content="2016-08-25">
+              2016-08-25
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="6-0新特性"><a href="#6-0新特性" class="headerlink" title="6.0新特性"></a>6.0新特性</h2><h3 id="TextInputLayout的使用"><a href="#TextInputLayout的使用" class="headerlink" title="TextInputLayout的使用"></a>TextInputLayout的使用</h3><p>高级炫酷带有提示的输入框，相当于输入框中的战斗框<br>使用需要依赖design类库：</p>
+<p>  <code>compile &#39;com.android.support:design:23.0.0+&#39;</code></p>
+<p>使用步骤：</p>
+<ul>
+<li><p>在布局文件中使用TextInputLayout并再其内部包裹一个EditText</p>
+<pre><code>&lt;android.support.design.widget.TextInputLayout
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;&gt;
+
+    &lt;EditText
+        android:id=&quot;@+id/et_name&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:hint=&quot;请输入姓名&quot; /&gt;
+&lt;/android.support.design.widget.TextInputLayout&gt;
+</code></pre></li>
+<li><p>editText.setError(“输入错误提示信息”);</p>
+<pre><code>String name = etName.getText().toString().trim();
+
+if (name.length() &gt; 3) {
+   etName.setError(&quot;用户名不得超过3个字符&quot;);
+}
+</code></pre></li>
+<li><p>效果图见下方</p>
+</li>
+</ul>
+<h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><p>###FloatingActionButton的使用</p>
+<ul>
+<li><p>总是能悬浮在界面上的Button，可以设置点击事件，类似于6.0系统短信和联系人应用中的圆形控件</p>
+</li>
+<li><p>使用需要依赖design类库：</p>
+<pre><code>` compile &apos;com.android.support:design:23.0.0+&apos;`
+</code></pre></li>
+<li><p>布局中可以设置以下属性：</p>
+<pre><code>app:fabSize=&quot;normal&quot;//2个取值，normal=56dp,mini=48dp
+app:elevation=&quot;10dp&quot;//高度
+app:rippleColor=&quot;#0000ff&quot;//按下水波纹颜色
+app:pressedTranslationZ=&quot;20dp&quot;//按下Z轴移动距离
+</code></pre></li>
+</ul>
+<h3 id="Snackbar的使用"><a href="#Snackbar的使用" class="headerlink" title="Snackbar的使用"></a>Snackbar的使用</h3><p>一个有趣的Toast，显示在界面底部，并且可以设置点击行为，也可以滑动出去<br>需要让CoordinatorLayout作为父布局才能滑动出去</p>
+<p>使用方法：</p>
+<pre><code>@InjectView(R.id.actionBtn)
+FloatingActionButton actionBtn;
+actionBtn.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        Snackbar.make(actionBtn, &quot;我是Snacbar&quot;, Snackbar.LENGTH_LONG).setAction(&quot;确定&quot;, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(TextInputLayoutActivity.this, &quot;点击了确定按钮&quot;, Toast.LENGTH_LONG).show();
+            }
+        }).show();
+    }
+});
+</code></pre><p>三个控件的效果图：</p>
+<p><img src="http://i.imgur.com/q13IwH4.png" alt=""></p>
+<hr>
+<h3 id="TabLayout的使用"><a href="#TabLayout的使用" class="headerlink" title="TabLayout的使用"></a>TabLayout的使用</h3><ol>
+<li><p>相当于ViewPagerIndicator的指示器效果，一般用来跟ViewPager结合使用</p>
+</li>
+<li><p>使用需要依赖design类库：</p>
+<pre><code>compile &apos;com.android.support:design:23.0.0+&apos;
+</code></pre></li>
+<li><p>单独使用TabLayout的步骤：</p>
+<p> 先添加Tab，使用tabLayout.newTab()方法创建Tab：</p>
+<p> 1.添加Tab</p>
+<pre><code>tabLayout.addTab(tabLayout.newTab().setText(&quot;Tab1&quot;));
+</code></pre><p> 2.给tabLayout添加tab改变的监听器</p>
+<pre><code>tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        Log.e(&quot;TAG&quot;, &quot;onTabSelected: &quot;+tab.getText());
+    }
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+    }
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+    }
+});
+</code></pre></li>
+<li><p>在xml中给TabLayout设置属性：</p>
+<pre><code>app:tabIndicatorColor=&quot;#00f&quot;//横线颜色
+app:tabSelectedTextColor=&quot;#f00&quot;//选中字体颜色
+app:tabTextColor=&quot;#0f0&quot;//默认字体颜色
+app:tabMode=&quot;fixed&quot;//fixed：不能滑动，每个Tab平分宽度，scrollable:可以滑动tab，每个tab宽度很小，适用于tab很多的情景
+app:tabGravity=&quot;fill&quot;//fill:平分宽度，center:让tab居中
+</code></pre></li>
+</ol>
+<p> 和ViewPager关联使用步骤：</p>
+<ol>
+<li><p>先给ViewPager填充数据，然后关联TabLayout和ViewPager：</p>
+<pre><code>//给ViewPager填充数据
+viewpager.setAdapter(new MyAdapter());
+</code></pre></li>
+<li><p>关联TabLayout和ViewPager</p>
+<pre><code>tabLayout.setupWithViewPager(viewpager);
+</code></pre></li>
+<li><p>需要注意的是，ViewPager的adapter的getPageTitle()方法的返回值将会设置给Tab的标题</p>
+</li>
+</ol>
+<h3 id="CoordinatorLayout的使用"><a href="#CoordinatorLayout的使用" class="headerlink" title="CoordinatorLayout的使用"></a>CoordinatorLayout的使用</h3><ul>
+<li><p>协调布局，能够协调多个布局的位置关系，可以实现让FAB上下滑动，展开或折叠ToolBar，控制View扩展收缩以及放大缩小</p>
+</li>
+<li><p>使用需要依赖design类库：</p>
+<pre><code>compile &apos;com.android.support:design:23.0.0+&apos;
+</code></pre></li>
+<li><p>使用它结合AppBarLayout实现向上滑动隐藏ToolBar的效果：一般来说CoordinateLayout的子View就是一个AppBarLayout</p>
+</li>
+<li><p>AppBarLayout会将包裹的所有子View作为一个整体的AppBar，有着统一的界面着色;</p>
+</li>
+<li><p>app:layout_scrollFlags属性介绍：</p>
+<ol>
+<li>scroll:表示该View可以被滑动出CoordinatorLayout的范围，所有想滚动出屏幕的view都需要设置这个flag， 没有设置这个flag的view将被固定在屏幕顶部。例如，TabLayout 没有设置这个值，将会停留在屏幕顶部</li>
+<li>enterAlways:表示任意向下的滚动都会导致该View可见</li>
+<li>exitUntilCollapsed:滚动退出屏幕，最后折叠在顶端，可配合minHeight使用，当达到minHeight的时候固定</li>
+<li>enterAlwaysCollapsed:当你的视图已经设置minHeight属性又使用此标志时，你的视图只能以最小高度进入，只有当滚动视图到达顶部时才扩大到完整高度</li>
+</ol>
+</li>
+<li><p>给想滑动出范围的View设置属性，比如ToolBar：</p>
+<pre><code>app:layout_scrollFlags=”scroll|enterAlways
+</code></pre></li>
+<li><p>给发出滑动行为的View设置属性，比如ViewPager,RecycleView：</p>
+<pre><code>app:layout_behavior=&quot;@string/appbar_scrolling_view_behavior&quot;
+</code></pre></li>
+</ul>
+<ul>
+<li><p>常用实现效果1： ToolBar与RecycleView联动，当recycleView向上滑动的时候，Toolbar跟随向上滚动消失，当RecycleView像下滑动则ToolBar显示，ToolBar使用的属性：<code>scroll|enterAlways</code>，当然也可以不设置<code>scroll|enterAlways</code> 那样RecycleVIew显示到第一条的时候才会拉出ToolBar<br><img src="http://i.imgur.com/BhvMpyh.gif" alt="">    </p>
+<pre><code>&lt;!--能够协调子view滑动的布局--&gt;
+&lt;android.support.design.widget.CoordinatorLayout
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;&gt;
+    &lt;!--能够控制子view统一着色并让子能够相应behavior控件的滑动事件布局--&gt;
+    &lt;android.support.design.widget.AppBarLayout
+        android:id=&quot;@+id/app_bar&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:fitsSystemWindows=&quot;true&quot;&gt;
+
+        &lt;android.support.v7.widget.Toolbar
+            android:id=&quot;@+id/toolbar&quot;
+            android:layout_width=&quot;match_parent&quot;
+            android:layout_height=&quot;match_parent&quot;
+            app:layout_scrollFlags=&quot;scroll|enterAlways&quot; /&gt;
+
+        &lt;android.support.design.widget.TabLayout
+            android:id=&quot;@+id/tablayout&quot;
+            android:layout_width=&quot;match_parent&quot;
+            android:layout_height=&quot;?attr/actionBarSize&quot;
+            app:tabIndicatorColor=&quot;#FFFFFF&quot;
+            app:tabIndicatorHeight=&quot;5dp&quot;
+            app:tabMode=&quot;scrollable&quot;
+            app:tabSelectedTextColor=&quot;#FFFFFF&quot;
+            app:tabTextColor=&quot;#FFFFFF&quot; /&gt;
+
+    &lt;/android.support.design.widget.AppBarLayout&gt;
+
+    &lt;!--要想让AppBar能够响应滚动事件，必须为coordinate中的一个能够滚动控件添加behavior属性--&gt;
+    &lt;android.support.v4.view.ViewPager
+        android:id=&quot;@+id/viewpager&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;match_parent&quot;
+        app:layout_behavior=&quot;@string/appbar_scrolling_view_behavior&quot;&gt;
+
+    &lt;/android.support.v4.view.ViewPager&gt;
+
+&lt;/android.support.design.widget.CoordinatorLayout&gt;
+</code></pre></li>
+</ul>
+<ul>
+<li>使用CollapsingToolbarLayout与Toolbar以及TabLayout共同组成形成可扩展效果顶部导航栏：</li>
+</ul>
+<p><img src="http://i.imgur.com/YAHrczS.gif" alt=""></p>
+<p>   <android.support.design.widget.coordinatorlayout android:layout_width="match_parent" android:layout_height="match_parent"><br>        <!--能够控制子view统一着色并让子能够相应behavior控件的滑动事件布局--><br>        <!-- 去掉fitSystemWindows后会让状态栏变为粉红色--><br>        <android.support.design.widget.appbarlayout android:id="@+id/app_bar" android:layout_width="match_parent" android:layout_height="wrap_content" android:fitssystemwindows="true" android:theme="@style/AppTheme"><br>            <!-- 去掉这个theme就会使文字颜色变为黑色--></android.support.design.widget.appbarlayout></android.support.design.widget.coordinatorlayout></p>
+<pre><code>        &lt;android.support.design.widget.CollapsingToolbarLayout
+            android:id=&quot;@+id/collapsing_toolbar&quot;
+            android:layout_width=&quot;match_parent&quot;
+            android:layout_height=&quot;250dp&quot;
+            android:fitsSystemWindows=&quot;true&quot;
+            app:contentScrim=&quot;?attr/colorPrimary&quot;
+            app:layout_scrollFlags=&quot;scroll|exitUntilCollapsed&quot;&gt;
+
+            &lt;ImageView
+                android:id=&quot;@+id/imageview&quot;
+                android:layout_width=&quot;match_parent&quot;
+                android:layout_height=&quot;match_parent&quot;
+                android:fitsSystemWindows=&quot;true&quot;
+                android:scaleType=&quot;centerCrop&quot;
+                android:src=&quot;@mipmap/dog&quot;
+                app:layout_collapseMode=&quot;parallax&quot;
+                app:layout_collapseParallaxMultiplier=&quot;0.7&quot; /&gt;
+            &lt;!-- 去掉这个fitSystem状态栏会变成蓝色--&gt;
+
+            &lt;android.support.v7.widget.Toolbar
+                android:id=&quot;@+id/toolbar&quot;
+                android:layout_width=&quot;match_parent&quot;
+                android:layout_height=&quot;90dp&quot;
+                android:gravity=&quot;top&quot; //注意这里是gravity表示Tool的标题即控件不居中，而是顶部对齐
+                android:minHeight=&quot;?attr/actionBarSize&quot;
+                app:layout_collapseMode=&quot;pin&quot;
+                app:popupTheme=&quot;@style/AppTheme&quot;
+                app:titleMarginTop=&quot;15dp&quot; /&gt;
+
+            &lt;android.support.design.widget.TabLayout
+
+                android:id=&quot;@+id/tablayout&quot;
+                android:layout_width=&quot;match_parent&quot;
+                android:layout_height=&quot;?attr/actionBarSize&quot;
+                android:layout_gravity=&quot;bottom&quot; //为了让TabLayout能位于Toolbar的底部
+                app:tabIndicatorColor=&quot;@color/colorPrimary&quot;
+                app:tabMode=&quot;scrollable&quot;
+                app:tabSelectedTextColor=&quot;@color/colorAccent&quot;
+                app:tabTextColor=&quot;#fff&quot; /&gt;
+
+        &lt;/android.support.design.widget.CollapsingToolbarLayout&gt;
+    &lt;/android.support.design.widget.AppBarLayout&gt;
+
+    &lt;!--要想让AppBar能够响应滚动事件，必须为coordinate中的一个能够滚动控件添加behavior属性--&gt;
+    &lt;android.support.v4.view.ViewPager
+        android:id=&quot;@+id/viewpager&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;match_parent&quot;
+        app:layout_behavior=&quot;@string/appbar_scrolling_view_behavior&quot;&gt;
+
+    &lt;/android.support.v4.view.ViewPager&gt;
+
+&lt;/android.support.design.widget.CoordinatorLayout&gt;
+</code></pre><p>注意一旦指定了CollapsingToolbarLayout 系统默认显示CollapsingToolbarLayout的标题，导致显示错位，我们可以在代码中指定：</p>
+<pre><code>collapsingToolbar.setTitleEnabled(false);//使用Toolbar的标题
+</code></pre><p>其中几个属性：</p>
+<ol>
+<li><p>layout_collapseMode (折叠模式) - 有两个值:</p>
+<pre><code>pin -  设置为这个模式时，当CollapsingToolbarLayout完全收缩后，Toolbar还可以保留在屏幕上。一般设置给ToolBar
+
+parallax - 设置为这个模式时，在内容滚动时，CollapsingToolbarLayout中的View（比如ImageView)也可以同时滚动，实现视差滚动效果，通常和layout_collapseParallaxMultiplier(设置视差因子)搭配使用。一般设置给图片
+</code></pre></li>
+<li><p>layout_collapseParallaxMultiplier(视差因子) - 设置视差滚动因子，值为：0~1。 </p>
+</li>
+</ol>
+<p>参考： </p>
+<ol>
+<li><p><a href="http://www.open-open.com/lib/view/open1438265746378.html" target="_blank" rel="external">http://www.open-open.com/lib/view/open1438265746378.html</a> //设置collapsingToolbar标题，移动显示</p>
+</li>
+<li><p><a href="http://blog.csdn.net/Handsonn/article/details/51714891" target="_blank" rel="external">http://blog.csdn.net/Handsonn/article/details/51714891</a> //设置collapsingToolbar标题不可用，toolBar位置不移动</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android笔记/" rel="tag">#android笔记</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/21/Android中的动画-ValueAnimator值动画的使用/" rel="next" title="Android中的动画---ValueAnimator值动画的使用">
+                <i class="fa fa-chevron-left"></i> Android中的动画---ValueAnimator值动画的使用
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/06/关于LayoutInflate和View-infalte的参数意义以及区别总结/" rel="prev" title="关于LayoutInflate和View.infalte的参数意义以及区别总结">
+                关于LayoutInflate和View.infalte的参数意义以及区别总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="ImportEffort" />
+          <p class="site-author-name" itemprop="name">ImportEffort</p>
+          <p class="site-description motion-element" itemprop="description">说道做到，这就是我的忍道</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-0新特性"><span class="nav-number">1.</span> <span class="nav-text">6.0新特性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TextInputLayout的使用"><span class="nav-number">1.1.</span> <span class="nav-text">TextInputLayout的使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">2.</span> <span class="nav-text"></span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Snackbar的使用"><span class="nav-number">2.1.</span> <span class="nav-text">Snackbar的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TabLayout的使用"><span class="nav-number">2.2.</span> <span class="nav-text">TabLayout的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CoordinatorLayout的使用"><span class="nav-number">2.3.</span> <span class="nav-text">CoordinatorLayout的使用</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ImportEffort</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

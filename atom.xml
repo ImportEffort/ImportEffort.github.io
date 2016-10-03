@@ -1,0 +1,3534 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>ImportEffort的博客</title>
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://yoursite.com/"/>
+  <updated>2016-08-21T17:20:51.759Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name>ImportEffort</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Android中的动画---ValueAnimator值动画的使用</title>
+    <link href="http://yoursite.com/2016/08/21/Android%E4%B8%AD%E7%9A%84%E5%8A%A8%E7%94%BB-ValueAnimator%E5%80%BC%E5%8A%A8%E7%94%BB%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
+    <id>http://yoursite.com/2016/08/21/Android中的动画-ValueAnimator值动画的使用/</id>
+    <published>2016-08-21T00:49:59.000Z</published>
+    <updated>2016-08-21T17:20:51.759Z</updated>
+    
+    <content type="html"><![CDATA[<p>##Android中动画简单分类</p>
+<p>Android包含三种动画：View Animation、 Drawable Animation、Property Animation（Android3.0新引入）。</p>
+<h3 id="View-Animation（view动画）："><a href="#View-Animation（view动画）：" class="headerlink" title="View Animation（view动画）："></a>View Animation（view动画）：</h3><p>view动画是一个比较旧的动画系统，并且它仅能用于View对象。主要的类别有： AlphaAnimation透明度动画, AnimationSet动画集合, RotateAnimation缩放动画, ScaleAnimation旋转动画, TranslateAnimation平移动画<br>基于View的渐变动画，只改变了View的绘制效果，而实际属性值未变。比如动画移动一个按钮位置，但按钮点击的实际位置仍未改变。在代码中定义动画，可以参考AnimationSet类和Animation的子类；而如果使用XML，可以在res/anim/文件夹中定义XML文件。这个动画系统相对与容易创建，并且对于应用程序中所遇到的大多数需求提供了足够的能力。</p>
+<a id="more"></a>
+<ul>
+<li>基本的应用方法：</li>
+</ul>
+<blockquote>
+<p>就是new出对应的view动画的类，设置动画的持续时间，重复时间，以及动画停止后固定在哪里，最后使用view控件对象调用startAnimation方法参数为要执行的动画开启动画。</p>
+</blockquote>
+<pre><code>        //两者合并就会产生一种，图片从正着从有，到缩小到看不见，倒立且x方向反转，出现
+ScaleAnimation scaleAnimation = new ScaleAnimation(
+        1, -1, //x方向从不缩放，到反方向缩放一倍，效果相当于绕着Y轴，中轴线转圈
+        1, -1, //Y方向从不缩放，到反方向缩放一倍，效果相当于绕着x轴，中轴线转圈
+        Animation.RELATIVE_TO_SELF, 0.5f,
+        Animation.RELATIVE_TO_SELF, 0.5f);
+// 设置动画时间
+scaleAnimation.setDuration(2000);
+// 设置重复次数 ，这里是无限循环
+scaleAnimation.setRepeatCount(TranslateAnimation.INFINITE);
+// 设置重复播放模式，倒退回来播放
+scaleAnimation.setRepeatMode(TranslateAnimation.REVERSE);
+img.startAnimation(scaleAnimation);
+</code></pre><p><img src="https://ooo.0o0.ooo/2016/08/21/57b9e31804673.gif" alt="20160821233018.gif"></p>
+<ul>
+<li><p>view动画集合的使用：  </p>
+<blockquote>
+<p>使用view动画的集合，可以实现多个view动画一起播放的效果。使用方法为定义好想要执行的各种动画， 添加到AnimationSet中，使用控件startAnimation(animationSet);播放集合中的动画。<br><strong>注意：</strong>  这里并没有设置动画播放的方式，即是顺序播放（palySequentially）还是一起（palyTogether）播放，默认播放方式是一起播放的。</p>
+</blockquote>
+<pre><code>AnimationSet animationSet = new AnimationSet(false);
+
+    //设置缩放
+    ScaleAnimation sAnimation = new ScaleAnimation(
+            1, -1, 
+            1, -1, 
+            Animation.RELATIVE_TO_SELF, 0.5f,
+            Animation.RELATIVE_TO_SELF, 0.5f);
+    // 设置动画时间
+    sAnimation.setDuration(2000);
+    // 设置重复次数 ，这里是无限循环
+    sAnimation.setRepeatCount(TranslateAnimation.INFINITE);
+    // 设置重复播放模式，倒退回来播放
+    sAnimation.setRepeatMode(TranslateAnimation.REVERSE);
+    //设置旋转
+    RotateAnimation rAnimation = new RotateAnimation(
+            0, 90, 
+            Animation.RELATIVE_TO_SELF, 0.5f,
+            Animation.RELATIVE_TO_SELF, 0.5f);
+    // 设置动画时间
+    rAnimation.setDuration(2000);
+    // 设置重复次数 ，这里是无限循环
+    rAnimation.setRepeatCount(TranslateAnimation.INFINITE);
+    // 设置重复播放模式，倒退回来播放
+    rAnimation.setRepeatMode(TranslateAnimation.REVERSE);
+    // 将定义好的播放样式加入到集合中
+    animationSet.addAnimation(rAnimation);
+    animationSet.addAnimation(sAnimation);
+    //播放集合中的动画 
+    img.startAnimation(animationSet);
+</code></pre></li>
+</ul>
+<h3 id="Drawable-Animation（帧动画动画）："><a href="#Drawable-Animation（帧动画动画）：" class="headerlink" title="Drawable Animation（帧动画动画）："></a>Drawable Animation（帧动画动画）：</h3><p>加载一系列Drawable资源来创建动画，这种传统动画某种程度上就是创建不同图片序列，顺序播放，就像电影胶片。在代码中定义动画帧，使用AnimationDrawable类；XML文件能更简单的组成动画帧，在res/drawable文件夹，使用<animation-list>采用<item>来定义不同的帧。感觉只能设置的属性是动画间隔时间。</item></animation-list></p>
+<blockquote>
+<p>实质： 几张图片叠加起来，然后轮流播放，类似于电影中的一帧一帧的效果</p>
+</blockquote>
+<ol>
+<li>创建一个imageView </li>
+<li>res文件夹下创建一个drawable文件夹，并将想要展示的图片放入</li>
+<li><p>drawable文件夹下，创建一个xml文件 根标签animation-list，每标签一张图片为一个item</p>
+<pre><code>&lt;animation-list xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; 
+android:oneshot=&quot;false&quot;&gt;
+
+    &lt;item android:drawable=&quot;@drawable/logo1&quot; android:duration=&quot;200&quot; /&gt;
+    &lt;item android:drawable=&quot;@drawable/logo2&quot; android:duration=&quot;200&quot; /&gt;
+    &lt;item android:drawable=&quot;@drawable/logo3&quot; android:duration=&quot;200&quot; /&gt;
+&lt;/animation-list&gt;
+</code></pre><p> oneshot：true 表示帧动画展示一遍后将停在最后一张图片，false表示会连续播放（默认）</p>
+</li>
+<li><p>Acitivity中代码实现</p>
+<pre><code>ImageView img = (ImageView) findViewById(R.id.img);
+//设置背景，参数为我们在Drawable目录下定义的xml文件
+img.setBackgroundResource(R.drawable.items);
+//再次获取背景：并强转为AnimationDrawable类型
+AnimationDrawable imgAnimation = (AnimationDrawable) img.getBackground();
+imgAnimation.start();
+</code></pre></li>
+</ol>
+<h3 id="Property-Animation（属性动画）："><a href="#Property-Animation（属性动画）：" class="headerlink" title="Property Animation（属性动画）："></a>Property Animation（属性动画）：</h3><p>在Android3.0中被引入（API Level 11），属性动画系统会让任何对象具有动画属性，包括那些没有呈现在屏幕上的对象。这个系统是可扩展的，并且支持自定义的类型的动画属性。<br>能够通过改变View对象的实际属性来实现View动画。任何时候View属性的改变，View能自动调用invalidate()来试试刷新。</p>
+<p>#VlaueAnimator简介</p>
+<p>关于值动画的作用谷歌官方给出来的解释是：</p>
+<p>The main timing engine for property animation that also computes the values for the property to be animated. It has all of the core functionality that calculates animation values and contains the timing details of each animation, information about whether an animation repeats, listeners that receive update events, and the ability to set custom types to evaluate. There are two pieces to animating properties: calculating the animated values and setting those values on the object and property that is being animated. ValueAnimator does not carry out the second piece, so you must listen for updates to values calculated by the ValueAnimator and modify the objects that you want to animate with your own logic. See the section about Animating with ValueAnimator for more information.</p>
+<p>意思大概就是：我们只会帮我们计算我们计算我们设定的初始值和结束值之间的动画过渡的数值，并不会让控件执行具体的操作，从ValueAnimator的使用上也可以看出来，我们在定义ValueAnimator的时候并没有给他指定应用控件。</p>
+<p>乍一看ValueAnimator并不会帮我们实现动画的过程，只是帮我们计算出动画执行过程中要经历的值得变化，好像对我来说没什么用，毕竟我们是想让控件动起来。但是我们当然不可能只是得到这里的值那么简单了。首先我们要知道怎么拿到ValueAnimator计算出的这些值，这就要借助于监听器 ValueAnimator.AnimatorUpdateListener() ，这个监听器给我们提供了onAnimationUpdate的回调方法，我们可以使用 animation.getAnimatedValue(),来拿到这个实时变化的值。</p>
+<pre><code>ValueAnimator anim = ValueAnimator.ofFloat(0f, 1f);  
+anim.setDuration(300);  
+anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {  
+    @Override  
+    public void onAnimationUpdate(ValueAnimator animation) {  
+        float currentValue = (float) animation.getAnimatedValue();  
+        Log.d(&quot;TAG&quot;, &quot;cuurent value is &quot; + currentValue);  
+    }  
+});  
+anim.start();  
+</code></pre><p>当我们拿到这些变化的值以后我们就可以实现我们想要的效果了，比如说我们想要实现TextView的一个展开效果，我们就可以使用该方法实现：</p>
+<pre><code>ValueAnimator animator = null;
+if (isExpand) {
+    animator  = ValueAnimator.ofInt(maxHeight,minHeight);
+}else{
+    animator  = ValueAnimator.ofInt(minHeight,maxHeight);
+}
+animator.addUpdateListener(new AnimatorUpdateListener() {
+
+    @Override
+    public void onAnimationUpdate(ValueAnimator animation) {
+        int animatedValue = (Integer) animation.getAnimatedValue();
+        LayoutParams params = (LayoutParams) tv_des.getLayoutParams();
+        params.height = animatedValue;
+        tv_des.setLayoutParams(params);
+    }
+});
+</code></pre><p><img src="https://ooo.0o0.ooo/2016/08/21/57b9e2d9d21f9.gif" alt="20160821231108.gif"><br>ValueAnimator当中最常用的应该就是ofFloat()和ofInt()这两个方法了，另外还有一个ofObject()方法它需要传入一个TypeEvaluator，该对象用于告诉值动画如果从设置的两个值之间过度，由于不常用所以了解不深，不过有兴趣的看官可以去郭霖的博客去看一下，这里贴下网址：<a href="http://blog.csdn.net/guolin_blog/article/details/43816093" target="_blank" rel="external">http://blog.csdn.net/guolin_blog/article/details/43816093</a></p>
+<p>那么除此之外，我们还可以调用setStartDelay()方法来设置动画延迟播放的时间，调用setRepeatCount()和setRepeatMode()方法来设置动画循环播放的次数以及循环播放的模式，循环模式包括RESTART和REVERSE两种，分别表示重新播放和倒序播放的意思。</p>
+<h2 id="属性动画的其他API："><a href="#属性动画的其他API：" class="headerlink" title="属性动画的其他API："></a>属性动画的其他API：</h2><p><strong>定义动画一个属性的步骤：</strong></p>
+<ol>
+<li>ObjectAnimator animator = ObjectAnimator.ofFloat(target, propertyName, values)<ol>
+<li>参数一：target 绑定对象</li>
+<li>参数二：property() 中间为控件的属性值imagview;想要设置哪个属性通过img.setXXX获取</li>
+<li>参数三：可变参数;为动画的具体数值：指定多个可将播放过程设定为多段，from… to/from …to</li>
+</ol>
+</li>
+<li>动画设置播放方式：<ol>
+<li>设置播放的时间，重复的次数，重复的方式</li>
+<li>animator.setDuration(200);</li>
+<li>animator.setRepeatCount(ObjectAnimator.INFINITE);</li>
+<li>animator.setRepeatMode(ObjectAnimator.REVERSE);</li>
+</ol>
+</li>
+<li>开启动画：<ol>
+<li>由于调用静态方法生成animator对象的时候已经绑定了img 所以这里直接调用start方法即可</li>
+<li>animator.start();</li>
+</ol>
+</li>
+</ol>
+<p><strong>属性集合动画：</strong></p>
+<ol>
+<li><p>步骤1： 生成属性动画集合 注意与ofFloat不同这里是new出来的</p>
+<p> 通过AnimatorSet set = new Animator（）；</p>
+</li>
+<li><p>步骤2：设置多个属性</p>
+<p> … 与上述设置单个属性相同，没有start步骤</p>
+</li>
+<li><p>步骤3：设置动画集合播放集合中属性的方式：<strong>注意这里可以设置播放的顺序方式，这是ViewAnimation所不具有的</strong></p>
+<ol>
+<li>方式1： 一起播放：set.palyTogether(Animator….andimator);</li>
+<li>方式2： 顺序播放：set.palySequentially(Animator…animator);</li>
+</ol>
+</li>
+<li><p>步骤4： 播放集合中的动画：set.start();</p>
+</li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;##Android中动画简单分类&lt;/p&gt;
+&lt;p&gt;Android包含三种动画：View Animation、 Drawable Animation、Property Animation（Android3.0新引入）。&lt;/p&gt;
+&lt;h3 id=&quot;View-Animation（view动画）：&quot;&gt;&lt;a href=&quot;#View-Animation（view动画）：&quot; class=&quot;headerlink&quot; title=&quot;View Animation（view动画）：&quot;&gt;&lt;/a&gt;View Animation（view动画）：&lt;/h3&gt;&lt;p&gt;view动画是一个比较旧的动画系统，并且它仅能用于View对象。主要的类别有： AlphaAnimation透明度动画, AnimationSet动画集合, RotateAnimation缩放动画, ScaleAnimation旋转动画, TranslateAnimation平移动画&lt;br&gt;基于View的渐变动画，只改变了View的绘制效果，而实际属性值未变。比如动画移动一个按钮位置，但按钮点击的实际位置仍未改变。在代码中定义动画，可以参考AnimationSet类和Animation的子类；而如果使用XML，可以在res/anim/文件夹中定义XML文件。这个动画系统相对与容易创建，并且对于应用程序中所遇到的大多数需求提供了足够的能力。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
+    
+    
+      <category term="android笔记" scheme="http://yoursite.com/tags/android%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>线程池的使用---自定义多线程下载</title>
+    <link href="http://yoursite.com/2016/08/20/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E4%BD%BF%E7%94%A8-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8B%E8%BD%BD/"/>
+    <id>http://yoursite.com/2016/08/20/线程池的使用-自定义多线程下载/</id>
+    <published>2016-08-20T04:34:29.000Z</published>
+    <updated>2016-08-21T17:16:39.408Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>本文主要介绍了Android中线程池，以及自定义ThreadPoolManger的例子。老司机可以绕道。</p>
+<p>##Android线程池使用</p>
+<h3 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h3><ul>
+<li>线程池的作用：<ol>
+<li>线程池作用就是限制系统中执行线程的数量。<br>根据系统的环境情况，可以自动或手动设置线程数量，达到运行的最佳效果；少了浪费了系统资源，多了造成系统拥挤效率不高。用线程池控制线程数量，其他线程排队等候。一个任务执行完毕，再从队列的中取最前面的任务开始执行。若队列中没有等待进程，线程池的这一资源处于等待。当一个新任务需要运行时，如果线程池中有等待的工作线程，就可以开始运行了；否则进入等待队列。</li>
+</ol>
+</li>
+<li><p>为什么要用线程池:</p>
+<ol>
+<li>减少了创建和销毁线程的次数，每个工作线程都可以被重复利用，可执行多个任务。这里的意思是我们不用手动new多个Thread，只需要往线程池中放入Runnable对象就好。</li>
+<li>可以根据系统的承受能力，调整线程池中工作线线程的数目，防止因为消耗过多的内存，而把服务器累趴下(每个线程需要大约1MB内存，线程开的越多，消耗的内存也就越大，最后死机)。</li>
+</ol>
+</li>
+</ul>
+<p>Java里面线程池的顶级接口是Executor，但是严格意义上讲Executor并不是一个线程池，而只是一个执行线程的工具。真正的线程池接口是ExecutorService。而本文中使用的ThreadPoolExecutor<br>即为ExecutorService的默认实现。</p>
+<a id="more"></a>
+<h3 id="如何创建一个ThreadPoolExecutor"><a href="#如何创建一个ThreadPoolExecutor" class="headerlink" title="如何创建一个ThreadPoolExecutor"></a>如何创建一个ThreadPoolExecutor</h3><p>ThreadPoolExecutor是ExecutorServeice的实现类： 我们采用构造方法参数最多的一个方法来创建对象，其他的构造方法省略的参数只是采用了默认的参数而已。</p>
+<p><code>ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);</code></p>
+<ol>
+<li>corePoolSize：核心线程池数量 线程池中所能同时执行的任务数量；</li>
+<li>maximumPoolSize： 最大线程池数量，超出缓冲队列的任务会放入最大线程池中等待，注意：maximumPoolSize是包含了corePoolSize的；</li>
+<li>keepAliveTime： 存活时间，表示的是最大线程池中等待任务的存活时间；</li>
+<li>unit： keepAliveTime参数的单位，时分秒等；</li>
+<li><p>workQueue：//缓冲队列，会将超出corePoolSize的任务放入workQueue等待着。</p>
+<pre><code>BlockingQueue&lt;Runnable&gt; workQueue = new LinkedBlockingQueue&lt;Runnable&gt;(Integer.MAX_VALUE); 这种创建方式和不传入参数是相同的。
+</code></pre></li>
+<li><p>threadFactory： 创建线程使用的工厂类，我们一般使用其静态方法创建一个默认的线程工厂，来创建线程对象。</p>
+<pre><code>Executors.defaultThreadFactory(),     
+</code></pre></li>
+<li><p>handler： 这个参数代表如果我们线程池已经满了，外部仍添加线程对象，我们的处理方式。一般这种情况我们选择不接受新的线程对象。</p>
+<pre><code>这个handler在处理的时候回抛RejectedExecutionException()并丢掉任务
+RejectedExecutionHandler  handler = new ThreadPoolExecutor.AbortPolicy(); 
+</code></pre></li>
+</ol>
+<p>注意：<br>　　我们参数5，如果设置成一个没有上限的缓存队列，因此缓存队列永远都不会满，因此 maximumPoolSize 的大小设置变得无所谓了。但是该方法对这几个数值有一个基本的要求，如果不满足就会抛出非法参数异常。</p>
+<pre><code>@throws IllegalArgumentException if one of the following holds:&lt;br&gt;
+         {@code corePoolSize &lt; 0}&lt;br&gt;
+         {@code keepAliveTime &lt; 0}&lt;br&gt;
+         {@code maximumPoolSize &lt;= 0}&lt;br&gt;
+         {@code maximumPoolSize &lt; corePoolSize}
+</code></pre><p>可见，即使maximumPoolSize大大小无所谓的时候我们保证他不小于核心线程数据量即corePoolSize的大小。了解各个参数的意义我们就可以创造出自己的一个ThreadPoolExcuter了：</p>
+<pre><code>   int corePoolSize = Runtime.getRuntime().availableProcessors()*2 + 1;
+int maximumPoolSize = corePoolSize;
+long keepAliveTime = 2;
+TimeUnit unit = TimeUnit.HOURS;
+BlockingQueue&lt;Runnable&gt; workQueue = new LinkedBlockingQueue&lt;Runnable&gt;();
+RejectedExecutionHandler  handler = new ThreadPoolExecutor.AbortPolicy();
+
+
+    ThreadPoolExecutor executor = new ThreadPoolExecutor(
+            corePoolSize, 
+            maximumPoolSize, 
+            keepAliveTime, 
+            unit, 
+            workQueue, 
+            Executors.defaultThreadFactory(), 
+            handler
+            );
+</code></pre><p>解释一下：</p>
+<ol>
+<li><code>int corePoolSize = Runtime.getRuntime().availableProcessors()*2 + 1;</code>    Runtime.getRuntime().availableProcessors()通过这个方法我们能拿到当前设备的可用的cpu数量，而大量研究表明，设备同时执行的线程数量跟可用cpu数量是有一定关系的，而这个关系就是上述这种算法。</li>
+<li>由于我们设置了无界的缓存队列，因此我们maximunPoolSize的大小只要保证不小于corePoolsize就好。</li>
+</ol>
+<h3 id="线程池的用法："><a href="#线程池的用法：" class="headerlink" title="线程池的用法："></a>线程池的用法：</h3><p>  了解线程池的最难的定义方法，接下来就该说明线程池的使用了。线程池内部的维护原理虽然比较复杂，但是使用起来需要我们关心的还是很好少的。</p>
+<ol>
+<li><p>”执行“线程任务： 这里之所以加上引号，是因为即使你调用了execute方法，线程池也未必会执行这个任务。原因上边已经有所解释，即我们规定了最大同时运行线程数量：corePoolSize，如果当前线程数量小于规定值， 我们调用这个方法任务会立刻得到执行，如果当前的任务已经大于规定值，那么调用这个execute方法，任务将回到缓存队列去排队，等待执行。</p>
+<p><code>executor.execute(runnable);</code></p>
+</li>
+<li><p>如果我们想要移除任务，比如说迅雷正下载任务的时候，我们点了取消下载，那么任务就从下载任务中取消了。线程池的这个原理也是一样的。</p>
+<p><code>executor.remove(runnable);</code></p>
+</li>
+</ol>
+<h3 id="自定义一个线程池管理类-ThreadPoolManager"><a href="#自定义一个线程池管理类-ThreadPoolManager" class="headerlink" title="自定义一个线程池管理类 ThreadPoolManager"></a>自定义一个线程池管理类 ThreadPoolManager</h3><p> 最近在做的项目，有一个需求就是，多个页面执行下载任务。如果我们经过简单的额封装，那么每个页面都要new出来这个“庞大的”线程池对象，岂不是要累死宝宝了。对于系统资源也是一种浪费。这里我们采用单例的ThreadPoolManager类，对外暴露执行任务和移除任务的方法，废话不多说代码如下：</p>
+<pre><code>/**
+  * 基于线程池进行封装的类
+  *
+  */
+ public class ThreadPoolManager {
+     private static ThreadPoolManager mInstance = new ThreadPoolManager();
+     private ThreadPoolExecutor executor;
+
+     int corePoolSize;//核心线程池数量，表示能够同时执行的任务的数量
+     int maximumPoolSize;//最大线程池数量，超出缓冲队列的任务会放入最大线程池中等待，注意：maximumPoolSize是包含了corePoolSize的
+     long keepAliveTime = 2;//存活时间，表示的是最大线程池中等待任务的存活时间
+     TimeUnit unit = TimeUnit.HOURS;//时间单位
+     //缓冲队列，会将超出corePoolSize的任务放入workQueue等待着，注意我们一般使用没有上限的缓冲队列
+     BlockingQueue&lt;Runnable&gt; workQueue = new LinkedBlockingQueue&lt;Runnable&gt;();
+     //如果任务数量超过maximumPoolSize，那么我是拒绝执行的
+     RejectedExecutionHandler  handler = new ThreadPoolExecutor.AbortPolicy();
+
+     public static ThreadPoolManager getInstance() {
+         return mInstance;
+     }
+     private ThreadPoolManager() {
+         //1.使用java封装好的线程池的类
+ //        ScheduledExecutorService threadPool = Executors.newScheduledThreadPool(3);
+
+         //计算corePoolSize的算法:设备的可用处理器核心数*2 + 1，能够让cpu的效率得到最大发挥
+         corePoolSize = Runtime.getRuntime().availableProcessors()*2 + 1;
+
+         maximumPoolSize = corePoolSize;
+         //2.使用可以自定义的线程池
+         executor = new ThreadPoolExecutor(
+                 corePoolSize, //3
+                 maximumPoolSize, //5
+                 keepAliveTime, 
+                 unit, 
+                 workQueue, 
+                 Executors.defaultThreadFactory(), 
+                 handler
+                 );
+     }
+
+     /**
+      * 往线程池中添加任务
+      * @param runnable
+      */
+     public void execute(Runnable runnable){
+         if(runnable!=null){
+             executor.execute(runnable);
+         }
+     }
+     /**
+      * 从线程池中移除任务
+      * @param runnable
+      */
+     public void remove(Runnable runnable){
+         if(runnable!=null){
+             executor.remove(runnable);
+         }
+     }
+ }
+</code></pre><h3 id="关于系统预定义的几个线程池接口实现类："><a href="#关于系统预定义的几个线程池接口实现类：" class="headerlink" title="关于系统预定义的几个线程池接口实现类："></a>关于系统预定义的几个线程池接口实现类：</h3><blockquote>
+<p>声明一下内容来自网络某大神的博客，这里只是摘抄学习： <a href="http://my.oschina.net/u/1424386/blog/336087" target="_blank" rel="external">http://my.oschina.net/u/1424386/blog/336087</a></p>
+</blockquote>
+<p>在JDK帮助文档中，有如此一段话：“强烈建议程序员使用较为方便的Executors工厂方法Executors.newCachedThreadPool()（无界线程池，可以进行自动线程回收）、Executors.newFixedThreadPool(int)（固定大小线程池）Executors.newSingleThreadExecutor()（单个后台线程）它们均为大多数使用场景预定义了设置。” </p>
+<ol>
+<li><p>Executors.newCachedThreadPool() 的系统源码为：</p>
+<pre><code>public static ExecutorService newCachedThreadPool() {
+return new ThreadPoolExecutor(
+                              0,//这里为什么会填0？  
+                              Integer.MAX_VALUE,
+                              60L, 
+                              TimeUnit.SECONDS,
+                              new SynchronousQueue&lt;Runnable&gt;());
+ }
+</code></pre><p> SynchronousQueue，简单说：该队列中，每个插入操作必须等待另一个线程的对应移除操作。这里的核心线程数量设置为0，大概意思就是一起执行的线程数量不确定，所有的新加进来的线程都会被放在队列里面而SynchronousQueue这种队列又很特殊，下面是任玉刚在<android开发艺术探索中>对newCachedThreadPool的描述：</android开发艺术探索中></p>
+<p> <img src="https://ooo.0o0.ooo/2016/08/21/57b9df462f6a8.png" alt=""></p>
+</li>
+<li><p>newFixedThreadPool: 该定义方法其实和上述我们自定义的ThreadPoolManger的方法相同，是无边界队列的线程池  </p>
+<pre><code>public static ExecutorService newFixedThreadPool(int nThreads) {
+    return new ThreadPoolExecutor(nThreads, nThreads,
+                                  0L, TimeUnit.MILLISECONDS,
+                                  new LinkedBlockingQueue&lt;Runnable&gt;());
+}
+</code></pre></li>
+<li><p>newSingleThreadExecutor: 单线程</p>
+<pre><code>public static ExecutorService newSingleThreadExecutor() {
+        return new FinalizableDelegatedExecutorService
+            (new ThreadPoolExecutor(1, 1,
+                                    0L, TimeUnit.MILLISECONDS,
+                                    new LinkedBlockingQueue&lt;Runnable&gt;()));
+    }
+</code></pre></li>
+</ol>
+<p>我们可以看到上述三个对象，均返回了一个ExecutorService对象，因此可以看到我们之前了解的ThreadPool的各个参数是有意义的。</p>
+<h2 id="关于选择哪个类型的队列：BlockingQueue"><a href="#关于选择哪个类型的队列：BlockingQueue" class="headerlink" title="关于选择哪个类型的队列：BlockingQueue"></a>关于选择哪个类型的队列：BlockingQueue</h2><ul>
+<li>首先：所有 BlockingQueue 都可用于传输和保持提交的任务。可以使用此队列与池大小进行交互：<ol>
+<li>如果运行的线程少于 corePoolSize，则 Executor始终首选添加新的线程，而不进行排队。（如果当前运行的线程小于corePoolSize，则任务根本不会存放，添加到queue中，而是直接抄家伙（thread）开始运行）</li>
+<li>如果运行的线程等于或多于 corePoolSize，则 Executor始终首选将请求加入队列，而不添加新的线程。</li>
+<li>如果无法将请求加入队列，则创建新的线程，除非创建此线程超出 maximumPoolSize，在这种情况下，任务将被拒绝</li>
+</ol>
+</li>
+</ul>
+<ul>
+<li>排队有三种通用策略：<ol>
+<li>直接提交。工作队列的默认选项是 SynchronousQueue，它将任务直接提交给线程而不保持它们。在此，如果不存在可用于立即运行任务的线程，则试图把任务加入队列将失败，因此会构造一个新的线程。此策略可以避免在处理可能具有内部依赖性的请求集时出现锁。直接提交通常要求无界maximumPoolSizes 以避免拒绝新提交的任务。当命令以超过队列所能处理的平均数连续到达时，此策略允许无界线程具有增长的可能性。</li>
+<li>无界队列。使用无界队列（例如，不具有预定义容量的 LinkedBlockingQueue）将导致在所有 corePoolSize 线程都忙时新任务在队列中等待。这样，创建的线程就不会超过 corePoolSize。（因此，maximumPoolSize的值也就无效了。）当每个任务完全独立于其他任务，即任务执行互不影响时，适合于使用无界队列；例如，在 Web页服务器中。这种排队可用于处理瞬态突发请求，当命令以超过队列所能处理的平均数连续到达时，此策略允许无界线程具有增长的可能性。</li>
+<li>有界队列。当使用有限的 maximumPoolSizes时，有界队列（如 ArrayBlockingQueue）有助于防止资源耗尽，但是可能较难调整和控制。队列大小和最大池大小可能需要相互折衷：使用大型队列和小型池可以最大限度地降低 CPU 使用率、操作系统资源和上下文切换开销，但是可能导致人工降低吞吐量。如果任务频繁阻塞（例如，如果它们是 I/O边界），则系统可能为超过您许可的更多线程安排时间。使用小型队列通常要求较大的池大小，CPU使用率较高，但是可能遇到不可接受的调度开销，这样也会降低吞吐量。  </li>
+</ol>
+</li>
+</ul>
+<ul>
+<li><p>使用直接提交策略，也即SynchronousQueue。</p>
+<ul>
+<li>首先SynchronousQueue是无界的，也就是说他存数任务的能力是没有限制的，但是由于该Queue本身的特性，在某次添加元素后必须等待其他线程取走后才能继续添加。在这里不是核心线程便是新创建的线程，但是</li>
+<li><p>我们试想一样下，下面的场景。我们使用一下参数构造ThreadPoolExecutor：</p>
+<pre><code>new ThreadPoolExecutor(   
+            2, 3, 30, TimeUnit.SECONDS,    
+            new  SynchronousQueue&lt;Runnable&gt;(),    
+             new RecorderThreadFactory(&quot;CookieRecorderPool&quot;),    
+            new ThreadPoolExecutor.CallerRunsPolicy());  
+</code></pre></li>
+<li><p>当核心线程已经有2个正在运行.<br>此时继续来了一个任务（A），根据前面介绍的“如果运行的线程等于或多于 corePoolSize，则 Executor始终首选将请求加入队列，而不添加新的线程。”,所以A被添加到queue中。<br>又来了一个任务（B），且核心2个线程还没有忙完，OK，接下来首先尝试1中描述，但是由于使用的SynchronousQueue，所以一定无法加入进去。<br>此时便满足了上面提到的“如果无法将请求加入队列，则创建新的线程，除非创建此线程超出maximumPoolSize，在这种情况下，任务将被拒绝。”，所以必然会新建一个线程来运行这个任务。<br>暂时还可以，但是如果这三个任务都还没完成，连续来了两个任务，第一个添加入queue中，后一个呢？queue中无法插入，而线程数达到了maximumPoolSize，所以只好执行异常策略了。<br>所以在使用SynchronousQueue通常要求maximumPoolSize是无界的，这样就可以避免上述情况发生（如果希望限制就直接使用有界队列）。对于使用SynchronousQueue的作用jdk中写的很清楚：此策略可以避免在处理可能具有内部依赖性的请求集时出现锁。<br>什么意思？如果你的任务A1，A2有内部关联，A1需要先运行，那么先提交A1，再提交A2，当使用SynchronousQueue我们可以保证，A1必定先被执行，在A1么有被执行前，A2不可能添加入queue中。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>   线程池的使用 其实也没有想象中的那么复杂，毕竟这个java给我们定义好的类，内部的调度关系我们不需要深入了解就可以使用。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h1&gt;&lt;p&gt;本文主要介绍了Android中线程池，以及自定义ThreadPoolManger的例子。老司机可以绕道。&lt;/p&gt;
+&lt;p&gt;##Android线程池使用&lt;/p&gt;
+&lt;h3 id=&quot;线程池&quot;&gt;&lt;a href=&quot;#线程池&quot; class=&quot;headerlink&quot; title=&quot;线程池&quot;&gt;&lt;/a&gt;线程池&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;线程池的作用：&lt;ol&gt;
+&lt;li&gt;线程池作用就是限制系统中执行线程的数量。&lt;br&gt;根据系统的环境情况，可以自动或手动设置线程数量，达到运行的最佳效果；少了浪费了系统资源，多了造成系统拥挤效率不高。用线程池控制线程数量，其他线程排队等候。一个任务执行完毕，再从队列的中取最前面的任务开始执行。若队列中没有等待进程，线程池的这一资源处于等待。当一个新任务需要运行时，如果线程池中有等待的工作线程，就可以开始运行了；否则进入等待队列。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;为什么要用线程池:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;减少了创建和销毁线程的次数，每个工作线程都可以被重复利用，可执行多个任务。这里的意思是我们不用手动new多个Thread，只需要往线程池中放入Runnable对象就好。&lt;/li&gt;
+&lt;li&gt;可以根据系统的承受能力，调整线程池中工作线线程的数目，防止因为消耗过多的内存，而把服务器累趴下(每个线程需要大约1MB内存，线程开的越多，消耗的内存也就越大，最后死机)。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Java里面线程池的顶级接口是Executor，但是严格意义上讲Executor并不是一个线程池，而只是一个执行线程的工具。真正的线程池接口是ExecutorService。而本文中使用的ThreadPoolExecutor&lt;br&gt;即为ExecutorService的默认实现。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
+    
+    
+      <category term="android笔记" scheme="http://yoursite.com/tags/android%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>UniversalImageLoader的初体验</title>
+    <link href="http://yoursite.com/2016/08/13/UniversalImageLoader%E7%9A%84%E5%88%9D%E4%BD%93%E9%AA%8C/"/>
+    <id>http://yoursite.com/2016/08/13/UniversalImageLoader的初体验/</id>
+    <published>2016-08-13T06:39:40.000Z</published>
+    <updated>2016-08-13T08:39:51.853Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><blockquote>
+<p>GitHub 图片加载开源项目库：UniversalImageLoader<br>项目地址<a href="：https://github.com/nostra13/Android-Universal-Image-Loader">：https://github.com/nostra13/Android-Universal-Image-Loader</a></p>
+</blockquote>
+<p>GitHub 项目主页描述的，UniversalImageLoader具有的特性：</p>
+<ul>
+<li><p>Multithread image loading (async or sync) 支持多线程 同步和异步加载 </p>
+</li>
+<li><p>Wide customization of ImageLoader’s configuration (thread executors, downloader, decoder, memory and disk cache, display image options, etc.) 支持对图片加载过程的多种配置，包括线程池的大小，解码，内存和本地缓存，图片显示选项的配置。</p>
+</li>
+<li><p>Many customization options for every display image call (stub images, caching<br>switch, decoding options, Bitmap processing and displaying, etc.) 对每个加载图片的的单独配置。</p>
+</li>
+<li><p>Image caching in memory and/or on disk (device’s file system or SD card) 图片的缓存位置</p>
+</li>
+<li><p>Listening loading process (including downloading progress) 监听图片加载过程，包括图片下载过程</p>
+</li>
+</ul>
+<hr>
+<a id="more"></a>
+<h2 id="使用："><a href="#使用：" class="headerlink" title="使用："></a>使用：</h2><ol>
+<li>GitHub上，下载项目jar包导入工程 </li>
+<li><p>在项目的全局Application类的onCreate()中初始化ImageLoader类的配置，（如果项目没有自定义Application，请创建Application 继承系统Application类，并复写onCreate方法）；代码如下：</p>
+<pre><code>import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
+import android.app.Application;
+import android.content.Context;
+
+public class GooglePalyApplication extends Application {
+    //全局的Application 供外部使用
+    public static Context context;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        context = this;
+        //初始化Imageloader的配置，包括缓存目录的初始化，线程池的初始化，缓存上限等的初始化
+        ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(this));
+    }
+}
+</code></pre></li>
+<li><p>由于项目中大部分图片加载的配置option相同所以我们自定义个接口，内部初始化图片加载的option</p>
+<pre><code>import com.example.googleplay.R;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+/**
+ * 设置全局的 图片加载Options设置
+ * @author wangsj
+ *
+ */
+public interface ImageLoaderOptions {
+
+    DisplayImageOptions fadein_options = new DisplayImageOptions.Builder()
+            .showImageOnLoading(R.drawable.ic_default)// 设置加载中显示什么图片
+            .showImageForEmptyUri(R.drawable.ic_default)// 设置如果url为空中显示什么图片
+            .showImageOnFail(R.drawable.ic_default)// 设置加载失败显示什么图片
+            .cacheInMemory(true)// 内存缓存
+            .cacheOnDisk(true)// 在硬盘缓存
+            .imageScaleType(ImageScaleType.EXACTLY)//内部会对图片进一步的压缩
+            .bitmapConfig(Bitmap.Config.RGB_565)//使用比较节省内存的颜色模式
+            // .considerExifParams(true)//会识别图片的方向信息
+            .displayer(new FadeInBitmapDisplayer(600)).build();// 设置渐渐显示的动画效果
+        // .displayer(new RoundedBitmapDisplayer(100)).build();// 设置圆角显示
+}
+</code></pre></li>
+</ol>
+<ol>
+<li>listview中加载图片方法：<pre><code>参数1：网络图片的url地址，参数2：imageView对象 参数3 加载图片的配置项
+ImageLoader.getInstance().displayImage(
+        UrlConstants.ImagePirfex + appInfo.iconUrl, iv_icon,
+        ImageLoaderOptions.options);
+</code></pre></li>
+</ol>
+<p>效果：<br><img src="http://i.imgur.com/z58V9xM.gif" alt=""></p>
+<p>如果想让图片展示同时具有圆角显示和渐变动画效果，可以加载图片的时候监听加载完成：</p>
+<pre><code>ImageLoader.getInstance().displayImage(
+        UrlConstants.ImagePirfex + appInfo.iconUrl, iv_icon,
+        ImageLoaderOptions.options, new SimpleImageLoadingListener() {
+
+            final List&lt;String&gt; displayedImages = Collections.synchronizedList(new LinkedList&lt;String&gt;());
+            public void onLoadingComplete(String imageUri, View view,
+                    Bitmap loadedImage) {
+                if (loadedImage != null) {
+                    ImageView imageView = (ImageView) view;
+                    boolean firstDisplay = !displayedImages.contains(imageUri);
+                    if (firstDisplay) {
+                        FadeInBitmapDisplayer.animate(imageView, 2000);//渐渐显示的效果
+                        displayedImages.add(imageUri);
+                    }
+                }
+            };
+        });
+</code></pre><p>此外除了在Application中设置使用默认的配置外还可以自定义配置：</p>
+<pre><code>public class GooglePalyApplication extends Application {
+            //全局的Application 供外部使用
+            public static Context context;
+
+            @Override
+            public void onCreate() {
+                super.onCreate();
+                context = this;
+
+                initImageLoader（）;
+            }
+
+
+        public static void initImageLoader(Context context) {
+            //创建加载的全局配置对象
+            ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(context);
+            config.threadPriority(Thread.NORM_PRIORITY - 2);//这是加载图片线程的优先级
+            config.denyCacheImageMultipleSizesInMemory();//不会在内存中缓存多个大小的图片
+            config.diskCacheFileNameGenerator(new Md5FileNameGenerator());//为了保证图片名称唯一
+            config.diskCacheSize(50 * 1024 * 1024); //设置本地缓存的上限： 50 MiB
+            //内存缓存大小默认是：app可用内存的1/8
+            config.tasksProcessingOrder(QueueProcessingType.LIFO);//后进先出
+            config.writeDebugLogs(); // Remove for release app//打印图片加载过程进度的log产品上线时候取消这个选项
+
+            // Initialize ImageLoader with configuration.
+            ImageLoader.getInstance().init(config.build());
+
+        }
+    }
+</code></pre><blockquote>
+<p>注意 在Application中初始化的是ImageLoader的全局配置，而在ImageLoaderOptions接口中定义的opinion则是单一图片加载的配置。我们可以想到后者可以定义多个，在不同的图片加载上采取不同的方案。</p>
+</blockquote>
+<p><strong>参考内容：</strong></p>
+<ol>
+<li>Android 开源框架Universal-Image-Loader完全解析（一）— 基本介绍及使用<br><a href="http://blog.csdn.net/xiaanming/article/details/26810303" target="_blank" rel="external">http://blog.csdn.net/xiaanming/article/details/26810303</a></li>
+<li>Android-Universal-Image-Loader 图片异步加载类库的使用（超详细配置）<br><a href="http://blog.csdn.net/vipzjyno1/article/details/23206387" target="_blank" rel="external">http://blog.csdn.net/vipzjyno1/article/details/23206387</a></li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;GitHub 图片加载开源项目库：UniversalImageLoader&lt;br&gt;项目地址&lt;a href=&quot;：https://github.com/nostra13/Android-Universal-Image-Loader&quot;&gt;：https://github.com/nostra13/Android-Universal-Image-Loader&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;GitHub 项目主页描述的，UniversalImageLoader具有的特性：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Multithread image loading (async or sync) 支持多线程 同步和异步加载 &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Wide customization of ImageLoader’s configuration (thread executors, downloader, decoder, memory and disk cache, display image options, etc.) 支持对图片加载过程的多种配置，包括线程池的大小，解码，内存和本地缓存，图片显示选项的配置。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Many customization options for every display image call (stub images, caching&lt;br&gt;switch, decoding options, Bitmap processing and displaying, etc.) 对每个加载图片的的单独配置。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Image caching in memory and/or on disk (device’s file system or SD card) 图片的缓存位置&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Listening loading process (including downloading progress) 监听图片加载过程，包括图片下载过程&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+    
+    </summary>
+    
+      <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
+    
+    
+      <category term="android笔记" scheme="http://yoursite.com/tags/android%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>打造万能ListView的ViewHolder和Adapter</title>
+    <link href="http://yoursite.com/2016/08/13/%E6%89%93%E9%80%A0%E4%B8%87%E8%83%BDListView%E7%9A%84ViewHolder%E5%92%8CAdapter/"/>
+    <id>http://yoursite.com/2016/08/13/打造万能ListView的ViewHolder和Adapter/</id>
+    <published>2016-08-13T05:08:21.000Z</published>
+    <updated>2016-08-13T06:40:37.396Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="BaseHolder的抽取："><a href="#BaseHolder的抽取：" class="headerlink" title="BaseHolder的抽取："></a>BaseHolder的抽取：</h2><blockquote>
+<p>抽取基类： 程序的多个地方用到大量重复的代码，这时候我们抽取基类，子类只需要关注必须实现的方法，来提高代码的编写效率，减少冗余代码。</p>
+</blockquote>
+<h3 id="listView的Adapter常规写法："><a href="#listView的Adapter常规写法：" class="headerlink" title="listView的Adapter常规写法："></a>listView的Adapter常规写法：</h3><p>正常的listview的适配器Adapter的getView和ViewHolder的使用方法：</p>
+<pre><code>public View getView(int position, View convertView, ViewGroup parent) {
+    ViewHolder viewHolder = null;
+    if (convertView == null) {
+        //1. 获取布局文件的view对象
+        convertView = View.inflate(GooglePalyApplication.context,
+            R.layout.home_list_item, null);
+        //2. 初始化viewholder
+        viewHolder = new ViewHolder();
+        //3. 为viewHolder的变量赋值，通过findViewbyId 
+        viewHolder.tv = (TextView) convertView.findViewById(R.id.tv);
+        //4. 为布局文件对象设置tag 以提高findViewbyId的效率
+        convertView.setTag(viewHolder);
+    }else{
+        viewHolder = (ViewHolder) convertView.getTag();
+    }
+    //5. 初始化数据
+    AppInfo appInfo = list.get(postion);
+    viewHolder.tv.setText(appInfo.name);
+    return convertView;
+}
+
+class ViewHolder{
+    TextView tv;
+}
+</code></pre><p>对getView执行的动作进行简单的分析我们可以发现，他做了如下几件事：</p>
+<ol>
+<li>获取布局文件的view对象</li>
+<li>初始化viewholder</li>
+<li>为viewHolder的变量赋值，通过findViewbyId </li>
+<li>为布局文件对象设置tag 以提高findViewbyId的效率</li>
+<li>初始化数据</li>
+</ol>
+<p>可以看出以上所有的步骤都与ViewHolder有关，这里我们要实现的就是将这些步骤放在ViewHolder内部完成，简化getView内部实现。<br><a id="more"></a></p>
+<h3 id="了解ListView中的convertView是怎么工作的"><a href="#了解ListView中的convertView是怎么工作的" class="headerlink" title="了解ListView中的convertView是怎么工作的"></a>了解ListView中的convertView是怎么工作的</h3><p>这里需要了解listview中convertView的缓存机制，我们可以理解为listview有一块内存用于存储划出屏幕的条目item的view对象（图中Recycler部分），而convertView这个引用就指向那块区域。convertView缓存的是getView方法返回的view对象。这是listView的中缓存机制，而与我们在getView返回什么view无关，<strong>无论我们返回convertView还是别的View，等条目划出屏幕的那一刻，listView就会帮我们缓存该条目的view对象，并使convertView指向该item的view对象。</strong></p>
+<p><img src="http://i.imgur.com/Ad2mR1q.png" alt=""></p>
+<h3 id="抽取BaseHolder"><a href="#抽取BaseHolder" class="headerlink" title="抽取BaseHolder"></a>抽取BaseHolder</h3><p>了解了上面内容，我们就已可使我们ViewHolder与convertView参数脱离关系了，只需要getView返回条目的view布局对象即可，我们在这里定义了viewholder的成员变量holderView充当该view对象。</p>
+<h4 id="将inflate布局和findviewbyId过程封装到viewholder的构造方法中。"><a href="#将inflate布局和findviewbyId过程封装到viewholder的构造方法中。" class="headerlink" title="将inflate布局和findviewbyId过程封装到viewholder的构造方法中。"></a>将inflate布局和findviewbyId过程封装到viewholder的构造方法中。</h4><p>抽取完成后ViewHolder使用方法：</p>
+<pre><code>class ViewHolder{
+    TextView tv;
+    View holderView;//定义自己的变量holderView用来接收布局inflate的结果
+    public ViewHolder(){
+        //1. 抽取初始化view的步骤 这里不能直接给临时变量赋值 解决这个问题 就是要使viewholder独立与getView方法
+        holderView = View.inflate(MyApplication.context, R.layout.home_list_item, null);
+
+        //2. 抽取findViewbyId  viewHolder.tv = (TextView)convertView.findViewById(R.id.tv);
+        tv = (TextView) holderView.findViewById(R.id.tv);
+
+        //3. 抽取setTag convertView.setTag(viewHolder);
+        holderView.setTag(this); 
+    }
+}
+</code></pre><p>getView就可以写成：</p>
+<pre><code>public View getView(int position, View convertView, ViewGroup parent) {
+    ViewHolder viewHolder = null;
+    if (convertView == null) {
+        viewHolder = new ViewHolder();
+    }else{
+        viewHolder = (ViewHolder) convertView.getTag();
+    }
+
+    AppInfo appInfo = list.get(postion);
+    viewHolder.tv.setText(appInfo.name);
+    return viewHolder.holderView;
+}
+</code></pre><p>这里疑惑的地方是<code>convertView.getTag();</code> 为什么能取出ViewHolder对象，那么首先让我们看下这次抽取中我们做了什么：</p>
+<p>我们通过getView的返回值<code>return viewHolder.holderView;</code>，可知我们item要展示的view对象实质是<code>viewHolder.holderView</code>；我们在ViewHolder内部对该变量的操作如下：</p>
+<ol>
+<li><code>holderView = View.inflate(GooglePalyApplication.context, R.layout.home_list_item, null);</code> 初始化holderView；</li>
+<li><code>holderView.setTag(this);</code> 设置holder的tag，这里的this即ViewHolder对象本身。</li>
+</ol>
+<p>而在getView中当<code>convertView！= null</code>即adapter有条目缓存的时候，我们使用convertView.getTag()，取出了我们set进入的ViewHolder对象。</p>
+<p>以上这一步做法，是我认为整个抽取过程中最难理解的一步，因为单纯从表面上看，我们从未对convertView进行过任何赋值操作，但是我们却使用 getTag 从中取出了viewHolder对象。 但是结合上面提到的listview是怎么对条目进行缓存的，我们就很好理解了。 </p>
+<ol>
+<li>当条目有缓存的时候，convertView指向listView条目缓存的view对象。</li>
+<li>listView这里展示的条目是 viewHolder.holderView 对象，所以缓存区域保存的肯定是该对象。</li>
+<li>我们在holderView中setTag了他原本以来的viewholder对象。即<code>holderView.setTag(this);</code></li>
+<li>那么当存在缓存的时候，convertView引用也就指向了 该holderView对象。 所以拿convertView取出Tag对象也是可以的。</li>
+</ol>
+<h4 id="抽取绑定数据操作："><a href="#抽取绑定数据操作：" class="headerlink" title="抽取绑定数据操作："></a>抽取绑定数据操作：</h4><p>ok，理解了上述最难的一点，关于ViewHolder，我们也就还有最后一步工作要做了。在getView方法中我们会为viewholder中的控件设置数据：</p>
+<pre><code>AppInfo appInfo = list.get(postion);
+viewHolder.tv.setText(appInfo.name);
+</code></pre><p>这一步其实为布局控件设置数据的步骤。那么我们也可以将这一步也封装起来，这样我们Adapter对象的getView方法。就完全不需要关注具体展示的view内部是怎么工作了。我们将这一步称为绑定数据过程。</p>
+<p>我们在ViewHolder内部提供bindData方法：</p>
+<pre><code>public void bindData(AppInfo appInfo){
+    tv.setText(appInfo.name);
+}
+</code></pre><p>提供该方法后ViewHolder写法如下：</p>
+<pre><code>class ViewHolder{
+    TextView tv;
+    View holderView;//定义自己的变量holderView用来接收布局inflate的结果
+    public ViewHolder(){
+        //1. 抽取初始化view的步骤 这里不能直接给临时变量赋值 解决这个问题 就是要使viewholder独立与getView方法
+        holderView = View.inflate(MyApplication.context, R.layout.home_list_item, null);
+
+        //2. 抽取findViewbyId  viewHolder.tv = (TextView) convertView.findViewById(R.id.tv);
+        tv = (TextView) holderView.findViewById(R.id.tv);
+
+        //3. 抽取setTag convertView.setTag(viewHolder);
+        holderView.setTag(this); 
+    }
+
+    //4. 抽取控件赋值步骤 对外提供bindData方法 只需要将条目对象传入该方法内部就实现赋值
+    public void bindData(AppInfo appInfo){
+        tv.setText(appInfo.name);
+    }
+}
+</code></pre><p>在getView中最终使用方法如下：</p>
+<pre><code>public View getView(int position, View convertView, ViewGroup parent) {
+    ViewHolder viewHolder = null;
+    if (convertView == null) {
+        viewHolder = new ViewHolder();
+    }else{
+        viewHolder = (ViewHolder) convertView.getTag();
+    }
+
+    AppInfo appInfo = list.get(postion);
+    //绑定view数据
+    viewHolder.bindData(appInfo);
+    return viewHolder.holderView;
+}
+</code></pre><p>这样看起来getView需要处理的工作已经所剩无几了，我们只需new出我们所依赖的ViewHolder对象。并在绑定数据的时候调用 viewHolder.bindData（info） 将条目的数据设置给viewHolder即可。</p>
+<h4 id="ViewHolder内部抽取-holderView的生成过程"><a href="#ViewHolder内部抽取-holderView的生成过程" class="headerlink" title="ViewHolder内部抽取 holderView的生成过程"></a>ViewHolder内部抽取 holderView的生成过程</h4><p>为了让我们的ViewHolder中的功能更加单一，也方便我们进一步抽取BaseHolder：我们将1，2步，提取成一个getHolderView方法，返回值当然是holderView。</p>
+<pre><code>class ViewHolder{
+    TextView tv;
+    View holderView;
+    public ViewHolder(){
+        //  抽取holderView的获得方法以及控件赋值的方法
+        holderView = getHolderView();
+
+        holderView.setTag(this); 
+    }
+    //绑定数据
+    public void bindData(AppInfo appInfo){
+        tv.setText(appInfo.name);
+    }
+
+    // 这里仅仅是将构造方法中的holderView初始化过程抽取到一个方法中
+    private View getHolderView(){
+        View view = View.inflate(MyApplication.context, R.layout.home_list_item, null);
+        tv = (TextView) view.findViewById(R.id.tv);
+        return view;
+    }
+}
+</code></pre><p>ok，截止到目前为止，我们已经将ViewHolder这个类完全和Adapter分离。我们可以看出ViewHolder的功能如下： </p>
+<ol>
+<li>初始化布局view 即得到holdeView，并设置tag</li>
+<li>找到布局中的控件 findViewById</li>
+<li>为控件绑定数据 bindData</li>
+</ol>
+<h4 id="抽取BaseHolder的初衷："><a href="#抽取BaseHolder的初衷：" class="headerlink" title="抽取BaseHolder的初衷："></a>抽取BaseHolder的初衷：</h4><p>对于应用程序，我们可能在多个页面应用了ListView对象，而每个listView都会对应一个Adapter和一个ViewHolder，我们程序员是很懒的，如果让我们在每个ViewHolder中都写这么多代码，在每个Adapter中都写这么多代码，这显然不是一个高级程序员应该做的事情。那么我们就做一个高级程序员应该做的事情（哈哈，这一个大写的 X）。 打造一个基类BaseHolder，所有的ViewHolder继承该BaseHolder，然后我们只需关注，ViewHolder不同的两个功能：</p>
+<ol>
+<li>getHolderView的返回值，即条目布局对象。</li>
+<li>bindData绑定什么数据，即我们要展示的布局控件的内容。</li>
+</ol>
+<p>先看下BaseHolder的写法：</p>
+<pre><code>public abstract class BaseViewHolder&lt;T&gt; {
+    //getView要展示的view对象
+    public View holderView;
+
+    public BaseViewHolder() {
+        holderView = getHolderView();
+        holderView.setTag(this);
+    }
+
+    /**
+     * 功能： 初始化holderView inflate布局文件，findviewbyid控件
+     * @return
+     */
+    public abstract View getHolderView();
+
+    /**
+     * 为getholderView中的控件赋值
+     * @param t 需要显示的条目的bean对象
+     */ 
+    public abstract void bindData(T t);//这里不知道具体页面需要展示的内容是什么数据 所以可以采用泛型来接收
+}
+</code></pre><p>相信经过了上边ViewHolder抽取，这个基类的抽取已经小菜一碟了，这里主要关注一点，因为我们不知道具体的Holder要绑定什么类型的数据，所以我们采用了泛型来接收。 ok，接下来我们来看下具体的使用方法：我们让之前的ViewHolder继承自我们的BaseHolder：</p>
+<pre><code>public class HomeHolder extends BaseHolder&lt;AppInfo&gt;{
+    TextView tv_des;
+    @Override
+    public View getHolderView() {
+
+        View view = View.inflate(MyApplication.context, R.layout.adapter_home, null);
+
+        tv_des = (TextView) view.findViewById(R.id.tv_des);
+
+        return view;
+    }
+
+    @Override
+    public void bindData(AppInfo appInfo) {
+
+        tv_des.setText(appInfo.des);
+    }
+}
+</code></pre><p>是不是很简单了，有了个这个BaseHolder，在写ViewHolder的时候只需要继承该BaseHolder并实现getHolderView 和 bindData方法就可。 </p>
+<hr>
+<h2 id="BaseAdaper的抽取："><a href="#BaseAdaper的抽取：" class="headerlink" title="BaseAdaper的抽取："></a>BaseAdaper的抽取：</h2><p>经过了BaseHolder的抽取我们回过头再看看我们的Adapter适配器的写法：</p>
+<pre><code>public class HomeAdapter extends BaseAdapter {
+    private ArrayList&lt;AppInfo&gt; list;
+    //构造参数接收条目数据内容集合
+    public HomeAdapter(ArrayList&lt;AppInfo&gt; list) {
+        this.list = list;
+    }
+
+    @Override
+    public int getCount() {
+        return list.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return list.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        // 1. 初始化holder
+        HomeViewHolder viewHolder = null;
+        if (convertView == null) {
+            viewHolder = new HomeViewHolder();
+        } else {
+            viewHolder = (HomeViewHolder) convertView.getTag();
+        }
+        // 2. 绑定数据
+        viewHolder.bindData(list.get(position));
+        return viewHolder.holderView;
+    }
+}
+</code></pre><p>我们可以看出 每一个Adapter的getView方法都做了以上这两件事，不同之处是就是 </p>
+<ol>
+<li>Holder对象类型不同，但都是BaseHolder的子类 </li>
+<li>数据不同，但与构造方法传进来list存储的数据类型有关</li>
+</ol>
+<p>可以看出除了我们要关注的getView方法，我们还有还有好多冗余代码，那么我们又可以抽取了，抽取的时候我们需要关注内容有哪些，不同Adapter功能实现时候不同的地方，就是我们需要关注的地方。</p>
+<p>我们可以看出：只需要关注的只有一点： <strong>getView使用的ViewHolder对象</strong>。但是我们可知，所有的holder都是我们BaseHolder的子类</p>
+<p><strong>抽取思路：</strong></p>
+<p>BasicAdapter提供抽象方法 getHolder() 来初始化所要使用的holder对象并返回，getView内部拿BaseHolder接收即可。list集合的数据类型还是由构造方法传入部传入。实现如下：</p>
+<pre><code>/***
+ *
+ * @param &lt;T&gt; 泛型为Adapter展示view所需的数据对象类型
+ */
+public abstract class BasicAdapter&lt;T&gt; extends BaseAdapter{
+        public ArrayList&lt;T&gt; list;
+        public BasicAdapter(ArrayList&lt;T&gt; list){
+            this.list = list;
+        }
+
+        @Override
+        public int getCount() {
+            return list.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return list.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            //1.初始化holder对象
+            BaseHolder&lt;T&gt; holder = null;
+            if(convertView==null){
+                //这个地方每个子的adapter所需要的holder都不一样，应该由子类自己实现
+                holder = getHolder();
+            }else {
+                holder = (BaseHolder&lt;T&gt;) convertView.getTag();
+            }
+
+            //2.绑定数据到holder
+            T t = list.get(position);
+            holder.bindData(t);
+
+            return holder.holderView;
+        }
+        /**
+         * 返回不同的holder，子类来实现
+         * @return
+         */
+        protected abstract BaseHolder&lt;T&gt; getHolder();
+    }
+</code></pre><p>可以看出，BasicAdapter交给子类的工作只有两个，构造参数中将数据集合传入，复写getHolder()方法，将我们BaseHolder的子类返回。如下实现：</p>
+<pre><code>public class HomeAdapter extends BasicAdapter&lt;AppInfo&gt; {
+
+    public HomeAdapter(ArrayList&lt;AppInfo&gt; list) {
+        super(list);
+    }
+
+    @Override
+    public BaseViewHolder&lt;AppInfo&gt; getHolder() {
+        HomeViewHolder holder = new HomeViewHolder();
+        return holder;
+    }
+}
+</code></pre><p> 哈哈，可以看出我们的Apater的代码量已经减少为短短10行代码了，需要我们关注的只有ViewHolder的子类实现了（HomeViewHolder）。而viewHolder的实现经过我们抽取，我们需要关注的也就只有getHolderView(),和bindData两个方法了。</p>
+<hr>
+<h2 id="使用方法："><a href="#使用方法：" class="headerlink" title="使用方法："></a>使用方法：</h2><p> 至此，我们的抽取过程完全完成。综上，我们为所有的listView的ViewHolder提取了一个BaseHolder，为所有Adapter提取了一个基类BasicAdapter。之后我们就可以在我们的项目中这样使用了：</p>
+<ol>
+<li><p>listView的初始化</p>
+<pre><code>//list存储的数据类型为AppInfo
+private ArrayList&lt;AppInfo&gt; list = new ArrayList&lt;AppInfo&gt;();
+
+.....
+
+ListView listView = new ListView(getActivity());
+//将要展示的数据由构造参数传入 
+HomeAdapter mHomeAdapter = new HomeAdapter(list);
+//设置Adapter
+listView.setAdapter(mHomeAdapter);  
+</code></pre></li>
+<li><p>HomeApdater实现：</p>
+<pre><code>public class HomeAdapter extends BasicAdapter&lt;AppInfo&gt; {
+
+    public HomeAdapter(ArrayList&lt;AppInfo&gt; list) {
+        super(list);
+    }
+
+    @Override
+    public BaseViewHolder&lt;AppInfo&gt; getHolder() {
+        //初始化ViewHolder 
+        HomeViewHolder holder = new HomeViewHolder();
+        return holder;
+    }
+
+}
+</code></pre></li>
+<li><p>HomeViewHolder的实现：</p>
+<pre><code>public class HomeHolder extends BaseHolder&lt;AppInfo&gt;{
+    TextView tv_des;
+    @Override
+    public View getHolderView() {
+        // 在这里初始化View
+        View view = View.inflate(GooglePlayApplication.context, R.layout.adapter_home, null);
+
+        tv_des = (TextView) view.findViewById(R.id.tv_des);
+
+        return view;
+    }
+
+    @Override
+    public void bindData(AppInfo appInfo) {
+        //在这里为控件赋值
+        tv_des.setText(appInfo.des);
+    }
+}
+</code></pre></li>
+</ol>
+<p>这解释一点： AppInfo（List集合） 的数据时怎么传递个HomeHolder的：</p>
+<p><strong>new HomeAdapter(list) —— BaseAdapter 中的ArrayList&lt;Tlist  —— BaseAdapter中getView方法 调用 BaseHolder的bindData方法：viewHolder.bindData(list.get(position)); —— HomeHolder 的bindData（APPInfo appInfo） 即为 list集合中指定位置的AppInfo对象。 </strong></p>
+<p>我们使用的时候只需要保证， </p>
+<ol>
+<li><p>new HomeAdapter 的泛型 与list集合中的数据类型相同， </p>
+<pre><code>public HomeAdapter(ArrayList&lt;AppInfo&gt; list) {
+    super(list);
+}
+</code></pre></li>
+<li><p>new HomeHolder 的时候bindData中的参数类型与list集合中的数据类型相同即可；</p>
+<pre><code>@Override
+public void bindData(AppInfo appInfo) {
+    tv_des.setText(appInfo.des);
+}
+</code></pre></li>
+</ol>
+<hr>
+<p>例子源码下载地址： <a href="https://github.com/ImportEffort/ListViewUseBaseHolder" target="_blank" rel="external">https://github.com/ImportEffort/ListViewUseBaseHolder</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;BaseHolder的抽取：&quot;&gt;&lt;a href=&quot;#BaseHolder的抽取：&quot; class=&quot;headerlink&quot; title=&quot;BaseHolder的抽取：&quot;&gt;&lt;/a&gt;BaseHolder的抽取：&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;抽取基类： 程序的多个地方用到大量重复的代码，这时候我们抽取基类，子类只需要关注必须实现的方法，来提高代码的编写效率，减少冗余代码。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&quot;listView的Adapter常规写法：&quot;&gt;&lt;a href=&quot;#listView的Adapter常规写法：&quot; class=&quot;headerlink&quot; title=&quot;listView的Adapter常规写法：&quot;&gt;&lt;/a&gt;listView的Adapter常规写法：&lt;/h3&gt;&lt;p&gt;正常的listview的适配器Adapter的getView和ViewHolder的使用方法：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public View getView(int position, View convertView, ViewGroup parent) {
+    ViewHolder viewHolder = null;
+    if (convertView == null) {
+        //1. 获取布局文件的view对象
+        convertView = View.inflate(GooglePalyApplication.context,
+            R.layout.home_list_item, null);
+        //2. 初始化viewholder
+        viewHolder = new ViewHolder();
+        //3. 为viewHolder的变量赋值，通过findViewbyId 
+        viewHolder.tv = (TextView) convertView.findViewById(R.id.tv);
+        //4. 为布局文件对象设置tag 以提高findViewbyId的效率
+        convertView.setTag(viewHolder);
+    }else{
+        viewHolder = (ViewHolder) convertView.getTag();
+    }
+    //5. 初始化数据
+    AppInfo appInfo = list.get(postion);
+    viewHolder.tv.setText(appInfo.name);
+    return convertView;
+}
+
+class ViewHolder{
+    TextView tv;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;对getView执行的动作进行简单的分析我们可以发现，他做了如下几件事：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;获取布局文件的view对象&lt;/li&gt;
+&lt;li&gt;初始化viewholder&lt;/li&gt;
+&lt;li&gt;为viewHolder的变量赋值，通过findViewbyId &lt;/li&gt;
+&lt;li&gt;为布局文件对象设置tag 以提高findViewbyId的效率&lt;/li&gt;
+&lt;li&gt;初始化数据&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;可以看出以上所有的步骤都与ViewHolder有关，这里我们要实现的就是将这些步骤放在ViewHolder内部完成，简化getView内部实现。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
+    
+    
+      <category term="android笔记" scheme="http://yoursite.com/tags/android%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>自定义控件之自定View实现开关（ToggleButton）效果</title>
+    <link href="http://yoursite.com/2016/07/29/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%A7%E4%BB%B6%E4%B9%8B%E8%87%AA%E5%AE%9AView%E5%AE%9E%E7%8E%B0%E5%BC%80%E5%85%B3%EF%BC%88ToggleButton%EF%BC%89%E6%95%88%E6%9E%9C/"/>
+    <id>http://yoursite.com/2016/07/29/自定义控件之自定View实现开关（ToggleButton）效果/</id>
+    <published>2016-07-29T14:48:42.000Z</published>
+    <updated>2016-08-13T06:40:50.717Z</updated>
+    
+    <content type="html"><![CDATA[<p>##自定控件简介：</p>
+<p>　　Android系统本身没有自带实现像，IOS那种ToggleButton的效果API。但需求往往是IOS和Android两个平台的产品UI效果要尽可能统一。我们经常见到手机系统中，数据流量开关功能的UI就是进行了这样的自定义。</p>
+<p>　　要使用自定义控件，我们往往需要进行自定义一个类继承，View或者ViewGroup，让后进行自己需要功能的添加。但是如何能把自己定义的控件成功展示出想要的效果，就需要了解系统View的绘制过程了：简单来说一个view从XML布局文件展示到界面上都需要经过三个阶段：测量阶段（onMeasure  ）,          布局(onLayout),画控件(onDraw)；</p>
+<ol>
+<li><p>onMeasure()方法，该方法实现的功能如下：    </p>
+<ol>
+<li>设置本View视图的最终大小，该功能的实现通过调用setMeasuredDimension()方法去设置实际的高(对应属性mMeasuredHeight)和宽(对应属性：mMeasureWidth)；</li>
+<li>如果该View对象是个ViewGroup类型，需要重写该onMeasure()方法，对其子视图进行遍历的measure()过程。我们需要该方法内部调用子view本身的measure方法来确定，每个子view控件的大小。</li>
+</ol>
+</li>
+<li><p>layout布局过程：</p>
+<ol>
+<li>主要作用 ：为将整个根据子视图的大小以及布局参数将View树放到合适的位置上。</li>
+<li>如果我们要实现的是一个View如本例中的ToggleButton而本身不包含子控件，那么我们不需要手动去实现这个方法。</li>
+</ol>
+</li>
+<li><p>onDraw绘制过程：</p>
+<ol>
+<li>主要作用就是初始view的视图，并和 invalidate（）组合来实现控件的动态绘制（移动控件的位置）；</li>
+<li>另外如果我们的自定义控件继承自ViewGroup那么我们就可以省略这个过程，因为系统的dispatchDraw()方法内部会遍历每个子视图，调用drawChild()去重新回调每个子视图的draw()方法。</li>
+</ol>
+</li>
+<li><p>invalidate() 重新绘制</p>
+<ol>
+<li>从该方法实现的功能来看很类与ListView的notifyDatehasChanged方法，功能就是当我改变View或者子View的内容的时候，调用这个方法就会为我们重画当前当前的View</li>
+<li>官方解释的话大概是下面这个意思：invalidate();使整个View无效化, 如果当前的View可见，那么会在未来的某一时刻调用onDraw invalidate()只能在主线程调用 如果想在子线程刷新界面 那么需要调用postInvalidate();</li>
+</ol>
+</li>
+</ol>
+<hr>
+<a id="more"></a>
+<h2 id="自定义ToggleButton的实现过程："><a href="#自定义ToggleButton的实现过程：" class="headerlink" title="自定义ToggleButton的实现过程："></a>自定义ToggleButton的实现过程：</h2><ol>
+<li><p>首先我们自定义MyToggleButton继承自View，然后实现其三个构造方法：</p>
+<pre><code>public ToggleButton(Context context, AttributeSet attrs, int defStyle) {
+    super(context, attrs, defStyle);
+}
+
+public ToggleButton(Context context, AttributeSet attrs) {
+    super(context, attrs);
+}
+
+public ToggleButton(Context context) {
+    super(context);
+}
+</code></pre></li>
+<li><p>其次我们对外暴露设置开关背景和开关按钮资源ID的方法：可以看到我们在该方法内部得到了两个资源的Bitmap对象，并通过Bitmap对象获得背景和开关按钮的宽高。</p>
+<pre><code>public void setBackgroundAndIcon(int backgroundResID, int iconResID) {
+    mBgBitmap = BitmapFactory.decodeResource(getResources(),
+            backgroundResID);
+    viewWidth = mBgBitmap.getWidth();
+    viewHight = mBgBitmap.getHeight();
+
+    mBtnBitmap = BitmapFactory.decodeResource(getResources(), iconResID);
+    iconWidth = mBtnBitmap.getWidth();
+    maxIconLeft = viewWidth - iconWidth;
+};
+</code></pre></li>
+<li><p>然后我们开始画出我们的自定义控件第一步覆写onMeasure方法：内容很简单就是调用了setMeasuredDimension方法将我们控件背景的大小传递进去，用来表示我们整个控件的大小。</p>
+<pre><code>@Override
+protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    //super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    setMeasuredDimension(viewWidth, viewHight);
+}
+</code></pre></li>
+<li><p>我们说过如果我们布局并不是继承自ViewGroup也就是我们自定的View中仅有一个控件需要摆放，那么我们就不需要覆写onLayout方法。相反我们却要覆写onDraw方法，画出我们控件的具体位置：</p>
+<pre><code>@Override
+protected void onDraw(Canvas canvas) {
+    // canvas.drawBitmap(bitmap, left, top, paint);
+    // 第二个参数 left 从x坐标的 具体哪个值开始画这张图片
+    // 第三个参数 top 从y坐标的 具体哪个值开始画这张图片
+    // 第四个参数 paint画笔 这里由于画的是图片 不需要修改 所以paint传null就可以了
+    canvas.drawBitmap(mBgBitmap, 0, 0, null);
+    //画button图标的方法被我们单独抽出来实现其功能
+    drawIcon(canvas);
+}
+</code></pre></li>
+<li><p>drawIcon方法的实现：</p>
+<pre><code>private void drawIcon(Canvas canvas) {
+// 第一次 画button的时候iconLeft= 0;
+        // 经历过TouchEvent后iconLeft随着手指滑动的位置改变,为了不让按钮画出背景，做出如下限制
+        if (iconLeft &lt; 0) {
+            iconLeft = 0;
+        } else if (iconLeft &gt; maxIconLeft) {
+            iconLeft = maxIconLeft;
+        }
+
+        canvas.drawBitmap(mBtnBitmap, iconLeft, 0, null);
+
+        //如果状态改变则去
+        if (canChangeState) {
+            canChangeState = false;
+
+            //定义临时变量 记录上一次的开关状态
+            boolean lastState = getOpen();
+
+            if (iconLeft == 0) {
+                //说明滑块在最左边 关闭的状态
+                isOpen = false;
+            }else{
+                isOpen = true;
+            }
+            if (lastState!= isOpen &amp;&amp; mLisener != null) {
+                mLisener.onButtonStateChangeLisener(this);
+            }
+        }
+
+    }
+</code></pre></li>
+<li><p>我们可以看到上述代码中canvas.drawBitmap(mBtnBitmap, iconLeft, 0, null);第二个参数传递的并不是0，而是一个IconLeft。这里不写死的原因是我们需要让button的位置发生变化，我们通过onTouchEvent中获取的坐标为iconLeft动态赋值：</p>
+<pre><code>@Override
+public boolean onTouchEvent(MotionEvent event) {
+
+    switch (event.getAction()) {
+    case MotionEvent.ACTION_DOWN:
+        // 设置我们按下后手指点的位置正好为按钮的中间 getX为到达自定义控件左边界的距离
+        iconLeft = event.getX() - iconWidth / 2;
+        break;
+    case MotionEvent.ACTION_MOVE:
+        iconLeft = event.getX() - iconWidth / 2;
+        break;
+    case MotionEvent.ACTION_UP:
+        //当停止滑动的时候设置最终显示结果：
+        if(event.getX()&gt; viewWidth/2){
+            iconLeft = maxIconLeft;
+        }else if(event.getX()&lt;= viewWidth/2){
+            iconLeft = 0;
+        }
+        //状态是否改变
+        canChangeState = true;
+        break;
+    }
+    // 重新绘制界面
+    invalidate();
+    return true;
+}
+</code></pre></li>
+<li><p>可以看到我们每次点击结束后都调用了invalidate()来进行页面的重画，这样一来就是实现button随着我们的手滑动改变位置了。</p>
+</li>
+<li><p>我们往往使用开关的时候需要进行在对应的状态实现相应的操作，如果开关关上我们停用数据网络，打开开启数据网络。</p>
+<ol>
+<li><p>我们让外部控件知道我们内部是否处于相应的位置，换句话说我们想要在对应的状态实现对应的方法，就需要对外暴露一个回调接口，当内部绘制完成后，调用接口的方法，而接口方法的具体实现交给外部调用者来实现。这种接口回调思想跟我们经常适应的button的onClickLisener的思路是相同的。</p>
+<pre><code>/**
+ * 对外暴露 回调接口 
+ */
+public interface onStateChangeLisener{
+    void onButtonStateChangeLisener(ToggleButton button);
+}
+
+public void setonStateChangeListener(onStateChangeLisener lisener){
+    this.mLisener = lisener;
+}
+</code></pre></li>
+<li><p>我们还需要有一个标志位，通过这个标志位，外部可以实现对开关的打开关闭进行设置</p>
+<pre><code>private boolean isOpean；
+public boolean getOpen() {
+    return isOpen;
+}
+public void setOpen(boolean isOpen) {
+    this.isOpen = isOpen;
+    //设置对应的显示的位置
+    if(!isOpen){
+        iconLeft = 0;
+    }else{
+        iconLeft = maxIconLeft;
+    }
+}
+</code></pre></li>
+<li><p>具体使用方法：</p>
+<pre><code>toggleButton.setonStateChangeListener(new onStateChangeLisener() {
+
+    @Override
+    public void onButtonStateChangeLisener(ToggleButton button) {
+        Toast.makeText(getApplicationContext(), toggleButton.getOpen()+&quot;&quot;,
+                Toast.LENGTH_SHORT).show();
+    }
+});
+</code></pre></li>
+</ol>
+</li>
+<li><p>到这里我们的基本功能就已经实现了：完整代码如下：</p>
+<pre><code>package com.itheima.togglebutton;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.View;
+
+public class ToggleButton extends View {
+
+    private Bitmap mBgBitmap;
+    private Bitmap mBtnBitmap;
+    private int viewWidth;
+    private int viewHight;
+    private int iconWidth;
+    private float iconLeft;
+    private int maxIconLeft;
+    private boolean canChangeState = false;
+    private onStateChangeLisener mLisener;
+    private boolean isOpen;
+    /**
+     * 对外提供设置 lisener
+     * @param lisener
+     */
+    public void setonStateChangeListener(onStateChangeLisener lisener){
+        this.mLisener = lisener;
+    }
+    public ToggleButton(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }
+
+    public ToggleButton(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public ToggleButton(Context context) {
+        super(context);
+    }
+
+    public void setBackgroundAndIcon(int backgroundResID, int iconResID) {
+        mBgBitmap = BitmapFactory.decodeResource(getResources(),
+                backgroundResID);
+        viewWidth = mBgBitmap.getWidth();
+        viewHight = mBgBitmap.getHeight();
+
+        mBtnBitmap = BitmapFactory.decodeResource(getResources(), iconResID);
+        iconWidth = mBtnBitmap.getWidth();
+        maxIconLeft = viewWidth - iconWidth;
+    };
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        setMeasuredDimension(viewWidth, viewHight);
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        // canvas.drawBitmap(bitmap, left, top, paint);
+        // 第二个参数 left 从x坐标的 具体哪个值开始画这张图片
+        // 第三个参数 top 从y坐标的 具体哪个值开始画这张图片
+        // 第四个参数 paint画笔 这里由于画的是图片 不需要修改 所以paint传null就可以了
+        canvas.drawBitmap(mBgBitmap, 0, 0, null);
+        drawIcon(canvas);
+    }
+
+    private void drawIcon(Canvas canvas) {
+        // 第一次 画button的时候iconLeft= 0;
+        // 经历过TouchEvent后iconLeft随着手指滑动的位置改变,为了不让按钮画出背景，做出如下限制
+        if (iconLeft &lt; 0) {
+            iconLeft = 0;
+        } else if (iconLeft &gt; maxIconLeft) {
+            iconLeft = maxIconLeft;
+        }
+
+        canvas.drawBitmap(mBtnBitmap, iconLeft, 0, null);
+
+        //如果状态改变则去
+        if (canChangeState) {
+            canChangeState = false;
+
+            //定义临时变量 记录上一次的开关状态
+            boolean lastState = getOpen();
+
+            if (iconLeft == 0) {
+                //说明滑块在最左边 关闭的状态
+                isOpen = false;
+            }else{
+                isOpen = true;
+            }
+            if (lastState!= isOpen &amp;&amp; mLisener != null) {
+                mLisener.onButtonStateChangeLisener(this);
+            }
+        }
+
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        switch (event.getAction()) {
+        case MotionEvent.ACTION_DOWN:
+            // 设置我们按下后手指点的位置正好为按钮的中间
+            iconLeft = event.getX() - iconWidth / 2;
+            break;
+        case MotionEvent.ACTION_MOVE:
+            iconLeft = event.getX() - iconWidth / 2;
+            break;
+        case MotionEvent.ACTION_UP:
+            //当停止滑动的时候设置最终显示结果：
+            if(event.getX()&gt; viewWidth/2){
+                iconLeft = maxIconLeft;
+            }else if(event.getX()&lt;= viewWidth/2){
+                iconLeft = 0;
+            }
+            canChangeState = true;
+            break;
+        }
+        // 重新绘制界面
+        invalidate();
+        return true;
+    }
+
+    public boolean getOpen() {
+        return isOpen;
+    }
+    public void setOpen(boolean isOpen) {
+        this.isOpen = isOpen;
+        //设置对应的显示
+        if(!isOpen){
+            iconLeft = 0;
+        }else{
+            iconLeft = maxIconLeft;
+        }
+    }
+
+    /**
+     * 对外暴露 回调接口 
+     */
+    public interface onStateChangeLisener{
+        void onButtonStateChangeLisener(ToggleButton button);
+    }
+}
+</code></pre><p> ——– Acitivty方法———-</p>
+<pre><code>public class MainActivity extends Activity {
+
+    private ToggleButton toggleButton;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        toggleButton = (ToggleButton) findViewById(R.id.togglebutton);
+
+        toggleButton.setBackgroundAndIcon(R.drawable.switch_background,
+                R.drawable.slide_button_background);
+
+        toggleButton.setonStateChangeListener(new onStateChangeLisener() {
+
+            @Override
+            public void onButtonStateChangeLisener(ToggleButton button) {
+                Toast.makeText(getApplicationContext(), toggleButton.getOpen()+&quot;&quot;,
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+}
+</code></pre><p> ——– 布局文件方法———-</p>
+<pre><code>&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+        xmlns:tools=&quot;http://schemas.android.com/tools&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;match_parent&quot;
+        tools:context=&quot;.MainActivity&quot; &gt;
+
+        &lt;com.itheima.togglebutton.ToggleButton
+            android:id=&quot;@+id/togglebutton&quot;
+            android:layout_width=&quot;wrap_content&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            android:layout_centerInParent=&quot;true&quot; /&gt;
+
+    &lt;/RelativeLayout&gt;
+</code></pre></li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;##自定控件简介：&lt;/p&gt;
+&lt;p&gt;　　Android系统本身没有自带实现像，IOS那种ToggleButton的效果API。但需求往往是IOS和Android两个平台的产品UI效果要尽可能统一。我们经常见到手机系统中，数据流量开关功能的UI就是进行了这样的自定义。&lt;/p&gt;
+&lt;p&gt;　　要使用自定义控件，我们往往需要进行自定义一个类继承，View或者ViewGroup，让后进行自己需要功能的添加。但是如何能把自己定义的控件成功展示出想要的效果，就需要了解系统View的绘制过程了：简单来说一个view从XML布局文件展示到界面上都需要经过三个阶段：测量阶段（onMeasure  ）,          布局(onLayout),画控件(onDraw)；&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;onMeasure()方法，该方法实现的功能如下：    &lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;设置本View视图的最终大小，该功能的实现通过调用setMeasuredDimension()方法去设置实际的高(对应属性mMeasuredHeight)和宽(对应属性：mMeasureWidth)；&lt;/li&gt;
+&lt;li&gt;如果该View对象是个ViewGroup类型，需要重写该onMeasure()方法，对其子视图进行遍历的measure()过程。我们需要该方法内部调用子view本身的measure方法来确定，每个子view控件的大小。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;layout布局过程：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;主要作用 ：为将整个根据子视图的大小以及布局参数将View树放到合适的位置上。&lt;/li&gt;
+&lt;li&gt;如果我们要实现的是一个View如本例中的ToggleButton而本身不包含子控件，那么我们不需要手动去实现这个方法。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;onDraw绘制过程：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;主要作用就是初始view的视图，并和 invalidate（）组合来实现控件的动态绘制（移动控件的位置）；&lt;/li&gt;
+&lt;li&gt;另外如果我们的自定义控件继承自ViewGroup那么我们就可以省略这个过程，因为系统的dispatchDraw()方法内部会遍历每个子视图，调用drawChild()去重新回调每个子视图的draw()方法。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;invalidate() 重新绘制&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;从该方法实现的功能来看很类与ListView的notifyDatehasChanged方法，功能就是当我改变View或者子View的内容的时候，调用这个方法就会为我们重画当前当前的View&lt;/li&gt;
+&lt;li&gt;官方解释的话大概是下面这个意思：invalidate();使整个View无效化, 如果当前的View可见，那么会在未来的某一时刻调用onDraw invalidate()只能在主线程调用 如果想在子线程刷新界面 那么需要调用postInvalidate();&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+    
+    </summary>
+    
+      <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
+    
+    
+      <category term="android笔记" scheme="http://yoursite.com/tags/android%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Application捕获全局异常</title>
+    <link href="http://yoursite.com/2016/07/29/Application%E6%8D%95%E8%8E%B7%E5%85%A8%E5%B1%80%E5%BC%82%E5%B8%B8/"/>
+    <id>http://yoursite.com/2016/07/29/Application捕获全局异常/</id>
+    <published>2016-07-28T16:57:01.000Z</published>
+    <updated>2016-07-28T17:07:18.407Z</updated>
+    
+    <content type="html"><![CDATA[<p>##自定义全局Appliction<br>　　我们都知道我们的可以自定义四大组件，并且在配置文件中声明并使用，其实Application也可以。而且定义一个全局的Appliction其内部的方法，参数等生命周期都是整个应用的生命周期。也就是只有用户退出应用了，才会被回收。所以这里非常适合定义一些全局使用的方法或者常量。</p>
+<ol>
+<li><p>在配置文件中使用自定义的Applcation：</p>
+<pre><code> &lt;application
+        android:name=&quot;.MyApplication&quot;
+        ······&gt;
+    ·····
+    ·····
+&lt;/application&gt;
+</code></pre></li>
+<li><p>自定义一个类继承自Application：</p>
+<pre><code>public class MobileSafeApplication extends Application {
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        // 设置未捕获异常处理器
+        Thread.setDefaultUncaughtExceptionHandler(new MyUncaughtExceptionHandler());
+    }
+
+    class MyUncaughtExceptionHandler implements UncaughtExceptionHandler {
+
+        // 未捕获的异常都会走到此方法中
+        // Throwable是Exception和Error的父类
+        @Override
+        public void uncaughtException(Thread thread, Throwable ex) {
+            System.out.println(&quot;产生了一个未处理的异常, 但是被哥捕获了...&quot;);
+            // 将异常日志输入到本地文件中, 找机会上传到服务器,供技术人员分析
+            File file = new File(Environment.getExternalStorageDirectory(),
+                    &quot;error.log&quot;);
+            try {
+                PrintWriter writer = new PrintWriter(file);
+                ex.printStackTrace(writer);
+                writer.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // 结束当前进程
+            android.os.Process.killProcess(android.os.Process.myPid());
+        }
+    }
+}
+</code></pre></li>
+<li><p>捕获全局异常，一般我们的应用程序异常都在使用的时候捕获，但是总有一些奇怪的异常，出现概率非常小，比如一个功能使用几百次，只有一次崩溃了。这种问题很难进行预测处理，这时候我们就需要使用全局异常来捕获了：</p>
+<pre><code>// 设置未捕获异常处理器
+Thread.setDefaultUncaughtExceptionHandler(new MyUncaughtExceptionHandler());
+</code></pre></li>
+<li><p>捕获异常我们都会上传到服务器，但是这种异常很特殊，很可能发生异常程序就崩溃退出了，所以良好的做法是先保存到本地，然后带用户下次使用的时候，偷偷上传服务器。</p>
+</li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;##自定义全局Appliction&lt;br&gt;　　我们都知道我们的可以自定义四大组件，并且在配置文件中声明并使用，其实Application也可以。而且定义一个全局的Appliction其内部的方法，参数等生命周期都是整个应用的生命周期。也就是只有用户退出应用了，才会被回收。所
+    
+    </summary>
+    
+      <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
+    
+    
+      <category term="android笔记" scheme="http://yoursite.com/tags/android%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>为你的应用添加守护进程，实现应用页面跳转</title>
+    <link href="http://yoursite.com/2016/07/28/%E4%B8%BA%E4%BD%A0%E7%9A%84%E5%BA%94%E7%94%A8%E6%B7%BB%E5%8A%A0%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B%EF%BC%8C%E5%AE%9E%E7%8E%B0%E5%BA%94%E7%94%A8%E9%A1%B5%E9%9D%A2%E8%B7%B3%E8%BD%AC/"/>
+    <id>http://yoursite.com/2016/07/28/为你的应用添加守护进程，实现应用页面跳转/</id>
+    <published>2016-07-28T11:30:49.000Z</published>
+    <updated>2016-07-28T11:40:47.436Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前台服务（守护进程）"><a href="#前台服务（守护进程）" class="headerlink" title="前台服务（守护进程）"></a>前台服务（守护进程）</h2><ul>
+<li>360, 金山, 腾讯的应用是杀不死的, 这时因为他们开启了前台服务, 系统认为他们是前台进程.而我们点击，清理内存控件的时候， ActivityManager.killBackgroundProcesses只能杀死后台进程. </li>
+<li>要让一个应用成为前台进程, 可以在使用前台服务. 前台服务也叫守护服务, 会在通知栏里显示一个通知, 通知栏所在的应用叫 SystemUI, 这个应用是不会挂掉的, 如果一个应用有前台服务, 在通知栏里有通知,系统也会认为这个进程是前台进程, 不会杀死它.</li>
+</ul>
+<p>实现方法：</p>
+<ol>
+<li>守护进程服务，通过服务来实现的。效果是在我们通知栏添加了一条不会消失的Notification。</li>
+<li><p>我们在应用开启的时候，就开启守护进程服务。</p>
+<pre><code>public class ProtectService extends Service {
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        // 参1 通知的id
+        Notification notification = new Notification();
+        notification.icon = R.drawable.ic_launcher;
+        // 远程view
+        notification.contentView = new RemoteViews(getPackageName(),
+                R.layout.notify_view);
+
+        Intent intent = new Intent();
+        intent.setAction(&quot;android.intent.action.MAIN&quot;);
+        intent.addCategory(&quot;android.intent.category.LAUNCHER&quot;);
+        ComponentName componentName = new ComponentName(
+                getApplicationContext(), SpalshActivity.class);
+        intent.setComponent(componentName);
+
+        // 延时意图 打开一个activity
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                getApplicationContext(), 100011, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        notification.contentView.setOnClickPendingIntent(R.id.notity_root,
+                pendingIntent);
+
+        // 让服务成为前台进程 不会轻易被杀掉
+        startForeground(1000, notification);
+    }
+}
+</code></pre></li>
+</ol>
+<p>留意这几行代码：我们为我们的跳转intent添加了一个组件名称对象。这样以来，系统就可以帮我们判断，当前应用是否在后台运行。如果在后台运行，那么就跳转到当前运行的界面。如果没有运行则帮我们找到该应用的Launch页面，即打开该应用。实际上应用的快捷方式也是应用了这个跳转方法。</p>
+<pre><code>Intent intent = new Intent();
+intent.setAction(&quot;android.intent.action.MAIN&quot;);
+intent.addCategory(&quot;android.intent.category.LAUNCHER&quot;);
+ComponentName componentName = new ComponentName(
+getApplicationContext(), SpalshActivity.class);
+intent.setComponent(componentName);
+</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前台服务（守护进程）&quot;&gt;&lt;a href=&quot;#前台服务（守护进程）&quot; class=&quot;headerlink&quot; title=&quot;前台服务（守护进程）&quot;&gt;&lt;/a&gt;前台服务（守护进程）&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;360, 金山, 腾讯的应用是杀不死的, 这时因为他们开启了前台
+    
+    </summary>
+    
+      <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
+    
+    
+      <category term="android笔记" scheme="http://yoursite.com/tags/android%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ViewPager简单使用--实现广告轮播</title>
+    <link href="http://yoursite.com/2016/07/28/ViewPager%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8-%E5%AE%9E%E7%8E%B0%E5%B9%BF%E5%91%8A%E8%BD%AE%E6%92%AD/"/>
+    <id>http://yoursite.com/2016/07/28/ViewPager简单使用-实现广告轮播/</id>
+    <published>2016-07-28T04:20:15.000Z</published>
+    <updated>2016-07-28T17:37:04.829Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="ViewPager实现广告轮播"><a href="#ViewPager实现广告轮播" class="headerlink" title="ViewPager实现广告轮播"></a>ViewPager实现广告轮播</h1><h2 id="官方support包的作用"><a href="#官方support包的作用" class="headerlink" title="官方support包的作用"></a>官方support包的作用</h2><h3 id="1-v4，v7，v13包都是干什么用的？"><a href="#1-v4，v7，v13包都是干什么用的？" class="headerlink" title="1.v4，v7，v13包都是干什么用的？"></a>1.v4，v7，v13包都是干什么用的？</h3><ol>
+<li>support包是android发布的支持库；提供给老版本使用新版本的功能。</li>
+<li>v4 – 最低android为API1.6的手及以上提供新版本的功能 </li>
+<li>v7 – 最低Android为API2.1手机及以上提供新版本的功能，注意，v7是要依赖v4这个包的，如果需要使用v7，两个包必须被同时加入工程</li>
+<li>v13– 这个包我们用的就比较少了,一般在开发平板应用的时候才会用到。</li>
+<li><strong>ViewPager在Android-support-V4包中</strong>。</li>
+</ol>
+<p>###2.如何关联v4的源码</p>
+<ol>
+<li>libs新建一个file名字为v4包名adnroid-suport-v4.jar.properties,</li>
+<li>在该文件中添加一行src=D:\eclipse\eclipseForAndorid_18\sdk\extras\android\support\v4\src （没有分号），即为sdk中v4包中src的全路径。</li>
+<li>关闭当前工程（closeProject），再次打开工程就可以看到源码了。</li>
+<li>导入源码后我们在eclipse中就可以看到对应viewpager的方法参数了，而不是arg0.1.2···之类的了。</li>
+</ol>
+<a id="more"></a>
+<h2 id="viewPager是工作原理是什么？"><a href="#viewPager是工作原理是什么？" class="headerlink" title="viewPager是工作原理是什么？"></a>viewPager是工作原理是什么？</h2><p>查看API文档可以看到有关于Viewpager的简介(这里只选取两段，详情还往自己翻阅官方文档)：</p>
+<blockquote>
+<p>When you implement a PagerAdapter, you must override the following methods at minimum:</p>
+</blockquote>
+<pre><code>instantiateItem(ViewGroup, int)
+destroyItem(ViewGroup, int, Object)
+getCount()
+isViewFromObject(View, Object)
+</code></pre><blockquote>
+<p>ViewPager associates each page with a key Object instead of working with Views directly. This key is used to track and uniquely identify a given page independent of its position in the adapter. A call to the PagerAdapter method startUpdate(ViewGroup) indicates that the contents of the ViewPager are about to change. One or more calls to instantiateItem(ViewGroup, int) and/ordestroyItem(ViewGroup, int, Object) will follow, and the end of an update will be signaled by a call to finishUpdate(ViewGroup). By the time finishUpdate returns the views associated with the key objects returned by instantiateItem should be added to the parent ViewGroup passed to these methods and the views associated with the keys passed to destroyItem should be removed. The method isViewFromObject(View, Object) identifies whether a page View is associated with a given key object.</p>
+</blockquote>
+<p>上边这段主要的意思翻译下就是说：</p>
+<blockquote>
+<p>viewpager不直接处理每一个视图而是将各个视图与一个键联系起来。这个键用来跟踪且唯一代表一个页面，不仅如此，该键还独立于这个页面所在adapter的位置。当pageradapter将要改变的时候他会调用startUpdate函数，接下来会调用一次或多次的instantiateItem或者destroyItem。最后在更新的后期会调用finishUpdate。当finishUpdate返回时 instantiateItem返回的对象应该添加到父ViewGroup destroyItem返回的对象应该被ViewGroup删除。methodisViewFromObject(View, Object)代表了当前的页面是否与给定的键相关联。</p>
+</blockquote>
+<p>这里我们可以联想到Listview是怎么处理条目的，Listview采用了convertView缓存机制，来对Item进行重复利用，viewpager则不同，我理解viewpager是通过在管理item的引用来进行条目的管理，即在startUpdate的时候调用instantiateItem，来对view对象的创建，并放到对应的continer中。在finishupdate的时候调用destroy将对象从container中删除。这样对象就是失去了原有的引用，也就是对象不再拥有对应的引用，不久也就会被gc回收了。</p>
+<p>ViewPager 正常情况下(在不手动设置预加载个数时)，最多缓存3个存在1条目，当滑动到两头的时候postiton = getCout 只会显示一个条目缓存一个条目。因此滑动的时候可以把下个条目或者上个条目展示出来。当缓存达到三个条目时，随着滑动会销毁一个旧的。</p>
+<h2 id="ViewPager简单实现"><a href="#ViewPager简单实现" class="headerlink" title="ViewPager简单实现"></a>ViewPager简单实现</h2><ul>
+<li>布局文件中使用viewpager，需要跟其他第三包一样使用全类名即：<code>android.support.v4.viewpager</code></li>
+<li><p>viewpager主要的功能实现，跟ListView一样主要是在代码中定义。所以布局文件只需要：</p>
+<pre><code>&lt;android.support.v4.view.ViewPager    
+    android:id=&quot;@+id/viewpager&quot;  
+    android:layout_width=&quot;wrap_content&quot;  
+    android:layout_height=&quot;wrap_content&quot;/&gt;  
+</code></pre></li>
+<li><p>Activity中的功能实现：</p>
+<ol>
+<li>对应的ViewPager控件</li>
+<li>为viewPager控件创建适配器PagerAdapter</li>
+</ol>
+</li>
+<li>PagerAdapter适配器：<br>自定义一个类继承PagerAdapter复写四个方法<ol>
+<li>getcount: 要显示条目的数量 </li>
+<li>isViewFromObject(View view, Object object): 返回boolean <ol>
+<li>用来判断接下来要展示的view是否来自instanteItem</li>
+<li>要想正确显示条目，必须使该方法的两个参数相同</li>
+</ol>
+</li>
+<li>instantiateItem(ViewGroup container, int position)<ol>
+<li>实例化一条目，</li>
+<li>要想要展示的View创建，然后添加到参数viewGroup container中 </li>
+<li>并将创建的返回条目</li>
+</ol>
+</li>
+<li>destroyItem(ViewGroup container, int position, Object object)<ol>
+<li>用来销毁已经展示过的view引用。</li>
+<li>使用container.remove(object);来移除对应的引用</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+<pre><code>public class MainActivity extends Activity {
+
+    private ViewPager mVp;
+    private int[] imageResIds = { 
+                    R.drawable.a, 
+                    R.drawable.b, 
+                    R.drawable.c,
+                    R.drawable.d, 
+                    R.drawable.e, };
+
+    private String[] descs = { 
+                    &quot;巩俐不低俗，我就不能低俗&quot;, 
+                    &quot;扑树又回来啦！再唱经典老歌引万人大合唱&quot;,
+                    &quot;揭秘北京电影如何升级&quot;, 
+                    &quot;乐视网TV版大派送&quot;, 
+                    &quot;热血屌丝的反杀&quot;, };
+
+            // 声明一个存放的ImageViews
+    private ImageView imageViews[] = new ImageView[imageResIds.length];
+
+            @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        mVp = (ViewPager) findViewById(R.id.viewPager);
+
+        // 初始化ImageView数组
+        for (int i = 0; i &lt; imageViews.length; i++) {
+        imageViews[i] = new ImageView(this);
+        //这里设置图片资源为ImageView的背景 填充整片viewpage区域
+        imageViews[i].setBackgroundResource(imageResIds[i]);
+        //设置为src的话则填充不了整个屏幕
+        //imageViews[i].setImageResource(imageResIds[i]);
+        } 
+
+        mVp.setAdapter(new Myadapter());
+    }
+    /**
+     *自定义pagerAdapter
+     */    
+    private class Myadapter extends PagerAdapter {
+
+                @Override
+                public int getCount() {
+                    return imageViews.length;
+                }
+
+                @Override
+                public boolean isViewFromObject(View view, Object object) {
+                    return view == object;
+                }
+
+                @Override
+                public Object instantiateItem(ViewGroup container, int position) {
+                    // 获取对应显示位置的ImageView
+                    ImageView imageView = imageViews[position];
+                    // 添加到Container
+                    container.addView(imageView);
+                    // 返回ImageView
+                    return imageView;
+                }
+
+                @Override
+                public void destroyItem(ViewGroup container, int position, Object object) {
+                    // 销毁不用的ImageView引用
+                    container.removeView(imageViews[position]);
+                }
+
+            }
+        }
+</code></pre><h2 id="实现对应的广告标题展示和进度提示"><a href="#实现对应的广告标题展示和进度提示" class="headerlink" title="实现对应的广告标题展示和进度提示"></a>实现对应的广告标题展示和进度提示</h2><p>实现如果下图片下方透明标题，以及进度小点效果：</p>
+<p><img src="http://i.imgur.com/v8Zwyxv.png" alt=""></p>
+<ol>
+<li><p>首先标题就是一个设置半透明背景的TextView，而进度则是用一个LinearLayout容器动态添加的：</p>
+<pre><code>&lt;LinearLayout
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:layout_alignBottom=&quot;@id/viewPager&quot;
+    android:background=&quot;#77000000&quot;
+    android:gravity=&quot;center_horizontal&quot;
+    android:orientation=&quot;vertical&quot;
+    android:padding=&quot;5dp&quot; &gt;
+
+    &lt;TextView
+        android:id=&quot;@+id/tv_desc&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:text=&quot;我是说明&quot;
+        android:textColor=&quot;#ffffff&quot; /&gt;
+
+    &lt;LinearLayout
+        android:id=&quot;@+id/ll_dots&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:orientation=&quot;horizontal&quot; &gt;
+    &lt;/LinearLayout&gt;
+
+&lt;/LinearLayout&gt;
+</code></pre></li>
+<li><p>我们需要进度点的个数应该与我们要展示的资源个数相同，本例中要展示的图片个数为5个：</p>
+<pre><code>for (int i = 0; i &lt; imageViews.length; i++) {
+    //声明一个view对象
+    View dotsView = new View(this);
+    // 参数一：宽 参数二 高
+    LayoutParams params = new LayoutParams(5, 5);
+    // params.setMargins(left, top, right, bottom)
+    params.setMargins(5, 7, 0, 0);
+    // 将属性赋值dotsView
+    dotsView.setLayoutParams(params);
+    // 设置view的背景
+    dotsView.setBackgroundResource(R.drawable.dots_select_selector);
+    // 设置view的选中状态
+    dotsView.setSelected(false);
+    // 添加到父布局中，父布局设置了水平居中
+    mLldots.addView(dotsView);
+}
+</code></pre></li>
+<li><p>进度点的状态我们使用自定一的shape来实现：</p>
+<ol>
+<li><p>正常：</p>
+<pre><code>&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; 
+        android:shape=&quot;oval&quot;&gt;
+        &lt;!-- 透明 --&gt;
+        &lt;solid android:color=&quot;#99000000&quot;/&gt;
+  &lt;/shape&gt;
+</code></pre></li>
+<li><p>选中的shape</p>
+<pre><code>&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; 
+android:shape=&quot;oval&quot;&gt;
+  &lt;!--白色 --&gt;
+    &lt;solid android:color=&quot;#ffffff&quot;/&gt;
+&lt;/shape&gt;
+</code></pre></li>
+<li><p>创建selector  state——seleted false/true 其他状态 normal</p>
+<pre><code>&lt;selector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;
+
+       &lt;item android:drawable=&quot;@drawable/dots_select_select&quot; android:state_selected=&quot;true&quot;&gt;&lt;/item&gt;
+       &lt;item android:drawable=&quot;@drawable/dots_select_normal&quot; android:state_selected=&quot;false&quot;&gt;&lt;/item&gt;
+    &lt;item android:drawable=&quot;@drawable/dots_select_normal&quot;&gt;&lt;/item&gt;
+
+    &lt;/selector&gt;
+</code></pre></li>
+</ol>
+</li>
+<li><p>textView显示的内容与小点的显示状态：</p>
+<ol>
+<li><p>首先如何实现进度与文字展示，这里我们抽取了一个方法setTextAndDots，参数是传进来对应位置：</p>
+<pre><code>/**
+ * 设置轮播显示文字内容即小点的选中状态
+ * 
+ * @param position
+ */
+private void setTextAndDots(int position) {
+    // 设置TextView显示的文字
+    mTvDesc.setText(descs[position]);
+    // 设置小点的选中状态
+    for (int i = 0; i &lt; mLldots.getChildCount(); i++) {
+        View view = mLldots.getChildAt(i);
+        view.setSelected(false);
+    }
+    View seletedView = mLldots.getChildAt(position);
+    seletedView.setSelected(true);
+}
+</code></pre><p>2.设置viewpager的滑动监听：</p>
+<pre><code>// 设置滑动监听
+mVp.setOnPageChangeListener(new OnPageChangeListener() {
+    // 被选中的时候(停留在某个图片的时候)
+    @Override
+    public void onPageSelected(int position) {
+        //调用我们定义好的方法，并将对应图片的位置坐标传进来
+        setTextAndDots(position);
+    }
+
+    // 被滑动的时候时候
+    @Override
+    public void onPageScrolled(int position, float positionOffset,
+            int positionOffsetPixels) {
+    }
+
+    // 滑动状态改变的时候
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+});
+</code></pre></li>
+<li><p>为了在第一次加载的时候也能正确显示我们还需要在noCreate方法中调用一次：</p>
+<pre><code>setTextAndDots(0);
+</code></pre></li>
+</ol>
+</li>
+</ol>
+<h2 id="如何实现循环轮播"><a href="#如何实现循环轮播" class="headerlink" title="如何实现循环轮播"></a>如何实现循环轮播</h2><p>###实现无限循环的思路：</p>
+<ol>
+<li><p>为Adapter指定一个特别大的count值，如：Integer.MAX_VALUE。让用户滑倒累死也滑不到边界</p>
+<pre><code>public int getCount() {
+    return count;//这里是类变量，值为Integer.MAX_VALUE
+}
+</code></pre></li>
+<li><p>但是简单这样设置就会造成滑动是时候角标越界，因为我们集合的大小，资源的数量又没那么多。所以我们就需要处理，真正要展示的内容在集合中的“真实”角标 进行position与要实际资源条目数进行模除。</p>
+<ol>
+<li><p>首先在instantiateItem添加view的时候：</p>
+<pre><code>ImageView imageView = imageViews[position % imageViews.length];
+</code></pre></li>
+<li><p>在滑动监听中设置文字中：</p>
+<pre><code>public void onPageSelected(int position) {
+    setTextAndDots(position % imageViews.length);
+}
+</code></pre></li>
+</ol>
+</li>
+<li><p>设置完成后我们发现我们是可以往右无限滑动了，但是在却无法往左滑动，用户体验还是不好，解决方法就是设置我们第一要展示的图片位置：</p>
+<pre><code>// 设置当前显示的条目，及对应位置的文字显示内容
+mVp.setCurrentItem(count / 2);
+setTextAndDots(count / 2 % imageViews.length);
+</code></pre></li>
+</ol>
+<h2 id="如何实现自动播放"><a href="#如何实现自动播放" class="headerlink" title="如何实现自动播放"></a>如何实现自动播放</h2><p>接下来要实现的功能就是实现图片自动滚动播放了，原理也很简单，就是利用Handler发送一条空消息，在handler处理消息的时候，我们重新设置viewpager的角标，处理完成后我们在发送一条同样的消息。这样就可以自动播放了；</p>
+<ol>
+<li><p>首先在滑动监听中监听滑动状态：如果处于空闲状态（），表示用户没有主动滑动，那么我们就发送一条延迟消息，开启自动播放，如果不是子啊空闲状态则代表用户手动滑动了，那我们就取消轮播。</p>
+<pre><code>// 滑动状态改变的时候
+@Override
+public void onPageScrollStateChanged(int state) {
+    // 当空闲的时候发送一条空闲handler
+    if (state == ViewPager.SCROLL_STATE_IDLE) {
+        // 整个轮播事件的起源
+        handler.sendEmptyMessageDelayed(UPDATE_ITEM, 2000);
+    } else {
+        // 当用户滑动的时候就不要在进行轮播了 因此移除消息
+        handler.removeMessages(UPDATE_ITEM);
+    }
+}
+</code></pre></li>
+<li><p>handler中处理消息接收到的消息：</p>
+<pre><code>/**
+ * handler处理消息消息的方式
+ */
+protected void changeCurrentItem() {
+    // 获取当前条目的位置
+    int postion = mVp.getCurrentItem();
+    // 设置显示下一张图片
+    mVp.setCurrentItem(postion + 1);
+    // 再次发送改变的消息
+    handler.sendEmptyMessageDelayed(UPDATE_ITEM, 2000);
+}
+
+private Handler handler = new Handler() {
+
+    @Override
+    public void handleMessage(Message msg) {
+        super.handleMessage(msg);
+        if（msg.what == UPDATE_ITEM）{
+            changeCurrentItem();
+        }
+    }
+
+};    
+</code></pre></li>
+</ol>
+<h2 id="自动播放的细节优化"><a href="#自动播放的细节优化" class="headerlink" title="自动播放的细节优化"></a>自动播放的细节优化</h2><p>经过上述步骤，我们的viewPager已经可以正常运作了，但是还有一些细节需要优化。</p>
+<ol>
+<li><p>在用户离开当前页面的时候需要自动播放，如用户按了home键，我们只需要在onStop方法中移除handler中的消息即可：</p>
+<pre><code>@Override
+protected void onStop() {
+    super.onStop();
+    // 在当前页面不可用的时候设置取消轮播 节约内存
+    handler.removeMessages(UPDATE_ITEM);
+    //或者移除所有的消息，
+    //handler.removeCallbacksAndMessages(null);
+}
+</code></pre></li>
+<li><p>当用户重新回到这个页面的时候我们仍需要继续播放，我们可以在onStart或者onResume的生命周期方法中重新发送这条消息：</p>
+<p> @Override<br> protected void onResume() {</p>
+<pre><code>super.onResume();
+// 对应的在页面可见的时候设置viewpage轮播开始
+handler.sendEmptyMessageDelayed(UPDATE_ITEM, 2000);
+</code></pre><p> }</p>
+</li>
+</ol>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><blockquote>
+<p>文章只是介绍了Viewpager的一些简单使用方法，google官方认为viewpager是和Fragment一起使用比较好，现在市面上的大部分应用也都是如此。有关其他的使用方法，以后用到了会继续记录。文章不足之处还请多多指教。</p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;ViewPager实现广告轮播&quot;&gt;&lt;a href=&quot;#ViewPager实现广告轮播&quot; class=&quot;headerlink&quot; title=&quot;ViewPager实现广告轮播&quot;&gt;&lt;/a&gt;ViewPager实现广告轮播&lt;/h1&gt;&lt;h2 id=&quot;官方support包的作用&quot;&gt;&lt;a href=&quot;#官方support包的作用&quot; class=&quot;headerlink&quot; title=&quot;官方support包的作用&quot;&gt;&lt;/a&gt;官方support包的作用&lt;/h2&gt;&lt;h3 id=&quot;1-v4，v7，v13包都是干什么用的？&quot;&gt;&lt;a href=&quot;#1-v4，v7，v13包都是干什么用的？&quot; class=&quot;headerlink&quot; title=&quot;1.v4，v7，v13包都是干什么用的？&quot;&gt;&lt;/a&gt;1.v4，v7，v13包都是干什么用的？&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;support包是android发布的支持库；提供给老版本使用新版本的功能。&lt;/li&gt;
+&lt;li&gt;v4 – 最低android为API1.6的手及以上提供新版本的功能 &lt;/li&gt;
+&lt;li&gt;v7 – 最低Android为API2.1手机及以上提供新版本的功能，注意，v7是要依赖v4这个包的，如果需要使用v7，两个包必须被同时加入工程&lt;/li&gt;
+&lt;li&gt;v13– 这个包我们用的就比较少了,一般在开发平板应用的时候才会用到。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ViewPager在Android-support-V4包中&lt;/strong&gt;。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;###2.如何关联v4的源码&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;libs新建一个file名字为v4包名adnroid-suport-v4.jar.properties,&lt;/li&gt;
+&lt;li&gt;在该文件中添加一行src=D:\eclipse\eclipseForAndorid_18\sdk\extras\android\support\v4\src （没有分号），即为sdk中v4包中src的全路径。&lt;/li&gt;
+&lt;li&gt;关闭当前工程（closeProject），再次打开工程就可以看到源码了。&lt;/li&gt;
+&lt;li&gt;导入源码后我们在eclipse中就可以看到对应viewpager的方法参数了，而不是arg0.1.2···之类的了。&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+      <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
+    
+    
+      <category term="android笔记" scheme="http://yoursite.com/tags/android%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Android的Activity的四种启动模式</title>
+    <link href="http://yoursite.com/2016/07/27/Android%E7%9A%84Activity%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%90%AF%E5%8A%A8%E6%A8%A1%E5%BC%8F/"/>
+    <id>http://yoursite.com/2016/07/27/Android的Activity的四种启动模式/</id>
+    <published>2016-07-27T00:54:59.000Z</published>
+    <updated>2016-07-28T11:29:01.431Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Acitivity的启动模式"><a href="#Acitivity的启动模式" class="headerlink" title="Acitivity的启动模式"></a>Acitivity的启动模式</h2><ol>
+<li>Task：任务<ol>
+<li>一个应用程序可以包含多个界面，每个界面就是一个任务，用于处理用户的交互逻辑以及显示</li>
+</ol>
+</li>
+<li><p>Stack： 栈</p>
+<ol>
+<li>实际上是一种数据结构（Queue队列）：先进后出，后进先出；</li>
+<li>android使用stack存储当前程序打开的界面，这样确保了界面的打开的顺序，以便用户按下返回键的时候回到相应的界面；</li>
+</ol>
+</li>
+<li><p>启动的四种模式： standard，singleTop，singleTask，singleInstance</p>
+<ol>
+<li>设置启动模式有两种方法：1.注册文件中声明，2，使用intent</li>
+<li>这里讲解方式1：<ol>
+<li>standrad：<ol>
+<li>启动某个界面多少次，在Stack中就记录多少个</li>
+<li>启动–&gt;进栈， 退出–&gt;出栈</li>
+</ol>
+</li>
+<li>singleTop：单一顶部<ol>
+<li>只要该界面的实例用于栈顶，那么就不会在创建新的实例</li>
+<li>并不意味着栈里只有一个实例</li>
+<li>短信的编写界面就是singletop</li>
+</ol>
+</li>
+<li>singleTask： 单一任务栈模式。只对当前栈有作用<ol>
+<li>如果该界面的实例存在与任务栈中，那么不会在创建新的实例。</li>
+<li>而且把该实例与栈顶之间的其他实例全都销毁；//acitiviy比较消耗资源的</li>
+<li>浏览器的主界面  </li>
+</ol>
+</li>
+<li>singleInstance; 单例模式：（全局唯一模式）<ol>
+<li>该界面的实例将会位于新的独立的栈中，这个栈有且只能有其一个实例。</li>
+<li>要想展示该页面，做的操作是颠倒栈的位置而不是实例的位置。</li>
+<li>返回键清楚的值当前实例栈内的内容 单位时间内出现activity。</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<p>##启动模式在实际中的应用：</p>
+<blockquote>
+<p>我们经常会用到程序跳转的功能，比如手机卫士中当我们为其他的应用程序添加了程序锁，再打开相应的界面的时候我们需要跳转到手机卫士的解锁界面。我们成功解锁进入应用后，按返回键退出应该，我们会发现我们进入了手机卫士应用。当然这肯定不是我们想要结果。这时候我们就需要为解锁界面添加singleInstance启动模式。</p>
+</blockquote>
+<p>未设置启动模式之前：</p>
+<p><img src="http://i.imgur.com/A6vAb19.png" alt=""></p>
+<p>设置启动模式就避免了这个问题：</p>
+<p><img src="http://i.imgur.com/p6DIH2s.png" alt=""></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;Acitivity的启动模式&quot;&gt;&lt;a href=&quot;#Acitivity的启动模式&quot; class=&quot;headerlink&quot; title=&quot;Acitivity的启动模式&quot;&gt;&lt;/a&gt;Acitivity的启动模式&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;Task：任务&lt;ol&gt;
+&lt;li&gt;
+    
+    </summary>
+    
+      <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
+    
+    
+      <category term="android笔记" scheme="http://yoursite.com/tags/android%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>AsyncTask的简单使用</title>
+    <link href="http://yoursite.com/2016/07/27/AsyncTask%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/"/>
+    <id>http://yoursite.com/2016/07/27/AsyncTask的简单使用/</id>
+    <published>2016-07-27T00:54:27.000Z</published>
+    <updated>2016-07-28T17:32:47.231Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="AsyncTask简介："><a href="#AsyncTask简介：" class="headerlink" title="AsyncTask简介："></a>AsyncTask简介：</h2><p>AsyncTask是谷歌官方，提供的一个异步线程处理类。我们都知道Android中的UI线程即主线程是不能进行耗时操作的，所以我们在进行网络请求和数据库查询等耗时操作的时候我们往往会开启一个子线程来实现。最常见的就是ListView获取条目内容的时候。谷歌推出的这个方法，能过方便的进行主线程和UI线程中的切换。</p>
+<h2 id="AsyncTask-的简单使用方法"><a href="#AsyncTask-的简单使用方法" class="headerlink" title="AsyncTask 的简单使用方法"></a>AsyncTask 的简单使用方法</h2><p>使用AsyncTask的时候我们往往要实现其中的4个方法：</p>
+<p>　1. onPreExecute(), 该方法将在执行实际的后台操作前被UI thread调用。可以在该方法中做一些准备工作，如在界面上显示一个进度条。<br>　2. doInBackground(Params…), 将在onPreExecute 方法执行后马上执行，该方法运行在后台线程中。这里将主要负责执行那些很耗时的后台计算工作。可以调用 publishProgress方法来更新实时的任务进度。该方法是抽象方法，子类必须实现。<br>　3. onProgressUpdate(Progress…),在publishProgress方法被调用后，UI thread将调用这个方法从而在界面上展示任务的进展情况，例如通过一个进度条进行展示。<br>　4. onPostExecute(Result), 在doInBackground 执行完成后，onPostExecute 方法将被UI thread调用，后台的计算结果将通过该方法传递到UI thread.<br><strong>　<br>使用的时候需要注意的事情：</strong></p>
+<ol>
+<li>使用的时候需要注意：如果我们不需要子线程向主线程传递参数，那么我们泛型列表均可指定为Void。</li>
+<li>如果我们需要在子线程及 doingBackground 中向主线程传递信息，我们需要调用 publishProgress(Progress… values)将对象传递出来，调用这个方法后，系统就会通知 onProgressUpdate(Progress…)去执行。</li>
+<li>doInBackground方法和onPostExecute的参数必须对应，publishProgress方法中的参数类型必须和onProgressUpdate的泛型类型对应。这三个参数在AsyncTask声明的泛型参数列表中指定，第一个为doInBackground接受的参数，第二个为显示进度的参数，第第三个为doInBackground返回和onPostExecute传入的参数。</li>
+<li>doingBackground方法运行在线程如果内部调用了publishProgress方法的话，系统在会存储这些通知，一直通知 onProgressUpdate 方法去执行，因为是异步线程，所以可能会堆积条通知。但值得注意的是，一旦异步线程运行结束，任务不会等待onProgressUpdate方法执行完成再去执行onPostExecute方法，从而可能造成一定的隐患，所以我们可以在doingbackground方法中使用SystemClock方法使其不要执行的太快。</li>
+</ol>
+<p>声明：</p>
+<pre><code>class Task extends AsyncTask&lt;Void, ScanInfoBean, Void&gt; {
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        scanInfos = new ArrayList&lt;ScanInfoBean&gt;();
+        mAdapter = new AvAdapter();
+        mLvVirus.setAdapter(mAdapter);
+    }
+
+    @Override
+    protected Void doInBackground(Void... params) {
+
+        List&lt;PackageInfo&gt; packages = mPm
+                .getInstalledPackages(PackageManager.GET_UNINSTALLED_PACKAGES
+                        | PackageManager.GET_SIGNATURES);
+        // 获取总的数量
+        max = packages.size();
+        for (PackageInfo packageInfo : packages) {
+
+            ApplicationInfo applicationInfo = packageInfo.applicationInfo;
+
+            ScanInfoBean info = new ScanInfoBean();
+
+            publishProgress(info);
+            SystemClock.sleep(20);
+        }
+        return null;
+    }
+
+    // 运行在主线程
+    @Override
+    protected void onProgressUpdate(ScanInfoBean... values) {
+        // 通过不定参数 获取传递过来的info对象
+        ScanInfoBean infoBean = values[0];
+
+        mAdapter.notifyDataSetChanged();
+
+        // 设置进度界面包名显示
+        mTvPackName.setText(infoBean.packageName);
+        // 设置进度条显示百分比
+        mArcPro.setProgress((int) (scanInfos.size() * 100.0f / max + 0.5f));
+
+    }
+
+    @Override
+    protected void onPostExecute(Void result) {
+        super.onPostExecute(result);
+
+    }
+
+}
+</code></pre><p>使用：</p>
+<pre><code>Task mTask = new Task();
+mTask.execute();
+</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;AsyncTask简介：&quot;&gt;&lt;a href=&quot;#AsyncTask简介：&quot; class=&quot;headerlink&quot; title=&quot;AsyncTask简介：&quot;&gt;&lt;/a&gt;AsyncTask简介：&lt;/h2&gt;&lt;p&gt;AsyncTask是谷歌官方，提供的一个异步线程处理类。我们
+    
+    </summary>
+    
+      <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
+    
+    
+      <category term="android笔记" scheme="http://yoursite.com/tags/android%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Android中的简单自定义组合控件</title>
+    <link href="http://yoursite.com/2016/07/27/Android%E4%B8%AD%E7%9A%84%E7%AE%80%E5%8D%95%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E5%90%88%E6%8E%A7%E4%BB%B6/"/>
+    <id>http://yoursite.com/2016/07/27/Android中的简单自定义组合控件/</id>
+    <published>2016-07-27T00:53:16.000Z</published>
+    <updated>2016-07-28T17:37:00.931Z</updated>
+    
+    <content type="html"><![CDATA[<p>##什么是自定义组合控件<br>　　简单的自定义组合控件，意思就是把你经常使用的一些布局内容，抽取成一个单独的布局文件，然后自定义一个viewGroup类，来加载这个布局文件，并对外提供自定义属性。自定义组合控件主要两种.
+　</p>
+<ol>
+<li>一种是带自定义属性的自定义组合控件，这些属性通过Attributes添加，并可以在xml中使用。</li>
+<li>另一种是包装多个控件对外提供方法设置内部控件属性；</li>
+</ol>
+<a id="more"></a>
+<p>##不带自定义属性的组合控件</p>
+<p>比如说我们的需求是为一个横向的ProgresBar添加上描述文字，常见的场景就是系统内存控件使用率的展示，如下图：</p>
+<p><img src="http://i.imgur.com/LFF2EJL.png" alt=""></p>
+<p>实现方法：</p>
+<ol>
+<li>第一步我们需要使用，对系统原有的ProgressBar进行修改：</li>
+</ol>
+<pre><code>&lt;ProgressBar
+    android:id=&quot;@+id/pb_vdp&quot;
+    style=&quot;?android:attr/progressBarStyleHorizontal&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;22dp&quot;
+    android:layout_centerVertical=&quot;true&quot;
+    android:progress=&quot;50&quot;
+    android:progressDrawable=&quot;@drawable/progress_horizontal&quot; /&gt;
+</code></pre><p>可以看到我们对系统原有的横向进度条添加了一条progressDrawable的属性，通过这个属性我们可以自己定义系统进度条的样式。至于为什么可以？我们可以参照系统进度条实现方法：</p>
+<ul>
+<li><p>我们找到我们应用的主题样式，在清单文件中Applection节点下的</p>
+<pre><code>android:theme=&quot;@style/AppTheme&quot; &gt;
+</code></pre></li>
+<li><p>ctrl+左键进入项目的style.xml文件看到：</p>
+<pre><code>   &lt;style name=&quot;AppTheme&quot; parent=&quot;AppBaseTheme&quot;&gt;
+    &lt;item name=&quot;android:windowNoTitle&quot;&gt;true&lt;/item&gt;
+&lt;/style&gt;
+</code></pre></li>
+<li><p>再次ctrl+左键进入系统的theme.xml文件，全局搜索 progressBarStyleHorizontal 我们可以看到如下信息：</p>
+<pre><code>&lt;item name=&quot;progressBarStyleHorizontal&quot;&gt;
+    @android:style/Widget.ProgressBar.Horizontal
+&lt;/item&gt;
+</code></pre></li>
+<li><p>再次ctrl+左键进入系统的style.xml文件，我们就可以看见系统的ProgressBar样式了：</p>
+<pre><code>&lt;style name=&quot;Widget.ProgressBar.Horizontal&quot;&gt;
+    &lt;item name=&quot;android:indeterminateOnly&quot;&gt;false&lt;/item&gt;
+    &lt;item name=&quot;android:progressDrawable&quot;&gt;@android:drawable/progress_horizontal&lt;/item&gt;
+    &lt;item name=&quot;android:indeterminateDrawable&quot;&gt;@android:drawable/progress_indeterminate_horizontal&lt;/item&gt;
+    &lt;item name=&quot;android:minHeight&quot;&gt;20dip&lt;/item&gt;
+    &lt;item name=&quot;android:maxHeight&quot;&gt;20dip&lt;/item&gt;
+    &lt;item name=&quot;android:mirrorForRtl&quot;&gt;true&lt;/item&gt;
+&lt;/style&gt;
+</code></pre></li>
+<li>我们可以看到系统的横向进度条原有一个progressDrawable属性引用的是系统drawable目录下的Progress_horizontal文件，点击进去我们就可以看到：</li>
+</ul>
+<pre><code>&lt;layer-list xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;
+        &lt;!-- 背景 --&gt;
+        &lt;item android:id=&quot;@android:id/background&quot;&gt;
+            &lt;shape&gt;
+                &lt;corners android:radius=&quot;5dip&quot; /&gt;
+                &lt;gradient
+                        android:startColor=&quot;#ff9d9e9d&quot;
+                        android:centerColor=&quot;#ff5a5d5a&quot;
+                        android:centerY=&quot;0.75&quot;
+                        android:endColor=&quot;#ff747674&quot;
+                        android:angle=&quot;270&quot;
+                /&gt;
+            &lt;/shape&gt;
+        &lt;/item&gt;
+        &lt;!-- 副进度条 --&gt;
+        &lt;item android:id=&quot;@android:id/secondaryProgress&quot;&gt;
+            &lt;clip&gt;
+                &lt;shape&gt;
+                    &lt;corners android:radius=&quot;5dip&quot; /&gt;
+                    &lt;gradient
+                            android:startColor=&quot;#80ffd300&quot;
+                            android:centerColor=&quot;#80ffb600&quot;
+                            android:centerY=&quot;0.75&quot;
+                            android:endColor=&quot;#a0ffcb00&quot;
+                            android:angle=&quot;270&quot;
+                    /&gt;
+                &lt;/shape&gt;
+            &lt;/clip&gt;
+        &lt;/item&gt;
+        &lt;!-- 主进度条 --&gt;
+        &lt;item android:id=&quot;@android:id/progress&quot;&gt;
+            &lt;clip&gt;
+                &lt;!-- 四周弧度 --&gt;
+                &lt;shape&gt;
+                    &lt;corners android:radius=&quot;5dip&quot; /&gt;
+                &lt;!-- 渐变颜色 --&gt;
+                    &lt;gradient
+                            android:startColor=&quot;#ffffd300&quot;
+                            android:centerColor=&quot;#ffffb600&quot;
+                            android:centerY=&quot;0.75&quot;
+                            android:endColor=&quot;#ffffcb00&quot;
+                            android:angle=&quot;270&quot;
+                    /&gt;
+                &lt;/shape&gt;
+            &lt;/clip&gt;
+        &lt;/item&gt;
+
+    &lt;/layer-list&gt;
+</code></pre><ul>
+<li><p>我们需要做的是，在我们项目的drawable目录下也创建一个这样的文件，也可以直接复制系统的Progress_horizontal文件，然后修改里边的属性达到我们想要的效果，我们做出如下修改主要是更改了原有的系统进度条的背景及进度条颜色，之后回到我们之前布局文件中在ProgressBar中使用<code>android:progressDrawable=&quot;@drawable/progress_horizontal&quot;</code>即可：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;layer-list xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; &gt;
+    &lt;!-- 背景 --&gt;
+    &lt;item android:id=&quot;@android:id/background&quot;&gt;
+        &lt;shape&gt;
+            &lt;!-- 进度颜色 --&gt;
+            &lt;solid android:color=&quot;#22000000&quot; /&gt;
+        &lt;/shape&gt;
+    &lt;/item&gt;
+    &lt;!-- 副进度条 --&gt;
+    &lt;item android:id=&quot;@android:id/secondaryProgress&quot;&gt;
+        &lt;clip&gt;
+            &lt;shape&gt;
+                &lt;solid android:color=&quot;#22ff0000&quot; /&gt;
+            &lt;/shape&gt;
+        &lt;/clip&gt;
+    &lt;/item&gt;
+    &lt;!-- 主进度条 --&gt;
+    &lt;item android:id=&quot;@android:id/progress&quot;&gt;
+        &lt;clip&gt;
+            &lt;shape&gt;
+                &lt;solid android:color=&quot;#55ff0000&quot; /&gt;
+            &lt;/shape&gt;
+        &lt;/clip&gt;
+    &lt;/item&gt;
+&lt;/layer-list&gt;    
+</code></pre></li>
+</ul>
+<hr>
+<ol>
+<li><p>第二步 组合我们想要的控件</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+              android:layout_width=&quot;match_parent&quot;
+              android:layout_height=&quot;wrap_content&quot;
+              android:gravity=&quot;center_vertical&quot;
+              android:orientation=&quot;horizontal&quot;&gt;
+    &lt;TextView
+        android:id=&quot;@+id/tv_pdv_title&quot;
+        style=&quot;@style/TextContentStyle&quot;
+        android:layout_width=&quot;50dp&quot;
+        android:layout_marginTop=&quot;0dp&quot;
+        android:text=&quot;标题:&quot;
+        android:textSize=&quot;15sp&quot;/&gt;
+    &lt;RelativeLayout
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;wrap_content&quot;&gt;
+        &lt;ProgressBar
+            android:id=&quot;@+id/pb_pdv&quot;
+            style=&quot;?android:attr/progressBarStyleHorizontal&quot;
+            android:layout_width=&quot;match_parent&quot;
+            android:layout_height=&quot;24dp&quot;
+            android:layout_centerVertical=&quot;true&quot;
+            android:progressDrawable=&quot;@drawable/progress_horizontal&quot;/&gt;
+        &lt;TextView
+            android:id=&quot;@+id/tv_pdv_left&quot;
+            style=&quot;@style/TextContentStyle&quot;
+            android:layout_centerVertical=&quot;true&quot;
+            android:layout_marginLeft=&quot;0dp&quot;
+            android:text=&quot;xxx已用&quot;
+            android:textSize=&quot;13sp&quot;/&gt;
+        &lt;TextView
+            android:id=&quot;@+id/tv_pdv_right&quot;
+            style=&quot;@style/TextContentStyle&quot;
+            android:layout_alignParentRight=&quot;true&quot;
+            android:layout_centerVertical=&quot;true&quot;
+            android:layout_marginLeft=&quot;0dp&quot;
+            android:layout_marginRight=&quot;3dp&quot;
+            android:text=&quot;xxx可用&quot;
+            android:textSize=&quot;13sp&quot;/&gt;
+    &lt;/RelativeLayout&gt;
+&lt;/LinearLayout&gt;
+</code></pre></li>
+<li><p>新建一个类继承自RelativeLayout，覆写其3个构造发方法，其中只有一个构造参数的构造方法一般在代码声明中之传入一个参数的时候调用，其他两个方法一般在xml布局文件中声明的时候都会调用。这里我们为避免在每个构造方法中都初始化一遍我们的控件，我们采用this传递的方法，使其无论调用哪个构造方法最终均调用三个构造参数的方法。</p>
+<pre><code>public ProgressDesView(Context context, AttributeSet attrs, int defStyle) {
+    super(context, attrs, defStyle);
+    init();
+}
+
+public ProgressDesView(Context context, AttributeSet attrs) {
+    this(context, attrs, 0);
+}
+
+public ProgressDesView(Context context) {
+    this(context, null);
+}    
+</code></pre></li>
+<li><p>实现init（）；方法初始化布局控件内容：</p>
+<pre><code>    private TextView tvTitle;
+    private TextView tvLeft;
+    private TextView tvRight;
+    private ProgressBar pbProcess;
+
+private void init() {
+
+    View view = View.inflate(getContext(), R.layout.prgress_des_view, this);
+    tvTitle = (TextView) view.findViewById(R.id.tv_title);
+    tvLeft = (TextView) view.findViewById(R.id.tv_left);
+    tvRight = (TextView) view.findViewById(R.id.tv_right);
+    pbProcess = (ProgressBar) view.findViewById(R.id.pb_vdp);
+    pbProcess.setMax(100);
+}
+</code></pre></li>
+<li><p>我们实际需求是，能够在外部声明控件后直接setText就能动态设置进度条显示内容，所以我们为自定义的控件个添加了设置文本内容以及进度条进度的方法：</p>
+<pre><code>public void setItemTitle(String title) {
+    tvTitle.setText(title);
+}
+
+public void setUsed(String used) {
+    tvLeft.setText(used);
+}
+
+public void setUnUsed(String UnUsed) {
+    tvRight.setText(UnUsed);
+}
+
+public void setProgress(int precent) {
+    pbProcess.setProgress(precent);
+}
+</code></pre></li>
+</ol>
+<hr>
+<h2 id="带自定义属性的组合控件"><a href="#带自定义属性的组合控件" class="headerlink" title="带自定义属性的组合控件"></a>带自定义属性的组合控件</h2><p>从上边的控件看来，我们只是使用了现有的控件，然后在组合控件内部添加了自定义的方法暴露给外部，在代码中，我们通过自定义控件的对象来实现动态赋值。而如果我们为自定义的组合控件设置了自定义属性，我们就可以跟系统控件一样在布局文件中赋值了。好多第三方软件也是这样做的，好了下面效果图：</p>
+<p><img src="http://i.imgur.com/Y7mA1lv.png" alt=""></p>
+<p>上图中每个条目其实都是使用同一个自定义组合控件来实现的，通过设置不同的属性来控制显示的样式及内容。</p>
+<ol>
+<li><p>创建自定义组合控件的条目布局：</p>
+<pre><code>&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:paddingBottom=&quot;8dp&quot;
+    android:paddingLeft=&quot;12dp&quot;
+    android:paddingRight=&quot;12dp&quot;
+    android:paddingTop=&quot;8dp&quot; &gt;
+
+    &lt;TextView
+        android:id=&quot;@+id/tv_setting_title&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:text=&quot;设置中心&quot;
+        android:textColor=&quot;#393839&quot;
+        android:textSize=&quot;18dp&quot; /&gt;
+
+    &lt;ImageView
+        android:id=&quot;@+id/img_setting_toggle&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_alignParentRight=&quot;true&quot;
+        android:src=&quot;@drawable/on&quot; /&gt;
+
+&lt;/RelativeLayout&gt;
+</code></pre><p>效果图：</p>
+<p> <img src="http://i.imgur.com/AzEL1D1.png" alt=""></p>
+</li>
+<li><p>自定义一个类继承自RelativeLayout：</p>
+<pre><code>public ItemSetView(Context context, AttributeSet attrs, int defStyle) {
+
+    super(context, attrs, defStyle);
+
+        initView(context, attrs);
+    }
+    public ItemSetView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public ItemSetView(Context context) {
+        this(context, null);
+
+}
+</code></pre></li>
+<li><p>自定义属性的方法，我们在项目的values的目录下新建一个attrs.xml文件，在这里我们可以定义所有自定义控件的属性内容：</p>
+<pre><code>&lt;!-- 自定义控件的属性，name指定了是哪个自定义控件，这里写我们自己的类名 --&gt;
+&lt;declare-styleable name=&quot;ItemSetView&quot;&gt;
+    &lt;!-- 显示内容 --&gt;
+    &lt;attr name=&quot;isvTitle&quot; format=&quot;string&quot; /&gt;
+    &lt;!-- 背景图片 --&gt;
+    &lt;attr name=&quot;isvBkg&quot;&gt;
+        &lt;!-- name为提示框中中显示的可选值  --&gt;
+        &lt;enum name=&quot;first&quot; value=&quot;0&quot; /&gt;
+        &lt;enum name=&quot;middle&quot; value=&quot;1&quot; /&gt;
+        &lt;enum name=&quot;last&quot; value=&quot;2&quot; /&gt;
+    &lt;/attr&gt;
+    &lt;!--  --&gt;
+    &lt;attr name=&quot;isvEnable&quot; format=&quot;boolean&quot; /&gt;
+&lt;/declare-styleable&gt; 
+</code></pre></li>
+<li><p>实现initView(context, attrs)方法，方法参数二为AttributeSet，即为控件属性集合。我们通过这个集合在找到我们需要的控件属性：</p>
+<ol>
+<li>首先我们通过View.inflate(context, R.layout.view_setting_item, null);将我们定义好的布局引入，这里之所以能够这样引入是因为我们定义的都是一个ViewGroup，它本身就可以包含其他控件。</li>
+<li><p>context.obtainStyledAttributes检索属性 获取自定义属性集：</p>
+<pre><code>// 检索属性 获取自定义属性集
+TypedArray typedArray = context.obtainStyledAttributes(attrs,R.styleable.ItemSetView);
+</code></pre></li>
+<li><p>通过typedArray.getXXX方法获取对应自定义控件的属性，并赋值给对应的内部控件。在设置背景的时候我们使用了类似可选属性的方法，通过switch方法设置每个可选值对应的属性内容。</p>
+</li>
+</ol>
+</li>
+</ol>
+<pre><code>private void initView(Context context, AttributeSet attrs) {
+    View view = View
+            .inflate(context, R.layout.view_setting_item, null);
+    addView(view);
+    mSetTitle = (TextView) findViewById(R.id.tv_setting_title);
+    mImgToggle = (ImageView) findViewById(R.id.img_setting_toggle);
+
+    // 检索属性 获取自定义属性集
+    TypedArray typedArray = context.obtainStyledAttributes(attrs,R.styleable.ItemSetView);
+
+    // 获取设置的文本内容
+    String showTitle = typedArray.getString(R.styleable.ItemSetView_isvTitle);
+    mSetTitle.setText(showTitle);
+
+    // 获取设置的开关是否显示
+    boolean isShow = typedArray.getBoolean(R.styleable.ItemSetView_isvEnable, false);
+    mImgToggle.setVisibility(isShow ? View.VISIBLE : View.INVISIBLE);
+
+    // 获取设置的背景颜色
+    int bkgId = typedArray.getInt(R.styleable.ItemSetView_isvBkg, -1);
+    // 根据获取的值动态设置背景颜色
+    switch (bkgId) {
+    case 0:
+        setBackgroundResource(R.drawable.setting_item_first_selector);
+        break;
+    case 1:
+        setBackgroundResource(R.drawable.setting_item_middle_selector);
+        break;
+    case 2:
+        setBackgroundResource(R.drawable.setting_item_last_selector);
+        break;
+    default:
+        break;
+    }
+
+        typedArray.recycle();
+}
+</code></pre><ol>
+<li><p>使用方法：</p>
+<pre><code>&lt;com.zdysx.mobilesafe.view.ItemSetView
+    android:id=&quot;@+id/siv_addr_query&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:layout_marginTop=&quot;10dp&quot;
+    zdysx:isvBkg=&quot;first&quot;
+    zdysx:isvEnable=&quot;false&quot;
+    zdysx:isvTitle=&quot;号码归属地查询&quot; /&gt;
+</code></pre><p> 注意如果我们直接这么些，eclipse是会报错的，因为系统不知道zdysx是什么鬼东西当然会把报错了，解决方法就是为布局文件添加命名空间，方法就是：</p>
+<pre><code>&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    xmlns:zdysx=&quot;http://schemas.android.com/apk/res/com.zdysx.mobilesafe&quot;
+    xmlns:tools=&quot;http://schemas.android.com/tools&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    android:orientation=&quot;vertical&quot; &gt;
+</code></pre><p>  <code>xmlns:zdysx=&quot;http://schemas.android.com/apk/res/com.zdysx.mobilesafe&quot;</code>这一行就是我们自己的命名空间，也就是把系统的命名空间，复制一行最后一行改为我们自己的项目包名，androidstudio中自定义的属性，系统会直接提示你加上<code>xmlns:zdykj=&quot;http://schemas.android.com/apk/res-auto&quot;</code>；添加完成后我们就可以愉快的使用了。</p>
+</li>
+</ol>
+<hr>
+<p>##小结</p>
+<ol>
+<li>自定义组合控件，其实思想也是方便使用，当我们代码中有大量重复，有不能写死布局属性的时候，我们往往需要自定义一个组合控件出来使用。</li>
+<li>自定义属性控件，用的比较多，功能也比较强大，但是就是比较繁琐。至少我们了解第三方框架中的一些属性都是怎么回事了。</li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;##什么是自定义组合控件&lt;br&gt;　　简单的自定义组合控件，意思就是把你经常使用的一些布局内容，抽取成一个单独的布局文件，然后自定义一个viewGroup类，来加载这个布局文件，并对外提供自定义属性。自定义组合控件主要两种.
+　&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;一种是带自定义属性的自定义组合控件，这些属性通过Attributes添加，并可以在xml中使用。&lt;/li&gt;
+&lt;li&gt;另一种是包装多个控件对外提供方法设置内部控件属性；&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+      <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
+    
+    
+      <category term="android笔记" scheme="http://yoursite.com/tags/android%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Android中的手势识别（-）</title>
+    <link href="http://yoursite.com/2016/07/27/Android%E4%B8%AD%E7%9A%84%E6%89%8B%E5%8A%BF%E8%AF%86%E5%88%AB%EF%BC%88-%EF%BC%89/"/>
+    <id>http://yoursite.com/2016/07/27/Android中的手势识别（-）/</id>
+    <published>2016-07-27T00:52:43.000Z</published>
+    <updated>2016-07-29T11:31:34.884Z</updated>
+    
+    <content type="html"><![CDATA[<ul>
+<li><p>1 重写activity的 onTouchEvent方法</p>
+<pre><code>@Override
+public boolean onTouchEvent(MotionEvent event) {
+    return super.onTouchEvent(event);
+}
+</code></pre></li>
+<li><p>2 创建手势识别器，</p>
+<pre><code>gestureDetector = new GestureDetector(getApplicationContext(),
+        new GestureDetector.SimpleOnGestureListener());
+</code></pre></li>
+<li><p>3 在onTouchEvent里调用</p>
+<pre><code>mGestureDetector.onTouchEvent(event);
+</code></pre></li>
+<li><p>4 覆写 SimpleOnGestureListener里的onFling  加入滑动判断处理</p>
+<pre><code>public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+                    float velocityY) {
+                int x1 = (int) e1.getRawX();
+                int x2 = (int) e2.getRawX();
+                int y1 = (int) e1.getRawY();
+                int y2 = (int) e2.getRawY();
+                if (Math.abs(x1 - x2) &lt; Math.abs(y1 - y2)) {
+                    // y轴方向的移动距离大于x轴方向的移动距离 说明 是在竖直方向上滑动 不做处理 返回
+                    return false;
+                }
+                if (x2 - x1 &gt; 150) {
+                    // 向右滑动距离超过150 跳转到上一个页面
+                    preAnim();
+                    return true;
+                }
+
+                if (x1 - x2 &gt; 150) {
+                    // 向 左滑动距离超过150 跳转到下一个页面
+                    nextAnim();
+                    return true;
+                }
+
+                return false;
+            };
+</code></pre><p>  关于该方法的返回值，当我们在想要在这个方法中结束用户的滑动事件的处理的时候我们就返回true，处理不了则返回false</p>
+</li>
+<li><p>手势识别器监听接口 所有的功能<br>  new OnGestureListener() {</p>
+<pre><code>    //点击事件
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+    //按下事件
+    @Override
+    public void onShowPress(MotionEvent e) {
+
+    }
+
+    //滑动 随着手指拖动
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2,
+            float distanceX, float distanceY) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    //长按
+    @Override
+    public void onLongPress(MotionEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    //滑动 松开手指后响应
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2,
+            float velocityX, float velocityY) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    //按下
+    @Override
+    public boolean onDown(MotionEvent e) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+}
+</code></pre></li>
+</ul>
+<h2 id="getRawX-和getX-区别："><a href="#getRawX-和getX-区别：" class="headerlink" title="getRawX()和getX()区别："></a>getRawX()和getX()区别：</h2><ol>
+<li>这里的getRawX()和getRawY()的到的坐标是相对于整个手机屏幕的左上角</li>
+<li>这里的getX()和getY()的到的坐标是相对于当前控件（就是xxx）的左上角，坐标值不会 超出控件的宽和高</li>
+<li>如果我们是重写的activity的onTouchEvent(MotionEvent event) 那么event.getX()和event.getRawX()的值是相同的</li>
+<li><p>如果给一个view（比如一个button） 设置setOnTouchListener </p>
+<pre><code>xxx.setOnTouchListener(new OnTouchListener() {
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        System.out.println(&quot;onTouch.getRawY()==&quot; + event.getRawY());
+        System.out.getRawY()(&quot;onTouch.getY()==&quot; + event.getY());
+        //这里的getRawX()和getRawY()的到的坐标是相对于整个手机屏幕的左上角
+        //这里的getX()和getY()的到的坐标是相对于当前控件（就是xxx）的左上角，坐标值不会 超出控件的宽和高
+        return true;
+    }
+});
+</code></pre><p> 在onTouch方法中event通过判断event方法的类型也可以判断用户的操作：</p>
+<pre><code>MotionEvent.ACTION_DOWN;//按下
+MotionEvent.ACTION_MOVE；//移动
+MotionEvent.ACTION_UP；//抬起
+</code></pre></li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;ul&gt;
+&lt;li&gt;&lt;p&gt;1 重写activity的 onTouchEvent方法&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;@Override
+public boolean onTouchEvent(MotionEvent event) {
+    return super.onTouchE
+    
+    </summary>
+    
+      <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
+    
+    
+      <category term="android笔记" scheme="http://yoursite.com/tags/android%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Android中的数据存储</title>
+    <link href="http://yoursite.com/2016/07/27/Android%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/"/>
+    <id>http://yoursite.com/2016/07/27/Android中的数据存储/</id>
+    <published>2016-07-26T16:48:37.000Z</published>
+    <updated>2016-07-26T16:49:59.930Z</updated>
+    
+    <content type="html"><![CDATA[<p>#总结<br>首先说一个面试中常问的问题： Android中数据存储有哪个几种方式？ </p>
+<p>答案应该是： SharedPreference ，数据库（SQLite） ，网络存储（数据提交服务器） ，ContentProvider（内容提供者） </p>
+<h2 id="SharedPreference"><a href="#SharedPreference" class="headerlink" title="SharedPreference"></a>SharedPreference</h2><p>Sharepreference 一般用于存储标记性的数据 和 设置性的配置数据；</p>
+<ul>
+<li>如系统的设置界面中各个内容的选项</li>
+<li>Sharepreference保存的数据其实是保存在私有目录下的shared_prfs目录下；是一个xml文件；</li>
+</ul>
+<h3 id="Sharepreference的使用："><a href="#Sharepreference的使用：" class="headerlink" title="Sharepreference的使用："></a>Sharepreference的使用：</h3><ul>
+<li><p>保存数据：</p>
+<pre><code>//1.通过Context对象获取SharePreference对象
+//name：SharedPreference的文件名称  mode:模式
+SharedPreferences sharedPreferences = context.getSharedPreferences(&quot;userinfo.txt&quot;, Context.MODE_PRIVATE);
+//2.通过SharePreference对象获取一个Editor对象 
+Editor editor = sharedPreferences.edit();
+//3.使用Editor对象 添加键值对的数据
+editor.putString(&quot;username&quot;, username);
+editor.putString(&quot;password&quot;, password);
+//4.提交数据
+editor.commit();
+</code></pre></li>
+<li><p>读取数据：</p>
+<pre><code>//1.通过Context对象获取SharePreference对象
+//name：SharedPreference的文件名称  mode:模式
+SharedPreferences sharedPreferences = context.getSharedPreferences(&quot;userinfo.txt&quot;, Context.MODE_PRIVATE);
+//2.使用sharedPreferences对象通过key获取value
+String username = sharedPreferences.getString(&quot;username&quot;, &quot;&quot;);
+String password = sharedPreferences.getString(&quot;password&quot;, &quot;&quot;);
+</code></pre></li>
+</ul>
+<a id="more"></a>
+<h3 id="获取SharaPreferences的三个方法："><a href="#获取SharaPreferences的三个方法：" class="headerlink" title="获取SharaPreferences的三个方法："></a>获取SharaPreferences的三个方法：</h3><ol>
+<li>Context类中的getSharedPrefences()方法，接收两个参数一个是文件的名称，一个是Context.MODE_PRIVATE    <ul>
+<li>Activity来中的getPreferences方法，接收一个参数Mode，默认保存的文件名称以当前Activity的名字进行保存</li>
+</ul>
+</li>
+<li>所有类中都可以用了： PreferenceManager.getDefaultSharedPreferences(context)</li>
+<li>sharaPreference存放的文件默认是存放在该应用程序私有目录下的shared_prfs目录，所以在应用程序的任意一个地方调用getSharedPreferences都能访问到该文件。</li>
+</ol>
+<ul>
+<li><p>下面是我在开发常用的自定义的一个SP工具类：</p>
+<pre><code>import android.content.Context;
+import android.content.SharedPreferences;
+
+public class PreferenceUtils {
+
+    private static SharedPreferences sp;
+    /**
+     * 存储字符串
+     */
+    public static void getSharedPreference(Context context) {
+        if (sp == null) {
+            sp = context.getSharedPreferences(&quot;config&quot;, context.MODE_PRIVATE);
+        }
+    }
+    /**
+     * 取出字符串
+     */
+    public static void putString(Context context, String key, String value) {
+        getSharedPreference(context);
+        sp.edit().putString(key, value).commit();
+    }
+
+    public static String getString(Context context, String key, String defValue) {
+        getSharedPreference(context);
+        return sp.getString(key, defValue);
+    }
+    /**
+     * 存储整数
+     */
+    public static void putInt(Context context, String key, int value) {
+        getSharedPreference(context);
+        sp.edit().putInt(key, value).commit();
+    }
+    /**
+     * 取出整数
+     */
+    public static int getInt(Context context, String key, int defValue) {
+        getSharedPreference(context);
+        return sp.getInt(key, defValue);
+    }
+    /**
+     * 存储布尔值
+     */
+    public static void putBoolean(Context context, String key, boolean value) {
+        getSharedPreference(context);
+        sp.edit().putBoolean(key, value).commit();
+    }
+    /**
+     * 取出布尔值
+     */
+    public static boolean getBoolean(Context context, String key,
+            boolean defValue) {
+        getSharedPreference(context);
+        return sp.getBoolean(key, defValue);
+    }
+
+    /**
+     * 移除
+     */
+    public static void remove(Context context, String key) {
+        getSharedPreference(context);
+        sp.edit().remove(key).commit();
+    }
+}
+</code></pre></li>
+</ul>
+<pre><code>这样一来省去了开发中每次都要写一个SP的繁琐工作。
+</code></pre><hr>
+<p>##数据存储sdcard</p>
+<pre><code>操作sdcard的注意事项：
+1.加权限：
+
+         &lt;uses-permission android:name=&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot;/&gt;
+
+2.硬性编码：
+
+        /使用Environment获取sdcard目录的路径
+        String path = Environment.getExternalStorageDirectory().getPath();    
+
+3.判断sdcard的状态
+
+    if(!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
+            Toast.makeText(this, &quot;sdcard未挂载或不存在&quot;, 0).show();
+            return;
+        }
+    //Environment.getExternalStorageState() 获取sd卡是否挂载和可读写
+    //Environment.MEDIA_MOUNTED sd卡以挂载且可读写
+
+4.sdcard剩余空间
+
+        //获取sdcard剩余空间，需要获取一个sdcard目录类型的文件
+        File sdcard_dirFile = Environment.getExternalStorageDirectory();
+        //获取sdcard剩余空间获取一个File的可用空间
+        long usableSpace = sdcard_dirFile.getUsableSpace();
+        //获取总空间
+        //long totalSpace = sdcard_dirFile.getTotalSpace();
+        //格式化文件大小到字符串类型的 M  G  K   context:上下文   fileSize：文件大小
+        String usableSpace_str = Formatter.formatFileSize(this, usableSpace);
+
+        if(usableSpace &lt; 200 *1024*1024){//sdcard空间小于200M 
+            Toast.makeText(this, &quot;sdcard空间不足，剩余&quot;+usableSpace_str, 0).show();
+            return;
+        }          
+
+5. 写入sd卡的步骤：
+    获取路径：String path = Environment.getExternalStorageDirectory().getPath();
+    建立file文件： File file = new File(path,&quot;stuInfo.xml&quot;);
+    建立文件输入流： FileOutputStream output = new FileOutputStream(file);
+6.读取sd卡的步骤：
+    获取路径：String path = Environment.getExternalStorageDirectory().getPath();
+    建立file文件： File file = new File(path,&quot;stuInfo.xml&quot;);
+    建立文件输入流： FileInputStream input = new FileInputStream(file);
+</code></pre><p>##文件到底应该保存在哪里：</p>
+<p>如果需要往sdcard中保存特定类型的内容，可以考虑使用Environment.getExternalStoragePublicDirectory(String type)函数，该函数可以返回特定类型的目录，目前支持如下类型：</p>
+<pre><code>DIRECTORY_ALARMS //警报的铃声
+DIRECTORY_DCIM //相机拍摄的图片和视频保存的位置
+DIRECTORY_DOWNLOADS //下载文件保存的位置
+DIRECTORY_MOVIES //电影保存的位置， 比如 通过google play下载的电影
+DIRECTORY_MUSIC //音乐保存的位置
+DIRECTORY_NOTIFICATIONS //通知音保存的位置
+DIRECTORY_PICTURES //下载的图片保存的位置
+DIRECTORY_PODCASTS //用于保存podcast(博客)的音频文件
+DIRECTORY_RINGTONES //保存铃声的位置
+</code></pre><blockquote>
+<p>以上几种类型所获取的文件路径均不在应用程序的包下，而在系统默认指定存放这些东西的位置。</p>
+<p>这样以来，我们删除应用程序的时，保存在这些文件下的文件并不会被删除。</p>
+<p>这些文件夹即使我们步手动发送系统扫描sd卡的广播，系统也会查询到这个文件夹下的内容。可以称之为 被系统监视了</p>
+</blockquote>
+<p>想必你也很讨厌App在SD卡根目录乱建目录吧，那就从我做起，来遵守Google的这一规定吧，Google规定：第三方软件应该将文件保存在自己的包下：</p>
+<ol>
+<li>通过Context.getExternalFilesDir()方法可以获取到 SDCard/Android/data/{package_name}/files/ ，储存一些长时间保存的数据；</li>
+<li>通过Context.getExternalCacheDir()方法可以获取到 SDCard/Android/data/{package_name}/cache/，储存临时缓存数据；</li>
+</ol>
+<p>这两个目录分别对应 设置-&gt;应用-&gt;应用详情里面的”清除数据“与”清除缓存“选项。因此像视频音频这种不想因为程序被卸载而被删除的东西，就不要放在以上目录下。</p>
+<h2 id="SQL数据库："><a href="#SQL数据库：" class="headerlink" title="SQL数据库："></a>SQL数据库：</h2><p>###创建数据库的流程</p>
+<ol>
+<li><p>写个类继承SqliteOpenHelper</p>
+</li>
+<li><p>重写一些抽象方法 oncreate onupgread 和一个构造方法</p>
+<p> a. 构造方法：用来指定当前帮助类要创建的数据库的名称及版本号;</p>
+<pre><code>public MySqliteOpenHelper(Context context) {
+        //name：数据库文件的名称  factory:用来为用户创建cursor（结果集）对象,默认传null //version:数据库的版本号，从1开始；版本发生改变，onUpgrade方法将执行;
+            super(context, &quot;my.db&quot;, null, 1);
+    }
+</code></pre><p> b.oncreate方法：数据库第一次创建的时候调用,特别适合做表结构的初始化，可以创建多个表，也就是多个db.exeSQL()语句</p>
+<pre><code>public void onCreate(SQLiteDatabase db) {
+    //如何做表结构的初始化 ？执行sql语句即可。 SQLiteDatabase  db：数据库操作对象,可以执行sql语句
+    db.execSQL(&quot;create table user (_id  integer  primary key autoincrement,name varchar(20))&quot;);
+        System.out.println(&quot;没有执行&quot;);
+    }
+</code></pre><p> c.onupgrade方法：当数据库版本发生改变时调用, 特别适合做表结构的修改，在这里也可是在升级数据库的时候添加一张表，或者为一张表添加删除一个字段。</p>
+<pre><code>public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    // 数据库升级时调用，我们可以在这里修改表结构，为表添加字段
+    // db.execSQL(&quot;alter table user add phone varchar(11)&quot;);
+    System.out.println(&quot;older:&quot; + oldVersion + &quot; new:&quot; + newVersion);
+
+｝
+</code></pre></li>
+<li><p>创建一个dbUtilts帮助类的对象，并调用getReadableDatabase()即可创建数据库。</p>
+<pre><code>//创建帮助类对象
+ MySqliteOpenHelper mySqliteOpenHelper = new MySqliteOpenHelper(this);
+ //调用getReadableDatabase可以帮助我们创建或打开一个数据库，并返回一个数据库操作对象
+    SQLiteDatabase db = mySqliteOpenHelper.getReadableDatabase();
+  //SQLiteDatabase db = mySqliteOpenHelper.getWritableDatabase();
+</code></pre></li>
+</ol>
+<ol>
+<li><p>getReadableDatabase与getWritableDatabase的区别</p>
+<p>  a.getReadableDatabase:首先会尝试读写方式打开数据库，如果数据库文件的磁盘空间满了，会再次尝试以只读方式打开数据库</p>
+<p> b.getWritableDatabase:直接以读写方式打开数据库，如果数据库文件的磁盘空间满了，直接报错。</p>
+</li>
+</ol>
+<p>###数据库的增删改查方式：execSQL做增删改</p>
+<ol>
+<li><p>开发一个app包含数据库的时候 </p>
+<p> a. 建立数据库管理有关的类，需要从新创建一个包默认包名加db，这里边存放所有的数据库有关的类</p>
+<p> b. 建立数据库所管理的bean类对象的时候需要新建一个包以默认包名加bean结尾</p>
+</li>
+<li><p>使用db中execSQL做增删改，使用rawQuery做查询； execSQL有两种重载方式，采用传两个参数的方式可以避免sql注入；</p>
+</li>
+<li><p>特点：增删改没有返回值，我们无法判断sql语句是否执行成功； 查询比较灵活，可以进行多表查询。</p>
+</li>
+<li><p>查询的流程：能使用execSQL方法 因为该方法没有返回值，不能的到处结果集使用rawQuery做查询；</p>
+</li>
+<li>Cursor的get方法传递的是列的索引；没有传递列名的方法</li>
+</ol>
+<pre><code>public void query(String name) {
+    // 调用getReadableDatabse方法，返回一个数据库操作对象 SqliteDabase
+    SQLiteDatabase db = userInfoOpenHelper.getReadableDatabase();
+    //使用db执行插入方法 sql: 语句 selectionArgs:sql语句中占位符的值
+    Cursor cursor = db.rawQuery(&quot;select * from student where name = ?&quot;,
+                    new String[] { name });
+    // 解析结果集中的数据
+    if (cursor != null &amp;&amp; cursor.getCount() &gt; 0) {// 判断结果集是否有数据
+        while (cursor.moveToNext()) {
+            int id = cursor.getInt(0);// 列的索引
+            String name1 = cursor.getString(1);// 列的索引
+            String phone = cursor.getString(2);// 列的索引
+            System.out.println(&quot;id :&quot; + id + &quot;name1 :&quot; + name1 + &quot;phone :&quot;
+                            + phone);
+        }
+    }    
+    cursor.close();
+    // 关闭db
+    db.close();
+}
+</code></pre><h3 id="Android下另外一种数据库增删改查方式-（常用方法）"><a href="#Android下另外一种数据库增删改查方式-（常用方法）" class="headerlink" title="Android下另外一种数据库增删改查方式 （常用方法）"></a>Android下另外一种数据库增删改查方式 （常用方法）</h3><p>使用db中insert ,update ,delete做增删改，使用query做查询；这种方法本身可以防止Sql注入。<br>特点：增删改有返回值，我们可以判断sql语句是否执行成功,  查询不能进行多表查询:多表查询需要有两个表名，但该方式，只能传一个表名.</p>
+<ol>
+<li>增删改查：</li>
+</ol>
+<p>（1） update(String table, ContentValues values, String whereClause, String[] whereArgs)</p>
+<ul>
+<li>ContentValues values:要更新的列的数据的封装  每次存放一个属性的名和值</li>
+<li>whereClause:更新条件  </li>
+<li>whereArgs：条件占位符的值</li>
+<li>返回值：成功修改多少行</li>
+</ul>
+<p>（2） delete(String table, String whereClause, String[] whereArgs)</p>
+<ul>
+<li>各参数的意思同上 update</li>
+<li>返回值也是成功删除多少行</li>
+</ul>
+<p>（3）insert(String table, String nullColumnHack, ContentValues values)</p>
+<ul>
+<li>table 数据库的名称 注意是：student 而不是student.db 也就是说没有后缀名</li>
+<li>nullColumnHack：这个参数在values不为空的时候没有用，一般穿null即可</li>
+<li>ContentValues values 将添加的对象values </li>
+<li>返回值为：所添加的对象的id也就是行号，如果没添加成功则返回-1</li>
+</ul>
+<p>（4）query方法中的参数：query(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy）</p>
+<ul>
+<li>String table：数据库名称； </li>
+<li>String[] columns 要查询的列名 以字符串数据进行封装；</li>
+<li>String selection ：条件查询 与where作用相同 ；</li>
+<li>String[] selectionArgs：占位符的内容</li>
+<li>String groupBy：查询结果以什么进行分组；</li>
+<li>String having：查询结果过滤的条件  </li>
+<li>orderBy： 查询结果排列方式</li>
+<li>返回值：</li>
+</ul>
+<p>###1.改</p>
+<pre><code>public int update(StudentBean newbean) {
+
+// 调用getReadableDatabse方法，返回一个数据库操作对象 SqliteDabase
+    SQLiteDatabase db = userInfoOpenHelper.getReadableDatabase();
+// 使用db执行插入方法 sql: 语句 bindArgs:sql语句中占位符的值
+    ContentValues values = new ContentValues();
+    values.put(&quot;phone&quot;, newbean.phone);//key :列名 values:值
+    //values:要更新的列的数据的封装  whereClause:更新条件  whereArgs：条件占位符的值
+    //返回值：成功修改多少行
+    int result = db.update(&quot;student&quot;, values,&quot;name =?&quot;, new String []{newbean.name});
+    // 关闭db
+    db.close();
+    return result;                    
+}        
+</code></pre><p>###2.查询：</p>
+<pre><code>public void query(String name) {
+    // 调用getReadableDatabse方法，返回一个数据库操作对象 SqliteDabase
+        SQLiteDatabase db = userInfoOpenHelper.getReadableDatabase();
+    // 使用db执行插入方法 sql: 语句 selectionArgs:sql语句中占位符的值
+    Cursor cursor = db.query(&quot;student&quot;, new String[]{&quot;_id&quot;,&quot;name&quot;,&quot;phone&quot;}, &quot;name = ?&quot;, new String[]{name}, null, null, &quot;_id desc &quot;);
+    // 4.解析结果集中的数据
+    if (cursor != null &amp;&amp; cursor.getCount() &gt; 0) {// 判断结果集是否有数据
+        while (cursor.moveToNext()) {
+        int id = cursor.getInt(0);// 列的索引
+        String name1 = cursor.getString(1);// 列的索引
+        String phone = cursor.getString(2);// 列的索引
+        System.out.println(&quot;id :&quot; + id + &quot;name1 :&quot; + name1 + &quot;phone :&quot;+ phone);
+        }
+     }
+    cursor.close();
+    // 关闭db
+    db.close();
+}
+</code></pre><p>###3.增</p>
+<pre><code>public boolean insert(StudentBean bean) {
+    SQLiteDatabase db = userInfoOpenHelper.getReadableDatabase();
+
+    ContentValues values = new ContentValues();
+    values.put(&quot;name&quot;, bean.name);
+    values.put(&quot;phone&quot;, bean.phone);
+
+    long result = db.insert(&quot;student&quot;, null, values);
+    db.close();
+    if (result == -1) {
+        return false;
+    }
+    return true;
+}
+</code></pre><p>###4.删除</p>
+<pre><code>public void delete(String name) {
+    db = studentOpeanHelper.getReadableDatabase();
+
+    int result = db.delete(&quot;student&quot;, &quot;name=?&quot;, new String[] { name });
+
+    if (result &gt; 0)
+        Toast.makeText(context, &quot;删除成功&quot; + result + &quot;项&quot;, Toast.LENGTH_SHORT)
+                .show();
+    else
+        Toast.makeText(context, &quot;删除失败&quot;, Toast.LENGTH_SHORT).show();
+
+    db.close();
+
+}
+</code></pre><p>##数据库的事务：</p>
+<blockquote>
+<p>由于事务是在进行事务提交时将要执行的SQL操作一次性打开数据库连接执行，其执行速度比逐条执行SQL语句的速度快了很多倍。</p>
+</blockquote>
+<p>事务：同时执行多条sql语句，要么同时成功要么同时失败：案例： 银行转账。</p>
+<pre><code>// 转账按钮的点击事件
+public void transfer(View v) {
+            // 创建帮助类
+    BankSqliteOpenHelper bankSqliteOpenHelper = new BankSqliteOpenHelper(
+                                this);
+    // 创建和打开数据库，获取数据库操作对象
+    SQLiteDatabase db = bankSqliteOpenHelper.getReadableDatabase();
+                        // 通过事务来保证多条sql同时成功或同时失败
+    db.beginTransaction();// 开启事务
+    try {
+        // 转账：李四账户转张三200
+        db.execSQL(&quot;update account set money= money-200 where name=?&quot;,
+                                    new String[] { &quot;李四&quot; });
+        db.execSQL(&quot;update account set money= money+200 where name=?&quot;,
+                                    new String[] { &quot;张三&quot; });
+
+        // 标记事务执行成功
+        db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();// 结束事务,会判断事务成功的标记是否被设置，如果没有设置，就将之前执行成功的sql全部回滚恢复
+        }
+
+        db.close();
+    }
+</code></pre><p> 对事物的理解：</p>
+<ul>
+<li>开启事务的时候用try进行封装操作内容 这时候默认事务结束的标记为false</li>
+<li>当所有的操作内容都执行完了 把事务的标记设置为ture 如果没有执行到设置标记表示没有完成操作</li>
+<li>最后使用end判断事物是否成功的标记 如果true 则执行完成，如果false则会滚已经执行的操作</li>
+<li>什么时候需要使用事务，如：删除文件 如果没删除完之前点击了取消</li>
+<li>由于事务是在进行事务提交时将要执行的SQL操作一次性打开数据库连接执行，其执行速度比逐条执行SQL语句的速度快了很多倍。</li>
+<li>数据库用事务么?<ul>
+<li>这个就可以说，多表操作，或者是循环操作一个表时会用，其他情况不用。</li>
+<li>多表操作，例如转账。循环操作，比如缓存listview数据，要循环插入listview的每一个item对象。</li>
+</ul>
+</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;#总结&lt;br&gt;首先说一个面试中常问的问题： Android中数据存储有哪个几种方式？ &lt;/p&gt;
+&lt;p&gt;答案应该是： SharedPreference ，数据库（SQLite） ，网络存储（数据提交服务器） ，ContentProvider（内容提供者） &lt;/p&gt;
+&lt;h2 id=&quot;SharedPreference&quot;&gt;&lt;a href=&quot;#SharedPreference&quot; class=&quot;headerlink&quot; title=&quot;SharedPreference&quot;&gt;&lt;/a&gt;SharedPreference&lt;/h2&gt;&lt;p&gt;Sharepreference 一般用于存储标记性的数据 和 设置性的配置数据；&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如系统的设置界面中各个内容的选项&lt;/li&gt;
+&lt;li&gt;Sharepreference保存的数据其实是保存在私有目录下的shared_prfs目录下；是一个xml文件；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;Sharepreference的使用：&quot;&gt;&lt;a href=&quot;#Sharepreference的使用：&quot; class=&quot;headerlink&quot; title=&quot;Sharepreference的使用：&quot;&gt;&lt;/a&gt;Sharepreference的使用：&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;保存数据：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;//1.通过Context对象获取SharePreference对象
+//name：SharedPreference的文件名称  mode:模式
+SharedPreferences sharedPreferences = context.getSharedPreferences(&amp;quot;userinfo.txt&amp;quot;, Context.MODE_PRIVATE);
+//2.通过SharePreference对象获取一个Editor对象 
+Editor editor = sharedPreferences.edit();
+//3.使用Editor对象 添加键值对的数据
+editor.putString(&amp;quot;username&amp;quot;, username);
+editor.putString(&amp;quot;password&amp;quot;, password);
+//4.提交数据
+editor.commit();
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;读取数据：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;//1.通过Context对象获取SharePreference对象
+//name：SharedPreference的文件名称  mode:模式
+SharedPreferences sharedPreferences = context.getSharedPreferences(&amp;quot;userinfo.txt&amp;quot;, Context.MODE_PRIVATE);
+//2.使用sharedPreferences对象通过key获取value
+String username = sharedPreferences.getString(&amp;quot;username&amp;quot;, &amp;quot;&amp;quot;);
+String password = sharedPreferences.getString(&amp;quot;password&amp;quot;, &amp;quot;&amp;quot;);
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+      <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
+    
+    
+      <category term="android笔记" scheme="http://yoursite.com/tags/android%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>从Eclipse迁移到AndroidStudio遇到的坑</title>
+    <link href="http://yoursite.com/2016/07/27/%E4%BB%8EEclipse%E8%BF%81%E7%A7%BB%E5%88%B0AndroidStudio%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/"/>
+    <id>http://yoursite.com/2016/07/27/从Eclipse迁移到AndroidStudio遇到的坑/</id>
+    <published>2016-07-26T16:48:19.000Z</published>
+    <updated>2016-07-26T16:49:31.610Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="从Eclipse迁移到Android-studio你所需要知道快捷键"><a href="#从Eclipse迁移到Android-studio你所需要知道快捷键" class="headerlink" title="从Eclipse迁移到Android studio你所需要知道快捷键"></a>从Eclipse迁移到Android studio你所需要知道快捷键</h2><blockquote>
+<p>下述为一些在Eclipse中常用的快捷键，另外说明下，网上好多提示说将AS的快捷见切换为Eclipse文本就跟Eclipse原来的快捷键一样。亲身实验就算你切换成Eclipse模版，还是有好多不一样。所以之后默默开始去熟悉默认的AS快捷键了。用多了你会感觉他的确很强大。拿前两天亲身的例子来讲：编写的代码由于仅适用与API16以上，正常来说Eclipse只会给你提示，而Studio我按了下Alt + enter 直接给我语句包裹了SDK版本判断的语句。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>Eclipse</th>
+<th>AndroidStudio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>删除一行</td>
+<td>ctrl + d</td>
+<td>ctrl + y</td>
+</tr>
+<tr>
+<td>复制一行</td>
+<td>ctrl + alt + ↑/↓</td>
+<td>ctrl + d</td>
+</tr>
+<tr>
+<td>移动一行</td>
+<td>ctrl + ↑/↓</td>
+<td>Shift+Alt+↑/↓</td>
+</tr>
+<tr>
+<td>大小写切换</td>
+<td>ctrl + shift+Y/X</td>
+<td>Ctrl+Shift+U</td>
+</tr>
+<tr>
+<td>生成成员变量</td>
+<td>ctrl + 2 + l</td>
+<td>ctrl+alt + v</td>
+</tr>
+<tr>
+<td>生成类变量</td>
+<td>ctrl + 2 + f</td>
+<td>ctrl+alt + f</td>
+</tr>
+<tr>
+<td>错误修改提示</td>
+<td>ctrl + 1</td>
+<td>alt + enter</td>
+</tr>
+<tr>
+<td>提示方法参数</td>
+<td>Alt + /</td>
+<td>自动/ctrl+p</td>
+</tr>
+<tr>
+<td>格式化代码</td>
+<td>ctrl + shift + f</td>
+<td>Ctrl+Alt+L</td>
+</tr>
+<tr>
+<td>修改变量名</td>
+<td>ctrl + shift + R</td>
+<td>shift + f6</td>
+</tr>
+<tr>
+<td>自动倒包</td>
+<td>Ctrl+Alt+O</td>
+<td>Ctrl+Alt+O</td>
+</tr>
+<tr>
+<td>智能代码提示</td>
+<td>自定义代码模版</td>
+<td>Ctrl+J很实用</td>
+</tr>
+<tr>
+<td>打开关闭所有函数</td>
+<td>无</td>
+<td>ctrl shift +/-</td>
+</tr>
+<tr>
+<td>打开关闭当前函数</td>
+<td>无</td>
+<td>ctrl +/-</td>
+</tr>
+<tr>
+<td>查看源码</td>
+<td>ctrl + 左键</td>
+<td>ctrl + 左键</td>
+</tr>
+<tr>
+<td>内部类与外部类切换</td>
+<td>无</td>
+<td>Alt + Up/Down</td>
+</tr>
+<tr>
+<td>回到上次编辑位置</td>
+<td>无</td>
+<td>Ctrl + Shift + Backspace﻿</td>
+</tr>
+<tr>
+<td>实现父类的方法</td>
+<td>alt + shift + s + v</td>
+<td>ctrl + I</td>
+</tr>
+<tr>
+<td>复写父类的方法</td>
+<td>alt + shift + s + o</td>
+<td>ctrl + o</td>
+</tr>
+<tr>
+<td>构造器、Getter、Setter等</td>
+<td>alt + shift + s</td>
+<td>alt + Insert</td>
+</tr>
+<tr>
+<td>搜索当前类中的方法等</td>
+<td>ctrl + o</td>
+<td>ctrl + f12</td>
+</tr>
+<tr>
+<td>版本控制操作弹窗</td>
+<td>无</td>
+<td>Alt + `</td>
+</tr>
+<tr>
+<td>查找操作</td>
+<td>ctrl + f</td>
+<td>Ctrl + Shift + A</td>
+</tr>
+<tr>
+<td>定位到父类</td>
+<td>ctrl + 左键</td>
+<td>Ctrl + U</td>
+</tr>
+<tr>
+<td>提取方法</td>
+<td>Ctrl + Alt + M</td>
+<td>Ctrl + Alt + M</td>
+</tr>
+<tr>
+<td>提取参数</td>
+<td>Ctrl + Alt + P</td>
+<td>Ctrl + Alt + P</td>
+</tr>
+<tr>
+<td>合并文本</td>
+<td>没发现</td>
+<td>Ctrl + Shift + J</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<a id="more"></a>
+<blockquote>
+<p>如果你需要更多的AndoridStudio快捷键使用技巧可以参考一下的网址内容：<br>[转] 还有我敬爱的张哥stromzhang的AndroidStudio使用技巧：<a href="http://stormzhang.com/devtools/2015/06/17/android-studio-all/" target="_blank" rel="external">http://stormzhang.com/devtools/2015/06/17/android-studio-all/</a><br>[转] 最强 Android Studio 使用小技巧和快捷键 ：<a href="http://www.open-open.com/lib/view/open1458715872710.html" target="_blank" rel="external">http://www.open-open.com/lib/view/open1458715872710.html</a></p>
+<p>还有两张可以当壁纸的快捷键图（注：图片来自网络）：</p>
+</blockquote>
+<p><img src="http://i.imgur.com/MkQcq32.png" alt="图片来自网络"></p>
+<p><img src="http://i.imgur.com/Fing1EA.jpg" alt="图片来自网络"></p>
+<hr>
+<p>##下面是我AndroidStudio中的一些配置：</p>
+<ol>
+<li><p>设置类变量自动加m:也就是说设置这个以后你的alt + ctrl + f 代码提示中自动为你添加m</p>
+<p> <img src="http://i.imgur.com/yIVLE9l.png" alt=""></p>
+</li>
+<li><p>我的AndroidStudio主题：Sublime Text 2，下载地址：<a href="http://color-themes.com/?view=theme&amp;id=563a1a6380b4acf11273ae40" target="_blank" rel="external">http://color-themes.com/?view=theme&amp;id=563a1a6380b4acf11273ae40</a>需要翻墙。<br>更多主题请参考知乎：<a href="https://www.zhihu.com/question/38958773" target="_blank" rel="external">https://www.zhihu.com/question/38958773</a></p>
+<p> <img src="http://i.imgur.com/5u86Tbk.png" alt=""></p>
+</li>
+<li><p>对了用了上边的主题：你肯能会感觉Log信息有点别扭，没关系我也感觉别扭，当然是有解决方案的：</p>
+<ul>
+<li><p>设置方法：<br>File-&gt;Settings 或Ctrl + Alt +S 找到 Editor -&gt; Colors &amp;Fonts -&gt; Android Logcat 或在上面的搜索框中输入Logcat 点中Verbose , Info, Debug等选项，然后在后面将Use Inberited attributes 去掉勾选 再将 Foreground 前的复选框选上，就可以双击后面的框框去选择颜色了 Apply–&gt;OK；下面图片来自网络：</p>
+<p><img src="http://i.imgur.com/J6eiXyE.png" alt=""></p>
+</li>
+</ul>
+</li>
+<li><p>如果添加Jar包依赖：</p>
+<blockquote>
+<p>如果你在github上下载的是jar包，恭喜你依赖很简单，复制到libs目录下，右键点击add library就好。</p>
+</blockquote>
+</li>
+</ol>
+<ul>
+<li>步骤1：复制到libs目录下<br>  <img src="http://i.imgur.com/PTlXX7u.png" alt=""></li>
+<li>步骤2：右键点击add library<br>  <img src="http://i.imgur.com/tNcMrsI.png" alt=""></li>
+<li>步骤3： 结果<br>  <img src="http://i.imgur.com/GEkpeFH.png" alt=""></li>
+</ul>
+<ol>
+<li><p>如果添加gradle 依赖：这里以StickyListHeaders为例：</p>
+<ul>
+<li>步骤1： 当然是去github上寻找对应的第三方包：</li>
+<li>步骤2： 找到对应的gradle依赖说明： 这里说明一下第三方包，的版本号都是三位的即使官方给出的最新版本是v2.7 后边的xxx也要写成2.7.0<br>  <img src="http://i.imgur.com/MVPqEvU.png" alt=""></li>
+<li><p>步骤3： 去项目的app目录下的build.gradle中添加dependencies：</p>
+<p>  <img src="http://i.imgur.com/QXmPcQs.png" alt=""></p>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<blockquote>
+<p>总结： 虽然万分的不习惯，加上AndroidStudio也十分的消耗电脑配置，想windows这样的系统，我想再高的系统配置也会不流畅。所有土豪们要是有钱的话就去换个macpro把，不要问我mac air和macpro要买哪一个，问这句话我能想到的原因只有两个，一个是你能钱只够买一个mac air的，考虑要不要借钱买pro，另一个是你两个都买不起就是问问。当然我是属于后者。哈哈哈。。。开玩笑呢。<br>总之，google官方推荐的方法使用的IDE当然是有他的好处。</p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;从Eclipse迁移到Android-studio你所需要知道快捷键&quot;&gt;&lt;a href=&quot;#从Eclipse迁移到Android-studio你所需要知道快捷键&quot; class=&quot;headerlink&quot; title=&quot;从Eclipse迁移到Android studio你所需要知道快捷键&quot;&gt;&lt;/a&gt;从Eclipse迁移到Android studio你所需要知道快捷键&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;下述为一些在Eclipse中常用的快捷键，另外说明下，网上好多提示说将AS的快捷见切换为Eclipse文本就跟Eclipse原来的快捷键一样。亲身实验就算你切换成Eclipse模版，还是有好多不一样。所以之后默默开始去熟悉默认的AS快捷键了。用多了你会感觉他的确很强大。拿前两天亲身的例子来讲：编写的代码由于仅适用与API16以上，正常来说Eclipse只会给你提示，而Studio我按了下Alt + enter 直接给我语句包裹了SDK版本判断的语句。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;快捷键&lt;/th&gt;
+&lt;th&gt;Eclipse&lt;/th&gt;
+&lt;th&gt;AndroidStudio&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;删除一行&lt;/td&gt;
+&lt;td&gt;ctrl + d&lt;/td&gt;
+&lt;td&gt;ctrl + y&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;复制一行&lt;/td&gt;
+&lt;td&gt;ctrl + alt + ↑/↓&lt;/td&gt;
+&lt;td&gt;ctrl + d&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;移动一行&lt;/td&gt;
+&lt;td&gt;ctrl + ↑/↓&lt;/td&gt;
+&lt;td&gt;Shift+Alt+↑/↓&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;大小写切换&lt;/td&gt;
+&lt;td&gt;ctrl + shift+Y/X&lt;/td&gt;
+&lt;td&gt;Ctrl+Shift+U&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;生成成员变量&lt;/td&gt;
+&lt;td&gt;ctrl + 2 + l&lt;/td&gt;
+&lt;td&gt;ctrl+alt + v&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;生成类变量&lt;/td&gt;
+&lt;td&gt;ctrl + 2 + f&lt;/td&gt;
+&lt;td&gt;ctrl+alt + f&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;错误修改提示&lt;/td&gt;
+&lt;td&gt;ctrl + 1&lt;/td&gt;
+&lt;td&gt;alt + enter&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;提示方法参数&lt;/td&gt;
+&lt;td&gt;Alt + /&lt;/td&gt;
+&lt;td&gt;自动/ctrl+p&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;格式化代码&lt;/td&gt;
+&lt;td&gt;ctrl + shift + f&lt;/td&gt;
+&lt;td&gt;Ctrl+Alt+L&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;修改变量名&lt;/td&gt;
+&lt;td&gt;ctrl + shift + R&lt;/td&gt;
+&lt;td&gt;shift + f6&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;自动倒包&lt;/td&gt;
+&lt;td&gt;Ctrl+Alt+O&lt;/td&gt;
+&lt;td&gt;Ctrl+Alt+O&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;智能代码提示&lt;/td&gt;
+&lt;td&gt;自定义代码模版&lt;/td&gt;
+&lt;td&gt;Ctrl+J很实用&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;打开关闭所有函数&lt;/td&gt;
+&lt;td&gt;无&lt;/td&gt;
+&lt;td&gt;ctrl shift +/-&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;打开关闭当前函数&lt;/td&gt;
+&lt;td&gt;无&lt;/td&gt;
+&lt;td&gt;ctrl +/-&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;查看源码&lt;/td&gt;
+&lt;td&gt;ctrl + 左键&lt;/td&gt;
+&lt;td&gt;ctrl + 左键&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;内部类与外部类切换&lt;/td&gt;
+&lt;td&gt;无&lt;/td&gt;
+&lt;td&gt;Alt + Up/Down&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;回到上次编辑位置&lt;/td&gt;
+&lt;td&gt;无&lt;/td&gt;
+&lt;td&gt;Ctrl + Shift + Backspace﻿&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;实现父类的方法&lt;/td&gt;
+&lt;td&gt;alt + shift + s + v&lt;/td&gt;
+&lt;td&gt;ctrl + I&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;复写父类的方法&lt;/td&gt;
+&lt;td&gt;alt + shift + s + o&lt;/td&gt;
+&lt;td&gt;ctrl + o&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;构造器、Getter、Setter等&lt;/td&gt;
+&lt;td&gt;alt + shift + s&lt;/td&gt;
+&lt;td&gt;alt + Insert&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;搜索当前类中的方法等&lt;/td&gt;
+&lt;td&gt;ctrl + o&lt;/td&gt;
+&lt;td&gt;ctrl + f12&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;版本控制操作弹窗&lt;/td&gt;
+&lt;td&gt;无&lt;/td&gt;
+&lt;td&gt;Alt + `&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;查找操作&lt;/td&gt;
+&lt;td&gt;ctrl + f&lt;/td&gt;
+&lt;td&gt;Ctrl + Shift + A&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;定位到父类&lt;/td&gt;
+&lt;td&gt;ctrl + 左键&lt;/td&gt;
+&lt;td&gt;Ctrl + U&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;提取方法&lt;/td&gt;
+&lt;td&gt;Ctrl + Alt + M&lt;/td&gt;
+&lt;td&gt;Ctrl + Alt + M&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;提取参数&lt;/td&gt;
+&lt;td&gt;Ctrl + Alt + P&lt;/td&gt;
+&lt;td&gt;Ctrl + Alt + P&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;合并文本&lt;/td&gt;
+&lt;td&gt;没发现&lt;/td&gt;
+&lt;td&gt;Ctrl + Shift + J&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+    
+    </summary>
+    
+      <category term="AndroidStudio" scheme="http://yoursite.com/categories/AndroidStudio/"/>
+    
+    
+      <category term="AndroidStudio" scheme="http://yoursite.com/tags/AndroidStudio/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>一个单例Toast的工具类</title>
+    <link href="http://yoursite.com/2016/07/27/%E4%B8%80%E4%B8%AA%E5%8D%95%E4%BE%8BToast%E7%9A%84%E5%B7%A5%E5%85%B7%E7%B1%BB/"/>
+    <id>http://yoursite.com/2016/07/27/一个单例Toast的工具类/</id>
+    <published>2016-07-26T16:47:59.000Z</published>
+    <updated>2016-07-26T16:49:08.710Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="单例Toast"><a href="#单例Toast" class="headerlink" title="单例Toast"></a>单例Toast</h2><blockquote>
+<p>　　在最近的开发过程中遇到了一个有关于Toast现实的问题：我们往往希望在适当的时候给予用户一个提示，如通知用户更新成功。<br> 有的时候我们也往往希望通过Toast给予用户警告，而此时，往往用户会不停的点击，导致toast的内容一直显示。用户本来就够烦心了，难道还要让用户等着你的Toast提示完？</p>
+<p>　　事实上不应该让这种事情发生，我们应该在短时间内只给与用户一次提示，即使用户点击了多次，产生了多次Toast我们也要尽可能的是Toast次数尽可能的少。</p>
+</blockquote>
+<p>于是郭婶今天微信公共账号的文章：我们可以自定义Toast的工具类，采取单例的设计思想，来实现上述需求：</p>
+<pre><code>public class ToastUtils {
+    public static  Toast mToast;
+    public static void show(Context context, String text) {
+
+        if (mToast == null){
+            mToast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+        }else {
+            //如果当前的Toast没有消失就重新设置toast的内容而不是重新new一个Toast
+            mToast.setText(text);
+        }
+        mToast.show();
+    }
+
+    public static void showLong(Context context, String text) {
+
+        if (mToast == null){
+            mToast = Toast.makeText(context, text, Toast.LENGTH_LONG);
+        }else {
+            //如果当前的Toast没有消失就重新设置toast的内容而不是重新new一个Toast
+            mToast.setText(text);
+        }
+        mToast.show();
+    }
+}
+</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;单例Toast&quot;&gt;&lt;a href=&quot;#单例Toast&quot; class=&quot;headerlink&quot; title=&quot;单例Toast&quot;&gt;&lt;/a&gt;单例Toast&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;　　在最近的开发过程中遇到了一个有关于Toast现实的问题：我们往往希望在
+    
+    </summary>
+    
+      <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
+    
+    
+      <category term="android笔记" scheme="http://yoursite.com/tags/android%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+</feed>
